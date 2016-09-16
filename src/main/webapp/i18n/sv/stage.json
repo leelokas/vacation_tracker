@@ -1,0 +1,11 @@
+{
+    "vacationTrackerApp": {
+        "Stage" : {
+            "null": "",
+            "SAVED": "SAVED",
+            "SENT": "SENT",
+            "PLANNED": "PLANNED",
+            "CONFIRMED": "CONFIRMED"
+        }
+    }
+}

@@ -1,0 +1,91 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myVacationLabel" data-translate="vacationTrackerApp.vacation.home.createOrEditLabel">Create or edit a Vacation</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.vacation.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.vacation.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="vacationTrackerApp.vacation.stage" for="field_stage">Stage</label>
+            <select class="form-control" name="stage" ng-model="vm.vacation.stage" id="field_stage">
+                <option value="SAVED" data-translate="vacationTrackerApp.Stage.SAVED">SAVED</option>
+                <option value="SENT" data-translate="vacationTrackerApp.Stage.SENT">SENT</option>
+                <option value="PLANNED" data-translate="vacationTrackerApp.Stage.PLANNED">PLANNED</option>
+                <option value="CONFIRMED" data-translate="vacationTrackerApp.Stage.CONFIRMED">CONFIRMED</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="vacationTrackerApp.vacation.type" for="field_type">Type</label>
+            <select class="form-control" name="type" ng-model="vm.vacation.type" id="field_type" required>
+                <option value="PAID" data-translate="vacationTrackerApp.VacationType.PAID">PAID</option>
+                <option value="UNPAID" data-translate="vacationTrackerApp.VacationType.UNPAID">UNPAID</option>
+                <option value="SICK_LEAVE" data-translate="vacationTrackerApp.VacationType.SICK_LEAVE">SICK_LEAVE</option>
+                <option value="STUDY_LEAVE" data-translate="vacationTrackerApp.VacationType.STUDY_LEAVE">STUDY_LEAVE</option>
+                <option value="PREGNANCY_LEAVE" data-translate="vacationTrackerApp.VacationType.PREGNANCY_LEAVE">PREGNANCY_LEAVE</option>
+                <option value="PARENTAL_LEAVE" data-translate="vacationTrackerApp.VacationType.PARENTAL_LEAVE">PARENTAL_LEAVE</option>
+            </select>
+            <div ng-show="editForm.type.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.type.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="vacationTrackerApp.vacation.payment" for="field_payment">Payment</label>
+            <select class="form-control" name="payment" ng-model="vm.vacation.payment" id="field_payment">
+                <option value="BEFORE_VACATION" data-translate="vacationTrackerApp.PaymentType.BEFORE_VACATION">BEFORE_VACATION</option>
+                <option value="WITH_NEXT_SALARY" data-translate="vacationTrackerApp.PaymentType.WITH_NEXT_SALARY">WITH_NEXT_SALARY</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="vacationTrackerApp.vacation.startDate" for="field_startDate">Start Date</label>
+                <div class="input-group">
+                    <input id="field_startDate" type="text" class="form-control" name="startDate" uib-datepicker-popup="{{dateformat}}" ng-model="vm.vacation.startDate" is-open="vm.datePickerOpenStatus.startDate"
+                    required/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('startDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            <div ng-show="editForm.startDate.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.startDate.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="vacationTrackerApp.vacation.endDate" for="field_endDate">End Date</label>
+                <div class="input-group">
+                    <input id="field_endDate" type="text" class="form-control" name="endDate" uib-datepicker-popup="{{dateformat}}" ng-model="vm.vacation.endDate" is-open="vm.datePickerOpenStatus.endDate"
+                    />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="vacationTrackerApp.vacation.owner" for="field_owner">Owner</label>
+            <select class="form-control" id="field_owner" name="owner" ng-model="vm.vacation.owner" ng-options="user as user.id for user in vm.users track by user.id">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

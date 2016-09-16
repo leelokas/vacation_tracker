@@ -1,0 +1,13 @@
+{
+    "vacationTrackerApp": {
+        "VacationType" : {
+            "null": "",
+            "PAID": "PAID",
+            "UNPAID": "UNPAID",
+            "SICK_LEAVE": "SICK_LEAVE",
+            "STUDY_LEAVE": "STUDY_LEAVE",
+            "PREGNANCY_LEAVE": "PREGNANCY_LEAVE",
+            "PARENTAL_LEAVE": "PARENTAL_LEAVE"
+        }
+    }
+}

@@ -1,0 +1,43 @@
+
+<div>
+    <h2><span data-translate="vacationTrackerApp.vacation.detail.title">Vacation</span> {{vm.vacation.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="vacationTrackerApp.vacation.stage">Stage</span></dt>
+        <dd>
+            <span data-translate="{{'vacationTrackerApp.Stage.' + vm.vacation.stage}}">{{vm.vacation.stage}}</span>
+        </dd>
+        <dt><span data-translate="vacationTrackerApp.vacation.type">Type</span></dt>
+        <dd>
+            <span data-translate="{{'vacationTrackerApp.VacationType.' + vm.vacation.type}}">{{vm.vacation.type}}</span>
+        </dd>
+        <dt><span data-translate="vacationTrackerApp.vacation.payment">Payment</span></dt>
+        <dd>
+            <span data-translate="{{'vacationTrackerApp.PaymentType.' + vm.vacation.payment}}">{{vm.vacation.payment}}</span>
+        </dd>
+        <dt><span data-translate="vacationTrackerApp.vacation.startDate">Start Date</span></dt>
+        <dd>
+            <span>{{vm.vacation.startDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span data-translate="vacationTrackerApp.vacation.endDate">End Date</span></dt>
+        <dd>
+            <span>{{vm.vacation.endDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span data-translate="vacationTrackerApp.vacation.owner">Owner</span></dt>
+        <dd>
+            {{vm.vacation.owner.id}}
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="vacation-detail.edit({id:vm.vacation.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

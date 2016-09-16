@@ -1,0 +1,51 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "owner",
+            "otherEntityName": "user",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [],
+            "otherEntityField": "id",
+            "ownerSide": true
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "stage",
+            "fieldType": "Stage",
+            "fieldValues": "SAVED,SENT,PLANNED,CONFIRMED",
+            "fieldValidateRules": []
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "VacationType",
+            "fieldValues": "PAID,UNPAID,SICK_LEAVE,STUDY_LEAVE,PREGNANCY_LEAVE,PARENTAL_LEAVE",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "payment",
+            "fieldType": "PaymentType",
+            "fieldValues": "BEFORE_VACATION,WITH_NEXT_SALARY",
+            "fieldValidateRules": []
+        },
+        {
+            "fieldName": "startDate",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "endDate",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "changelogDate": "20160916143639",
+    "dto": "no",
+    "service": "no",
+    "entityTableName": "vacation",
+    "pagination": "pagination"
+}

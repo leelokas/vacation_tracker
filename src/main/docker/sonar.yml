@@ -1,0 +1,8 @@
+version: '2'
+services:
+    vacationtracker-sonar:
+        container_name: vacationtracker-sonar
+        image: sonarqube:5.6.1-alpine
+        ports:
+            - 9000:9000
+            - 9092:9092
