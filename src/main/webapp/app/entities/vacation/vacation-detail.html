@@ -18,15 +18,15 @@
         </dd>
         <dt><span data-translate="vacationTrackerApp.vacation.startDate">Start Date</span></dt>
         <dd>
-            <span>{{vm.vacation.startDate | date:'mediumDate'}}</span>
+            <span>{{vm.vacation.startDate | date:'dd.MMMM yyyy'}}</span>
         </dd>
         <dt><span data-translate="vacationTrackerApp.vacation.endDate">End Date</span></dt>
         <dd>
-            <span>{{vm.vacation.endDate | date:'mediumDate'}}</span>
+            <span>{{vm.vacation.endDate | date:'dd.MMMM yyyy'}}</span>
         </dd>
         <dt><span data-translate="vacationTrackerApp.vacation.owner">Owner</span></dt>
         <dd>
-            {{vm.vacation.owner.id}}
+            {{vm.vacation.owner.login}}
         </dd>
     </dl>
 

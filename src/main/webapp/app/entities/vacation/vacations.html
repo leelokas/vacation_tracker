@@ -24,7 +24,7 @@
                     <th jh-sort-by="payment"><span data-translate="vacationTrackerApp.vacation.payment">Payment</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="startDate"><span data-translate="vacationTrackerApp.vacation.startDate">Start Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="endDate"><span data-translate="vacationTrackerApp.vacation.endDate">End Date</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="owner.id"><span data-translate="vacationTrackerApp.vacation.owner">Owner</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="owner.login"><span data-translate="vacationTrackerApp.vacation.owner">Owner</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -34,10 +34,10 @@
                     <td data-translate="{{'vacationTrackerApp.Stage.' + vacation.stage}}">{{vacation.stage}}</td>
                     <td data-translate="{{'vacationTrackerApp.VacationType.' + vacation.type}}">{{vacation.type}}</td>
                     <td data-translate="{{'vacationTrackerApp.PaymentType.' + vacation.payment}}">{{vacation.payment}}</td>
-                        <td>{{vacation.startDate | date:'mediumDate'}}</td>
-                        <td>{{vacation.endDate | date:'mediumDate'}}</td>
+                        <td>{{vacation.startDate | date:'dd/MM/yyyy'}}</td>
+                        <td>{{vacation.endDate | date:'dd/MM/yyyy'}}</td>
                     <td>
-                        {{vacation.owner.id}}
+                        {{vacation.owner.login}}
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

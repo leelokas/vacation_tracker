@@ -43,7 +43,7 @@
         }
 
         function dateformat () {
-            return 'yyyy-MM-dd';
+            return 'dd/MM/yyyy';
         }
     }
 
