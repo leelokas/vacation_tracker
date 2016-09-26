@@ -16,15 +16,6 @@
                 <input type="text" class="form-control" id="id" name="id" ng-model="vm.vacation.id" readonly />
             </div>
             <div class="form-group col-md-12">
-                <label class="control-label" data-translate="vacationTrackerApp.vacation.stage" for="field_stage">Stage</label>
-                <select class="form-control" name="stage" ng-model="vm.vacation.stage" id="field_stage">
-                    <option value="SAVED" data-translate="vacationTrackerApp.Stage.SAVED">SAVED</option>
-                    <option value="SENT" data-translate="vacationTrackerApp.Stage.SENT">SENT</option>
-                    <option value="PLANNED" data-translate="vacationTrackerApp.Stage.PLANNED">PLANNED</option>
-                    <option value="CONFIRMED" data-translate="vacationTrackerApp.Stage.CONFIRMED">CONFIRMED</option>
-                </select>
-            </div>
-            <div class="form-group col-md-12">
                 <label class="control-label" data-translate="vacationTrackerApp.vacation.type" for="field_type">Type</label>
                 <select class="form-control" name="type" ng-model="vm.vacation.type" id="field_type" required>
                     <option value="PAID" data-translate="vacationTrackerApp.VacationType.PAID">PAID</option>
@@ -45,8 +36,8 @@
             <div class="form-group col-md-6">
                 <label class="control-label" data-translate="vacationTrackerApp.vacation.startDate" for="field_startDate">Start Date</label>
                 <div class="input-group">
-                    <input id="field_startDate" type="text" class="form-control" name="startDate" uib-datepicker-popup="{{'dd/MM/yyyy'}}"
-                           ng-model="vm.vacation.startDate" is-open="vm.datePickerOpenStatus.startDate" required/>
+                    <input id="field_startDate" type="text" class="form-control" name="startDate" uib-datepicker-popup="{{'dd/MM/yyyy'}}" required
+                           ng-model="vm.vacation.startDate" is-open="vm.datePickerOpenStatus.startDate" datepicker-options="dateOptions" show-button-bar="false"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('startDate')"><i class="glyphicon glyphicon-calendar"></i></button>
                     </span>
@@ -56,7 +47,7 @@
                 <label class="control-label" data-translate="vacationTrackerApp.vacation.endDate" for="field_endDate">End Date</label>
                 <div class="input-group">
                     <input id="field_endDate" type="text" class="form-control" name="endDate" uib-datepicker-popup="{{'dd/MM/yyyy'}}"
-                           ng-model="vm.vacation.endDate" is-open="vm.datePickerOpenStatus.endDate"/>
+                           ng-model="vm.vacation.endDate" is-open="vm.datePickerOpenStatus.endDate" datepicker-options="dateOptions" show-button-bar="false"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endDate')"><i class="glyphicon glyphicon-calendar"></i></button>
                     </span>

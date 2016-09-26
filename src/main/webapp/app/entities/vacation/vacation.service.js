@@ -33,6 +33,7 @@
             'save': {
                 method: 'POST',
                 transformRequest: function (data) {
+                    data.stage = "SAVED";
                     data.startDate = DateUtils.convertLocalDateToServer(data.startDate);
                     data.endDate = DateUtils.convertLocalDateToServer(data.endDate);
                     return angular.toJson(data);

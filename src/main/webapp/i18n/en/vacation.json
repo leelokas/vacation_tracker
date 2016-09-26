@@ -7,7 +7,7 @@
                 "createOrEditLabel": "Create or edit a Vacation",
                 "search": "Search for Vacation"
             },
-            "created": "A new Vacation is created with identifier {{ param }}",
+            "created": "Your vacation request is saved but not sent for confirmation. \nIf your request doesn’t need any changes then please click 'Send to confirmation'",
             "updated": "A Vacation is updated with identifier {{ param }}",
             "deleted": "A Vacation is deleted with identifier {{ param }}",
             "delete": {
