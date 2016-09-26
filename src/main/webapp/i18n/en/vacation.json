@@ -8,6 +8,7 @@
                 "search": "Search for Vacation"
             },
             "created": "Your vacation request is saved but not sent for confirmation. \nIf your request doesn’t need any changes then please click 'Send to confirmation'",
+            "sent": "Your vacation request for dates {{vacation.startDate}} - {{vacation.endDate}} was sent for confirmation to your manager {{manager.firstName}} {{manager.lastName}}.",
             "updated": "A Vacation is updated with identifier {{ param }}",
             "deleted": "A Vacation is deleted with identifier {{ param }}",
             "delete": {

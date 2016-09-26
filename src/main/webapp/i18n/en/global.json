@@ -89,7 +89,8 @@
             "edit": "Edit",
             "open": "Open",
             "save": "Save",
-            "view": "View"
+            "view": "View",
+            "confirmation": "Send to confirmation"
         },
         "detail": {
             "field": "Field",
