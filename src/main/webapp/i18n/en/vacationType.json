@@ -2,12 +2,12 @@
     "vacationTrackerApp": {
         "VacationType" : {
             "null": "",
-            "PAID": "PAID",
-            "UNPAID": "UNPAID",
-            "SICK_LEAVE": "SICK_LEAVE",
-            "STUDY_LEAVE": "STUDY_LEAVE",
-            "PREGNANCY_LEAVE": "PREGNANCY_LEAVE",
-            "PARENTAL_LEAVE": "PARENTAL_LEAVE"
+            "PAID": "Paid vacation",
+            "UNPAID": "Unpaid vacation",
+            "SICK_LEAVE": "Sick leave",
+            "STUDY_LEAVE": "Study leave",
+            "PREGNANCY_LEAVE": "Pregnancy leave",
+            "PARENTAL_LEAVE": "Parental leave"
         }
     }
 }

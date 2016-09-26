@@ -2,8 +2,8 @@
     "vacationTrackerApp": {
         "PaymentType" : {
             "null": "",
-            "BEFORE_VACATION": "BEFORE_VACATION",
-            "WITH_NEXT_SALARY": "WITH_NEXT_SALARY"
+            "BEFORE_VACATION": "Before vacation",
+            "WITH_NEXT_SALARY": "With next salary"
         }
     }
 }
