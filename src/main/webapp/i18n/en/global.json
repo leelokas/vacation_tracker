@@ -90,7 +90,8 @@
             "open": "Open",
             "save": "Save",
             "view": "View",
-            "confirmation": "Send to confirmation"
+            "send": "Send to confirmation",
+            "confirm": "Confirm"
         },
         "detail": {
             "field": "Field",

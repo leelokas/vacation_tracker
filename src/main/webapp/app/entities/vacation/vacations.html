@@ -52,10 +52,15 @@
                                 <span class="glyphicon glyphicon-pencil"></span>
                                 <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.edit"></span>
                             </button>
-                            <button ng-show="vacation.stage === 'SAVED'" type="button" ng-click="vm.confirm(vacation)"
+                            <button ng-show="vacation.stage === 'SAVED'" type="button" ng-click="vm.send(vacation)"
                                     class="btn btn-success btn-sm">
                                 <span class="glyphicon glyphicon-send"></span>
-                                <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.confirmation"></span>
+                                <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.send"></span>
+                            </button>
+                            <button ng-show="vacation.stage === 'SENT'" type="button" ng-click="vm.confirm(vacation)"
+                                    class="btn btn-success btn-sm">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.confirm"></span>
                             </button>
                             <button type="submit"
                                     ui-sref="vacation.delete({id:vacation.id})"

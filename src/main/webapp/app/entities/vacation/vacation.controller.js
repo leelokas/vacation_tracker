@@ -15,6 +15,7 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
+        vm.send = send;
         vm.confirm = confirm;
 
         loadAll();
@@ -57,7 +58,7 @@
             });
         }
 
-        function confirm (vacation) {
+        function send (vacation) {
             vacation.stage = "SENT";
             Vacation.update(vacation, function (result) {
                 loadAll();
@@ -66,9 +67,21 @@
                         startDate: $filter('date')(new Date(result.startDate), "dd/MM/yyyy"),
                         endDate: $filter('date')(new Date(result.endDate), "dd/MM/yyyy")
                     },
-                    manager: { //TODO task #14
+                    manager: { //TODO task #32 & #33
                         firstName: "John",
                         lastName: "Doe"
+                    }});
+            });
+        }
+
+        function confirm (vacation) {
+            vacation.stage = "PLANNED";
+            Vacation.update(vacation, function (result) {
+                loadAll();
+                AlertService.info("vacationTrackerApp.vacation.confirmed", {
+                    owner: {
+                        firstName: result.owner.firstName,
+                        lastName: result.owner.lastName
                     }});
             });
         }
