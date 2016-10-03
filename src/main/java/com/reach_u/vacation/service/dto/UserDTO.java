@@ -59,7 +59,7 @@ public class UserDTO {
         this.activated = activated;
         this.langKey = langKey;
         this.authorities = authorities;
-        if (manager != null) {
+        if (manager != null && !manager.getLogin().equals(login)) {
             this.manager = new UserDTO(manager);
         }
     }
