@@ -15,6 +15,7 @@
         vm.languages = null;
         vm.save = save;
         vm.user = entity;
+        vm.users = User.query();
 
 
         JhiLanguageService.getAll().then(function (languages) {
@@ -36,6 +37,7 @@
 
         function save () {
             vm.isSaving = true;
+            vm.user.managerId = (vm.user.manager ? vm.user.manager.id : null);
             if (vm.user.id !== null) {
                 User.update(vm.user, onSaveSuccess, onSaveError);
             } else {

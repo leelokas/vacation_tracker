@@ -12,19 +12,21 @@
         <table class="table table-striped">
             <thead>
             <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                <th jh-sort-by="id"><span data-translate="global.field.id">ID</span><span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="id" class="hidden-xs"><span data-translate="global.field.id">ID</span><span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="login"><span data-translate="userManagement.login">Login</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="email"><span data-translate="userManagement.email">Email</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th></th>
-                <th  jh-sort-by="langKey"> <span data-translate="userManagement.langKey">Lang Key</span> <span class="glyphicon glyphicon-sort"></span></th>                <th><span data-translate="userManagement.profiles">Profiles</span></th>                <th jh-sort-by="createdDate"><span data-translate="userManagement.createdDate">Created Date</span> <span class="glyphicon glyphicon-sort"></span></th>
-                <th jh-sort-by="lastModifiedBy"><span data-translate="userManagement.lastModifiedBy">Last Modified By</span> <span class="glyphicon glyphicon-sort"></span></th>
-                <th jh-sort-by="lastModifiedDate"><span data-translate="userManagement.lastModifiedDate">Last Modified Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th><span data-translate="userManagement.profiles">Roles</span></th>
+                <th><span data-translate="userManagement.manager">Roles</span></th>
+                <th jh-sort-by="createdDate" class="hidden-xs hidden-sm"><span data-translate="userManagement.createdDate">Created Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="lastModifiedBy" class="hidden-xs"><span data-translate="userManagement.lastModifiedBy">Last Modified By</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="lastModifiedDate" class="hidden-xs"><span data-translate="userManagement.lastModifiedDate">Last Modified Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="user in vm.users track by user.id">
-                <td><a ui-sref="user-management-detail({login:user.login})">{{user.id}}</a></td>
+                <td class="hidden-xs"><a ui-sref="user-management-detail({login:user.login})">{{user.id}}</a></td>
                 <td>{{user.login}}</td>
                 <td>{{user.email}}</td>
                 <td>
@@ -33,34 +35,34 @@
                     <span class="label label-success" ng-click="vm.setActive(user, false)" ng-show="user.activated"
                           data-translate="userManagement.activated" style="cursor: pointer;">Activated</span>
                 </td>
-                <td>{{user.langKey}}</td>
                 <td>
                     <div ng-repeat="authority in user.authorities">
                         <span class="label label-info">{{ authority }}</span>
                     </div>
                 </td>
-                <td>{{user.createdDate | date:'dd/MM/yy HH:mm'}}</td>
-                <td>{{user.lastModifiedBy}}</td>
-                <td>{{user.lastModifiedDate | date:'dd/MM/yy HH:mm'}}</td>
+                <td class="hidden-xs hidden-sm">{{user.manager.login}}</td>
+                <td class="hidden-xs hidden-sm">{{user.createdDate | date:'dd/MM/yy HH:mm'}}</td>
+                <td class="hidden-xs">{{user.lastModifiedBy}}</td>
+                <td class="hidden-xs">{{user.lastModifiedDate | date:'dd/MM/yy HH:mm'}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
                                 ui-sref="user-management-detail({login:user.login})"
                                 class="btn btn-info btn-sm">
                             <span class="glyphicon glyphicon-eye-open"></span>
-                            <span class="hidden-xs hidden-sm" data-translate="entity.action.view"></span>
+                            <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.view"></span>
                         </button>
                         <button type="submit"
                                 ui-sref="user-management.edit({login:user.login})"
                                 class="btn btn-primary btn-sm">
                             <span class="glyphicon glyphicon-pencil"></span>
-                            <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"></span>
+                            <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.edit"></span>
                         </button>
                         <button type="submit"
                                 ui-sref="user-management.delete({login:user.login})"
                                 class="btn btn-danger btn-sm" ng-disabled="vm.currentAccount.login==user.login">
                             <span class="glyphicon glyphicon-remove-circle"></span>
-                            <span class="hidden-xs hidden-sm" data-translate="entity.action.delete"></span>
+                            <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.delete"></span>
                         </button>
                     </div>
                 </td>

@@ -5,11 +5,11 @@
             "createLabel": "Create a new user",
             "createOrEditLabel": "Create or edit a user"
         },
-        "created": "A new user is created with identifier {{ param }}",
-        "updated": "An user is updated with identifier {{ param }}",
-        "deleted": "An user is deleted with identifier {{ param }}",
+        "created": "A new user is created with login '{{ param }}'",
+        "updated": "An user is updated with login '{{ param }}'",
+        "deleted": "An user is deleted with login '{{ param }}'",
         "delete": {
-            "question": "Are you sure you want to delete user {{ login }}?"
+            "question": "Are you sure you want to delete user '{{ login }}'?"
         },
         "detail": {
             "title": "User"
@@ -20,11 +20,12 @@
         "email": "Email",
         "activated": "Activated",
         "deactivated": "Deactivated",
-        "profiles": "Profiles",
+        "profiles": "Roles",
         "langKey": "Language",
         "createdBy": "Created by",
         "createdDate": "Created date",
         "lastModifiedBy": "Modified by",
-        "lastModifiedDate": "Modified date"
+        "lastModifiedDate": "Modified date",
+        "manager": "Manager"
     }
 }

@@ -56,7 +56,8 @@
 
             <div class="form-group col-md-12">
                 <label data-translate="vacationTrackerApp.vacation.owner" for="field_owner">Owner</label>
-                <select class="form-control" id="field_owner" name="owner" ng-model="vm.vacation.owner" ng-options="user as user.login for user in vm.users track by user.login">
+                <select class="form-control" id="field_owner" name="owner" ng-model="vm.vacation.owner"
+                        ng-options="user as user.login for user in vm.users track by user.login">
                     <option value=""></option>
                 </select>
             </div>
