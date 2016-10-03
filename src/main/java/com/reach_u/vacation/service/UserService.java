@@ -64,11 +64,11 @@ public class UserService {
                 return user.getResetDate().isAfter(oneDayAgo);
            })
            .map(user -> {
-                user.setPassword(passwordEncoder.encode(newPassword));
-                user.setResetKey(null);
-                user.setResetDate(null);
-                userRepository.save(user);
-                return user;
+               user.setPassword(passwordEncoder.encode(newPassword));
+               user.setResetKey(null);
+               user.setResetDate(null);
+               userRepository.save(user);
+               return user;
            });
     }
 
@@ -131,6 +131,9 @@ public class UserService {
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(ZonedDateTime.now());
         user.setActivated(true);
+        if (managedUserVM.getManagerId() != null) {
+            userRepository.findOneById(managedUserVM.getManagerId()).ifPresent(m -> user.setManager(m));
+        }
         userRepository.save(user);
         log.debug("Created Information for User: {}", user);
         return user;
@@ -148,7 +151,7 @@ public class UserService {
     }
 
     public void updateUser(Long id, String login, String firstName, String lastName, String email,
-        boolean activated, String langKey, Set<String> authorities) {
+                           boolean activated, String langKey, Set<String> authorities, Long managerId) {
 
         userRepository
             .findOneById(id)
@@ -164,6 +167,9 @@ public class UserService {
                 authorities.stream().forEach(
                     authority -> managedAuthorities.add(authorityRepository.findOne(authority))
                 );
+                if (managerId != null) {
+                    userRepository.findOneById(managerId).ifPresent(m -> u.setManager(m));
+                }
                 log.debug("Changed Information for User: {}", u);
             });
     }

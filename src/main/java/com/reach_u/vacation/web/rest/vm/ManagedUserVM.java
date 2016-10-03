@@ -27,6 +27,8 @@ public class ManagedUserVM extends UserDTO {
 
     private ZonedDateTime lastModifiedDate;
 
+    private Long managerId;
+
     @NotNull
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     private String password;
@@ -47,7 +49,7 @@ public class ManagedUserVM extends UserDTO {
     public ManagedUserVM(Long id, String login, String password, String firstName, String lastName,
                          String email, boolean activated, String langKey, Set<String> authorities,
                          String createdBy, ZonedDateTime createdDate, String lastModifiedBy, ZonedDateTime lastModifiedDate) {
-        super(login, firstName, lastName, email, activated, langKey, authorities);
+        super(login, firstName, lastName, email, activated, langKey, authorities, null);
         this.id = id;
         this.createdBy = createdBy;
         this.createdDate = createdDate;
@@ -99,6 +101,10 @@ public class ManagedUserVM extends UserDTO {
 
     public String getPassword() {
         return password;
+    }
+
+    public Long getManagerId() {
+        return managerId;
     }
 
     @Override

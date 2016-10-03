@@ -70,11 +70,20 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "reset_key", length = 20)
     private String resetKey;
 
+    @ManyToOne
+    @JoinColumn(name="manager_id")
+    private User manager;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "manager")
+    private Set<User> subordinates;
+
+
     @Column(name = "reset_date", nullable = true)
     private ZonedDateTime resetDate = null;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "jhi_user_authority",
         joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
@@ -95,6 +104,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public String getLogin() {
         return login;
+    }
+
+    public User getManager() {
+        return manager;
+    }
+
+    public void setManager(User manager) {
+        this.manager = manager;
     }
 
     //Lowercase the login before saving it in database
@@ -184,6 +201,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public Set<PersistentToken> getPersistentTokens() {
         return persistentTokens;
+    }
+
+    public Set<User> getSubordinates() {
+        return subordinates;
     }
 
     public void setPersistentTokens(Set<PersistentToken> persistentTokens) {
