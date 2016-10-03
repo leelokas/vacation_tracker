@@ -21,7 +21,7 @@ spring:
         serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:file:./target/h2db/db/vacationtracker;DB_CLOSE_DELAY=-1
+        url: jdbc:h2:file:/tmp/vacationtracker/h2db/db/vacationtracker;DB_CLOSE_DELAY=-1
         name:
         username: vacationTracker
         password:
