@@ -16,4 +16,15 @@
         </addColumn>
 
     </changeSet>
+
+    <changeSet id="20161004092039-1" author="tanelj">
+        <insert tableName="jhi_authority" >
+            <column name="name" value="ROLE_MANAGER" />
+        </insert>
+        <insert tableName="jhi_authority" >
+            <column name="name" value="ROLE_ACCOUNTANT" />
+        </insert>
+
+    </changeSet>
+
 </databaseChangeLog>
