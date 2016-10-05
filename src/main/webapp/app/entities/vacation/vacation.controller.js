@@ -62,15 +62,18 @@
             vacation.stage = "SENT";
             Vacation.update(vacation, function (result) {
                 loadAll();
-                AlertService.info("vacationTrackerApp.vacation.sent", {
-                    vacation: {
-                        startDate: $filter('date')(new Date(result.startDate), "dd/MM/yyyy"),
-                        endDate: $filter('date')(new Date(result.endDate), "dd/MM/yyyy")
-                    },
-                    manager: { //TODO task #32 & #33
-                        firstName: "John",
-                        lastName: "Doe"
-                    }});
+                if(vacation.owner.manager){
+                    AlertService.info("vacationTrackerApp.vacation.sent", {
+                        vacation: {
+                            startDate: $filter('date')(new Date(result.startDate), "dd/MM/yyyy"),
+                            endDate: $filter('date')(new Date(result.endDate), "dd/MM/yyyy")
+                        },
+                        manager: vacation.owner.manager
+                    });
+                }
+                else {
+                    AlertService.warning("User doesn't have a manager. This step will be redundant for managers without managers in later development");
+                }
             });
         }
 
@@ -79,10 +82,8 @@
             Vacation.update(vacation, function (result) {
                 loadAll();
                 AlertService.info("vacationTrackerApp.vacation.confirmed", {
-                    owner: {
-                        firstName: result.owner.firstName,
-                        lastName: result.owner.lastName
-                    }});
+                    owner: result.owner
+                });
             });
         }
     }
