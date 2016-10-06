@@ -168,7 +168,8 @@ public class UserService {
                     authority -> managedAuthorities.add(authorityRepository.findOne(authority))
                 );
                 if (managerId != null && !managerId.equals(id)) {
-                    userRepository.findOneById(managerId).ifPresent(m -> u.setManager(m));
+                    User manager = userRepository.findOneById(managerId).orElse(null);
+                    u.setManager(manager);
                 }
                 log.debug("Changed Information for User: {}", u);
             });

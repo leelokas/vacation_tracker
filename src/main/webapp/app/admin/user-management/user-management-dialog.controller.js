@@ -36,11 +36,15 @@
         }
 
         function save () {
-            if (vm.user.manager && vm.user.manager.id === vm.user.id) {
-                AlertService.error("userManagement.managerNotUpdated", vm.user.login);
-            }
             vm.isSaving = true;
-            vm.user.managerId = (vm.user.manager ? vm.user.manager.id : null);
+            if (vm.user.manager) {
+                vm.user.managerId = vm.user.manager.id;
+                if (vm.user.manager.id === vm.user.id) {
+                    AlertService.error("userManagement.managerNotUpdated");
+                }
+            } else {
+                vm.user.managerId = -1;
+            }
             if (vm.user.id !== null) {
                 User.update(vm.user, onSaveSuccess, onSaveError);
             } else {
