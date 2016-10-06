@@ -40,10 +40,15 @@
                 vm.vacations = data;
                 vm.page = pagingParams.page;
             }
+
+
+
             function onError(error) {
                 AlertService.error(error.data.message);
             }
         }
+
+        $scope.list = "owner";
 
         function loadPage (page) {
             vm.page = page;

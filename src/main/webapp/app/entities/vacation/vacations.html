@@ -29,7 +29,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="vacation in vm.vacations track by vacation.id">
+                <tr ng-repeat="vacation in vm.vacations track by vacation.id" >
                     <td class="hidden-xs hidden-sm"><a ui-sref="vacation-detail({id:vacation.id})">{{vacation.id}}</a></td>
                     <td data-translate="{{'vacationTrackerApp.Stage.' + vacation.stage}}">{{vacation.stage}}</td>
                     <td data-translate="{{'vacationTrackerApp.VacationType.' + vacation.type}}">{{vacation.type}}</td>

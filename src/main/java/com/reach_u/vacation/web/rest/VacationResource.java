@@ -31,7 +31,7 @@ import java.util.Optional;
 public class VacationResource {
 
     private final Logger log = LoggerFactory.getLogger(VacationResource.class);
-        
+
     @Inject
     private VacationRepository vacationRepository;
 
@@ -95,7 +95,7 @@ public class VacationResource {
     public ResponseEntity<List<Vacation>> getAllVacations(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Vacations");
-        Page<Vacation> page = vacationRepository.findAll(pageable);
+        Page<Vacation> page = vacationRepository.findByOwnerIsCurrentUser(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/vacations");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
