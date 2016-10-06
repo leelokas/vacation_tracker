@@ -15,7 +15,7 @@ import java.util.List;
 public interface VacationRepository extends JpaRepository<Vacation,Long> {
 
     @Query("select vacation from Vacation vacation where vacation.owner.login = ?#{principal.username}")
-    List<Vacation> findByOwnerIsCurrentUser();
+    List<Vacation> findAll();
 
     @Query("select vacation from Vacation vacation where vacation.owner.login = ?#{principal.username}")
     Page<Vacation> findByOwnerIsCurrentUser(Pageable pageable);
