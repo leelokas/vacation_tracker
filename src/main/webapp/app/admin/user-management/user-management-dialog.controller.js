@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('UserManagementDialogController',UserManagementDialogController);
 
-    UserManagementDialogController.$inject = ['$stateParams', '$uibModalInstance', 'entity', 'User', 'JhiLanguageService'];
+    UserManagementDialogController.$inject = ['$stateParams', '$uibModalInstance', 'entity', 'User', 'JhiLanguageService', 'AlertService'];
 
-    function UserManagementDialogController ($stateParams, $uibModalInstance, entity, User, JhiLanguageService) {
+    function UserManagementDialogController ($stateParams, $uibModalInstance, entity, User, JhiLanguageService, AlertService) {
         var vm = this;
 
         vm.authorities = ['ROLE_USER', 'ROLE_MANAGER', 'ROLE_ACCOUNTANT', 'ROLE_ADMIN'];
@@ -36,6 +36,9 @@
         }
 
         function save () {
+            if (vm.user.manager && vm.user.manager.id === vm.user.id) {
+                AlertService.error("userManagement.managerNotUpdated", vm.user.login);
+            }
             vm.isSaving = true;
             vm.user.managerId = (vm.user.manager ? vm.user.manager.id : null);
             if (vm.user.id !== null) {
