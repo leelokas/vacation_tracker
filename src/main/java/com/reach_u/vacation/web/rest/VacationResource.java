@@ -95,7 +95,7 @@ public class VacationResource {
     public ResponseEntity<List<Vacation>> getAllVacations(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Vacations");
-        Page<Vacation> page = vacationRepository.findByOwnerIsCurrentUser(pageable);
+        Page<Vacation> page = vacationRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/vacations");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -134,6 +134,44 @@ public class VacationResource {
         log.debug("REST request to delete Vacation : {}", id);
         vacationRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("vacation", id.toString())).build();
+    }
+
+    /**
+     * GET  /vacations/currentUser : get all current user's vacations.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of vacations in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
+     */
+    @RequestMapping(value = "/vacations/currentUser",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<Vacation>> getCurrentUserVacations(Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of current user's Vacations");
+        Page<Vacation> page = vacationRepository.findByOwnerIsCurrentUser(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/vacations/currentUser");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /vacations/confirmed : get all planned and confirmed vacations.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of vacations in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
+     */
+    @RequestMapping(value = "/vacations/confirmed",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<Vacation>> getConfirmedVacations(Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of planned&confirmed Vacations");
+        Page<Vacation> page = vacationRepository.findAllConfirmed(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/vacations/confirmed");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }

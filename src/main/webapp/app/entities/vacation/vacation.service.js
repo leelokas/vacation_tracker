@@ -7,19 +7,42 @@
     Vacation.$inject = ['$resource', 'DateUtils'];
 
     function Vacation ($resource, DateUtils) {
-        var resourceUrl =  'api/vacations/:id';
+        var resourceUrl =  'api/vacations/:id', getMethodCallback;
+
+        getMethodCallback = function(data) {
+            if (data) {
+                data = angular.fromJson(data);
+                data.startDate = DateUtils.convertLocalDateFromServer(data.startDate);
+                data.endDate = DateUtils.convertLocalDateFromServer(data.endDate);
+            }
+            return data;
+        };
 
         return $resource(resourceUrl, {}, {
-            'query': { method: 'GET', isArray: true},
+            'query': {
+                method: 'GET',
+                isArray: true
+            },
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {
-                    if (data) {
-                        data = angular.fromJson(data);
-                        data.startDate = DateUtils.convertLocalDateFromServer(data.startDate);
-                        data.endDate = DateUtils.convertLocalDateFromServer(data.endDate);
-                    }
-                    return data;
+                    return getMethodCallback(data);
+                }
+            },
+            'getOwnVacations': {
+                method: 'GET',
+                url: 'api/vacations/currentUser',
+                isArray: true,
+                transformResponse: function (data) {
+                    return getMethodCallback(data);
+                }
+            },
+            'getOverviewVacations': {
+                method: 'GET',
+                url: 'api/vacations/confirmed',
+                isArray: true,
+                transformResponse: function (data) {
+                    return getMethodCallback(data);
                 }
             },
             'update': {

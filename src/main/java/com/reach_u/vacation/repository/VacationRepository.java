@@ -15,10 +15,12 @@ import java.util.List;
 public interface VacationRepository extends JpaRepository<Vacation,Long> {
 
     @Query("select vacation from Vacation vacation where vacation.owner.login = ?#{principal.username}")
-    List<Vacation> findAll();
+    List<Vacation> findByOwnerIsCurrentUser();
 
     @Query("select vacation from Vacation vacation where vacation.owner.login = ?#{principal.username}")
     Page<Vacation> findByOwnerIsCurrentUser(Pageable pageable);
 
+    @Query("select vacation from Vacation vacation where vacation.stage in ('CONFIRMED', 'PLANNED')")
+    Page<Vacation> findAllConfirmed(Pageable pageable);
 
 }

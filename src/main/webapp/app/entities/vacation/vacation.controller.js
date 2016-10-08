@@ -21,7 +21,7 @@
         loadAll();
 
         function loadAll () {
-            Vacation.query({
+            Vacation.getOwnVacations({
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
                 sort: sort()
@@ -40,15 +40,10 @@
                 vm.vacations = data;
                 vm.page = pagingParams.page;
             }
-
-
-
             function onError(error) {
                 AlertService.error(error.data.message);
             }
         }
-
-        $scope.list = "owner";
 
         function loadPage (page) {
             vm.page = page;
