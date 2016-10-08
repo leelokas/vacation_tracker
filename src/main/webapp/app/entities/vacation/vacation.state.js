@@ -18,8 +18,53 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/vacation/vacations.html',
+                    templateUrl: 'app/entities/vacation/myVacations.html',
                     controller: 'VacationController',
+                    controllerAs: 'vm'
+                }
+            },
+            params: {
+                page: {
+                    value: '1',
+                    squash: true
+                },
+                sort: {
+                    value: 'id,asc',
+                    squash: true
+                },
+                search: null
+            },
+            resolve: {
+                pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                    return {
+                        page: PaginationUtil.parsePage($stateParams.page),
+                        sort: $stateParams.sort,
+                        predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                        ascending: PaginationUtil.parseAscending($stateParams.sort),
+                        search: $stateParams.search
+                    };
+                }],
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('vacation');
+                    $translatePartialLoader.addPart('stage');
+                    $translatePartialLoader.addPart('vacationType');
+                    $translatePartialLoader.addPart('paymentType');
+                    $translatePartialLoader.addPart('global');
+                    return $translate.refresh();
+                }]
+            }
+        })
+        .state('overview', {
+            parent: 'entity',
+            url: '/vacation/overview?page&sort&search',
+            data: {
+                authorities: ['ROLE_USER'],
+                pageTitle: 'vacationTrackerApp.vacation.home.title'
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/vacation/vacationOverview.html',
+                    controller: 'VacationOverviewController',
                     controllerAs: 'vm'
                 }
             },
