@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.reach_u.vacation.domain.Vacation;
 
 import com.reach_u.vacation.repository.VacationRepository;
+import com.reach_u.vacation.service.MailService;
 import com.reach_u.vacation.web.rest.util.HeaderUtil;
 import com.reach_u.vacation.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -34,6 +35,9 @@ public class VacationResource {
 
     @Inject
     private VacationRepository vacationRepository;
+
+    @Inject
+    private MailService mailService;
 
     /**
      * POST  /vacations : Create a new vacation.
@@ -76,9 +80,12 @@ public class VacationResource {
             return createVacation(vacation);
         }
         Vacation result = vacationRepository.save(vacation);
+        mailService.sendVacationUpdateEmail(vacation.getOwner(),vacation);
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("vacation", vacation.getId().toString()))
             .body(result);
+
     }
 
     /**

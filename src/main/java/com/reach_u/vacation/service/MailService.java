@@ -3,6 +3,7 @@ package com.reach_u.vacation.service;
 import com.reach_u.vacation.config.JHipsterProperties;
 import com.reach_u.vacation.domain.User;
 
+import com.reach_u.vacation.domain.Vacation;
 import org.apache.commons.lang3.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,6 +99,14 @@ public class MailService {
         context.setVariable(BASE_URL, baseUrl);
         String content = templateEngine.process("passwordResetEmail", context);
         String subject = messageSource.getMessage("email.reset.title", null, locale);
+        sendEmail(user.getEmail(), subject, content, false, true);
+    }
+
+    @Async
+    public void sendVacationUpdateEmail(User user, Vacation vacation) {
+        log.debug("Sending vacation update  e-mail to '{}'", user.getEmail());
+        String content = "vacation stage updated to " + vacation.getStage() ;
+        String subject = "vacation stage updated";
         sendEmail(user.getEmail(), subject, content, false, true);
     }
 }
