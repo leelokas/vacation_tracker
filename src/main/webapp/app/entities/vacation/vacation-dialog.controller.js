@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('VacationDialogController', VacationDialogController);
 
-    VacationDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Vacation', 'User'];
+    VacationDialogController.$inject = ['$timeout', '$scope', '$uibModalInstance', 'entity', 'Vacation', 'User', 'Principal'];
 
-    function VacationDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Vacation, User) {
+    function VacationDialogController ($timeout, $scope, $uibModalInstance, entity, Vacation, User, Principal) {
         var vm = this;
 
         vm.vacation = entity;
@@ -26,6 +26,14 @@
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
+
+        setOwner();
+
+        function setOwner() {
+            Principal.identity().then(function(account) {
+                vm.vacation.owner = User.get({login: account.login});
+            });
+        }
 
         function clear () {
             $uibModalInstance.dismiss('cancel');
