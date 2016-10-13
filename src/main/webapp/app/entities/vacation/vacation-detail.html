@@ -30,10 +30,9 @@
         </dd>
     </dl>
 
-    <button type="submit"
-            ui-sref="{{ vm.previousState }}"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    <button type="submit" ui-sref="{{ vm.previousState }}" class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;
+        <span data-translate="entity.action.back"> Back</span>
     </button>
 
     <button type="button" ui-sref="vacation-detail.edit({id:vm.vacation.id})" class="btn btn-primary">
@@ -42,9 +41,14 @@
     </button>
 
     <button ng-show="vm.vacation.stage === 'SAVED'" type="submit"
-            ui-sref="vacation.delete({id:vm.vacation.id})"
-            class="btn btn-danger">
+            ui-sref="vacation.delete({id:vm.vacation.id})" class="btn btn-danger">
         <span class="glyphicon glyphicon-remove-circle"></span>
         <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.delete"></span>
+    </button>
+
+    <button ng-show="vm.vacation.stage !== 'SAVED'" type="submit"
+            ui-sref="vacation.cancel({id:vm.vacation.id})" class="btn btn-danger">
+        <span class="glyphicon glyphicon-ban-circle"></span>
+        <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.cancelRequest"></span>
     </button>
 </div>

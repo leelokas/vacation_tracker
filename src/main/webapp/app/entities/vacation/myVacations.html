@@ -68,6 +68,12 @@
                                 <span class="glyphicon glyphicon-remove-circle"></span>
                                 <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.delete"></span>
                             </button>
+                            <button ng-show="vacation.stage !== 'SAVED'" type="submit"
+                                    ui-sref="vacation.cancel({id:vacation.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-ban-circle"></span>
+                                <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.cancelRequest"></span>
+                            </button>
                         </div>
 
                     </td>

@@ -85,6 +85,7 @@
             "addimage": "Add image",
             "back": "Back",
             "cancel": "Cancel",
+            "cancelRequest": "Cancel request",
             "delete": "Delete",
             "edit": "Edit",
             "open": "Open",
@@ -99,6 +100,9 @@
         },
         "delete": {
             "title": "Confirm delete operation"
+        },
+        "cancel": {
+            "title": "Confirm cancel operation"
         },
         "validation": {
             "required": "This field is required.",

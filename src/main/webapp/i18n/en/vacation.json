@@ -15,6 +15,9 @@
             "delete": {
                 "question": "Are you sure you want to delete Vacation {{ id }}?"
             },
+            "cancel": {
+                "question": "Are you sure you want to cancel Vacation {{ id }}?"
+            },
             "detail": {
                 "title": "Vacation"
             },

@@ -239,6 +239,30 @@
                     $state.go('^');
                 });
             }]
+        })
+        .state('vacation.cancel', {
+            parent: 'vacation',
+            url: '/{id}/cancel',
+            data: {
+                authorities: ['ROLE_USER']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/entities/vacation/vacation-cancel-dialog.html',
+                    controller: 'VacationCancelController',
+                    controllerAs: 'vm',
+                    size: 'md',
+                    resolve: {
+                        entity: ['Vacation', function(Vacation) {
+                            return Vacation.get({id : $stateParams.id}).$promise;
+                        }]
+                    }
+                }).result.then(function() {
+                    $state.go('vacation', null, { reload: 'vacation' });
+                }, function() {
+                    $state.go('^');
+                });
+            }]
         });
     }
 
