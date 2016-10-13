@@ -40,4 +40,11 @@
         <span class="glyphicon glyphicon-pencil"></span>
         <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
     </button>
+
+    <button ng-show="vm.vacation.stage === 'SAVED'" type="submit"
+            ui-sref="vacation.delete({id:vm.vacation.id})"
+            class="btn btn-danger">
+        <span class="glyphicon glyphicon-remove-circle"></span>
+        <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.delete"></span>
+    </button>
 </div>
