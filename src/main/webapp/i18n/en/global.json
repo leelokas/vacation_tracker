@@ -8,7 +8,7 @@
             "entities": {
                 "myVacation": "My vacations",
                 "vacation": "Overview",
-                "managerView": "Manager view",
+                "confirmationNeeded": "Confirmation needed",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
