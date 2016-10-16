@@ -46,7 +46,7 @@
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.view"></span>
                             </button>
-                            <button type="submit"
+                            <button ng-show="vacation.stage === 'SAVED'" type="submit"
                                     ui-sref="vacation.edit({id:vacation.id})"
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>

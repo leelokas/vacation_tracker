@@ -35,7 +35,8 @@
         <span data-translate="entity.action.back"> Back</span>
     </button>
 
-    <button type="button" ui-sref="vacation-detail.edit({id:vm.vacation.id})" class="btn btn-primary">
+    <button ng-show="vm.vacation.stage === 'SAVED'" type="button"
+            ui-sref="vacation-detail.edit({id:vm.vacation.id})" class="btn btn-primary">
         <span class="glyphicon glyphicon-pencil"></span>
         <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
     </button>
@@ -46,7 +47,7 @@
         <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.delete"></span>
     </button>
 
-    <button ng-show="vm.vacation.stage !== 'SAVED'" type="submit"
+    <button ng-show="vm.vacation.stage !== 'SAVED' && vm.vacation.owner.login === vm.currentUser.login" type="submit"
             ui-sref="vacation.cancel({id:vm.vacation.id})" class="btn btn-danger">
         <span class="glyphicon glyphicon-ban-circle"></span>
         <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.cancelRequest"></span>
