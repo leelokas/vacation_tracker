@@ -23,4 +23,7 @@ public interface VacationRepository extends JpaRepository<Vacation,Long> {
     @Query("select vacation from Vacation vacation where vacation.stage in ('CONFIRMED', 'PLANNED')")
     Page<Vacation> findAllConfirmed(Pageable pageable);
 
+    @Query("select vacation from Vacation vacation where vacation.owner.manager.login = ?#{principal.username} and vacation.stage in ('SENT')")
+    Page<Vacation> findAllSubordinateVacations(Pageable pageable);
+
 }

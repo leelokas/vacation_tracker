@@ -3,11 +3,11 @@
 
     angular
         .module('vacationTrackerApp')
-        .controller('VacationController', VacationController);
+        .controller('ManagerViewController', managerViewController);
 
-    VacationController.$inject = ['$scope', '$state', '$filter', 'Vacation', 'ParseLinks', 'AlertService', 'pagingParams', 'paginationConstants'];
+    managerViewController.$inject = ['$scope', '$state', 'Vacation', 'ParseLinks', 'AlertService', 'pagingParams', 'paginationConstants'];
 
-    function VacationController ($scope, $state, $filter, Vacation, ParseLinks, AlertService, pagingParams, paginationConstants) {
+    function managerViewController ($scope, $state, Vacation, ParseLinks, AlertService, pagingParams, paginationConstants) {
         var vm = this;
 
         vm.loadPage = loadPage;
@@ -15,12 +15,12 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-        vm.send = send;
+        vm.confirm = confirm;
 
         loadAll();
 
         function loadAll () {
-            Vacation.getOwnVacations({
+            Vacation.getAllSubordinateVacations({
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
                 sort: sort()
@@ -57,22 +57,13 @@
             });
         }
 
-        function send (vacation) {
-            vacation.stage = "SENT";
+        function confirm (vacation) {
+            vacation.stage = "PLANNED";
             Vacation.update(vacation, function (result) {
                 loadAll();
-                if(vacation.owner.manager){
-                    AlertService.info("vacationTrackerApp.vacation.sent", {
-                        vacation: {
-                            startDate: $filter('date')(new Date(result.startDate), "dd/MM/yyyy"),
-                            endDate: $filter('date')(new Date(result.endDate), "dd/MM/yyyy")
-                        },
-                        manager: vacation.owner.manager
-                    });
-                }
-                else {
-                    AlertService.warning("User doesn't have a manager. This step will be redundant for managers without managers in later development");
-                }
+                AlertService.info("vacationTrackerApp.vacation.confirmed", {
+                    owner: result.owner
+                });
             });
         }
     }

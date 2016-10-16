@@ -45,6 +45,14 @@
                     return getMethodCallback(data);
                 }
             },
+            'getAllSubordinateVacations': {
+                method: 'GET',
+                url: 'api/vacations/subordinateVacations',
+                isArray: true,
+                transformResponse: function (data) {
+                    return getMethodCallback(data);
+                }
+            },
             'update': {
                 method: 'PUT',
                 transformRequest: function (data) {

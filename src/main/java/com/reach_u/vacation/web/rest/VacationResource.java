@@ -181,4 +181,23 @@ public class VacationResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    /**
+     * GET  /vacations/subordinateVacations : get all planned and confirmed vacations.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of vacations in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
+     */
+    @RequestMapping(value = "/vacations/subordinateVacations",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<Vacation>> getSubordinateVacations(Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of vacations in 'Sent' stage to be confirmed by the logged in manager");
+        Page<Vacation> page = vacationRepository.findAllSubordinateVacations(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/vacations/subordinateVacations");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
 }
