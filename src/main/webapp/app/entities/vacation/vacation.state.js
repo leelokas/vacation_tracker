@@ -221,8 +221,8 @@
                         entity: function () {
                             return {
                                 stage: null,
-                                type: null,
-                                payment: null,
+                                type: 'PAID',
+                                payment: 'BEFORE_VACATION',
                                 startDate: null,
                                 endDate: null,
                                 id: null
