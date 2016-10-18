@@ -93,7 +93,8 @@
             "save": "Save",
             "view": "View",
             "send": "Send to confirmation",
-            "confirm": "Confirm"
+            "confirm": "Confirm",
+            "reject": "Reject"
         },
         "detail": {
             "field": "Field",

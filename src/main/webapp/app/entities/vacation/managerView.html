@@ -25,16 +25,17 @@
                 <td class="text-right">
 
                     <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                ui-sref="vacation-detail({id:vacation.id})"
-                                class="btn btn-info btn-sm">
-                            <span class="glyphicon glyphicon-eye-open"></span>
-                            <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.view"></span>
-                        </button>
+
                         <button ng-show="vacation.stage === 'SENT'" type="button" ng-click="vm.confirm(vacation)"
                                 class="btn btn-success btn-sm">
                             <span class="glyphicon glyphicon-ok"></span>
                             <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.confirm"></span>
+                        </button>
+
+                        <button ng-show="vacation.stage === 'SENT'" type="button" ng-click="vm.reject(vacation)"
+                                class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-ok"></span>
+                            <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.reject"></span>
                         </button>
                     </div>
 

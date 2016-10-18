@@ -16,6 +16,7 @@
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.confirm = confirm;
+        vm.reject = reject;
 
         loadAll();
 
@@ -62,6 +63,16 @@
             Vacation.update(vacation, function (result) {
                 loadAll();
                 AlertService.info("vacationTrackerApp.vacation.confirmed", {
+                    owner: result.owner
+                });
+            });
+        }
+
+        function reject (vacation) {
+            vacation.stage = "SAVED";
+            Vacation.update(vacation, function (result) {
+                loadAll();
+                AlertService.info("vacationTrackerApp.vacation.rejected", {
                     owner: result.owner
                 });
             });
