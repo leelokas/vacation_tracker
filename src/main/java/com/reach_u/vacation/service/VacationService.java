@@ -26,7 +26,7 @@ public class VacationService {
      *     0 0 0 * * ? - every midnight
      *     0 * * * * * - every minute - use this for testing
      */
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0 0 * * ?")
     public void updateVacationStage(){
         List<Vacation> vacations = vacationRepository.getAllUpcomingVacations();
         for (Vacation vacation : vacations){
