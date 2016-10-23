@@ -10,7 +10,7 @@
 
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="row">
+        <div class="row" ng-hide="vm.vacation.stage === 'CONFIRMED'">
             <div class="form-group col-md-12" ng-show="vm.vacation.id">
                 <label for="id" data-translate="global.field.id">ID</label>
                 <input type="text" class="form-control" id="id" name="id" ng-model="vm.vacation.id" readonly />
@@ -35,9 +35,9 @@
             </div>
             <div class="form-group col-md-6">
                 <label class="control-label" data-translate="vacationTrackerApp.vacation.startDate" for="field_startDate">Start Date</label>
-                <div class="input-group">
+                <div class="input-group" >
                     <input id="field_startDate" type="text" class="form-control" name="startDate" uib-datepicker-popup="{{'dd/MM/yyyy'}}" required
-                           ng-model="vm.vacation.startDate" is-open="vm.datePickerOpenStatus.startDate" datepicker-options="dateOptions" show-button-bar="false"/>
+                           ng-model="vm.vacation.startDate" is-open="vm.datePickerOpenStatus.startDate" datepicker-options="vm.vacation.type === 'SICK_LEAVE' ? startDateOptions : dateOptions" show-button-bar="false"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('startDate')"><i class="glyphicon glyphicon-calendar"></i></button>
                     </span>
@@ -47,14 +47,36 @@
                 <label class="control-label" data-translate="vacationTrackerApp.vacation.endDate" for="field_endDate">End Date</label>
                 <div class="input-group">
                     <input id="field_endDate" type="text" class="form-control" name="endDate" uib-datepicker-popup="{{'dd/MM/yyyy'}}"
-                           ng-model="vm.vacation.endDate" is-open="vm.datePickerOpenStatus.endDate" datepicker-options="dateOptions" show-button-bar="false"/>
+                          ng-disabled="vm.vacation.type === 'SICK_LEAVE'" ng-model="vm.vacation.endDate" is-open="vm.datePickerOpenStatus.endDate" datepicker-options="dateOptions" show-button-bar="false"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endDate')"><i class="glyphicon glyphicon-calendar"></i></button>
                     </span>
                 </div>
             </div>
         </div>
-
+        <div class="row" ng-show="vm.vacation.type === 'SICK_LEAVE' && vm.vacation.stage === 'CONFIRMED'">
+            <div class="form-group col-md-6">
+                <label class="control-label" data-translate="vacationTrackerApp.vacation.startDate" for="field_startDate_sickLeave">Start Date</label>
+                <div class="input-group">
+                    <input id="field_startDate_sickLeave" type="text" class="form-control" name="startDate" uib-datepicker-popup="{{'dd/MM/yyyy'}}"
+                           ng-disabled="vm.vacation.stage === 'CONFIRMED'" ng-model="vm.vacation.startDate" is-open="vm.datePickerOpenStatus.startDate" datepicker-options="dateOptions" show-button-bar="false"
+                           placeholder="vm.vacation.startDate"/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('startDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <label class="control-label" data-translate="vacationTrackerApp.vacation.endDate" for="field_endDate_sickLeave">Start Date</label>
+                <div class="input-group">
+                    <input id="field_endDate_sickLeave" type="text" class="form-control" name="endDateSickleave" uib-datepicker-popup="{{'dd/MM/yyyy'}}"
+                           ng-model="vm.vacation.endDate" is-open="vm.datePickerOpenStatus.endDateSickLeave" datepicker-options="dateOptions" show-button-bar="false"/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endDateSickLeave')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">

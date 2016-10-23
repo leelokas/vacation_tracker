@@ -94,7 +94,8 @@
             "view": "View",
             "send": "Send to confirmation",
             "confirm": "Confirm",
-            "reject": "Reject"
+            "reject": "Reject",
+            "end": "End date"
         },
         "detail": {
             "field": "Field",

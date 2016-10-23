@@ -58,7 +58,12 @@
         }
 
         function send (vacation) {
-            vacation.stage = "SENT";
+            if(vacation.type === "SICK_LEAVE"){
+                vacation.stage = "CONFIRMED";
+            }
+            else {
+                vacation.stage = "SENT";
+            }
             Vacation.update(vacation, function (result) {
                 loadAll();
                 if(vacation.owner.manager){
@@ -70,10 +75,12 @@
                         manager: vacation.owner.manager
                     });
                 }
+
                 else {
                     AlertService.warning("User doesn't have a manager. This step will be redundant for managers without managers in later development");
                 }
             });
+
         }
     }
 })();

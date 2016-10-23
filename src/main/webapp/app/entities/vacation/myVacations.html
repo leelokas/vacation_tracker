@@ -52,6 +52,12 @@
                                 <span class="glyphicon glyphicon-pencil"></span>
                                 <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.edit"></span>
                             </button>
+                            <button ng-show="vacation.stage === 'CONFIRMED' && vacation.type === 'SICK_LEAVE' && vacation.endDate === null" type="submit"
+                                    ui-sref="vacation.edit({id:vacation.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.end"></span>
+                            </button>
                             <button ng-show="vacation.stage === 'SAVED'" type="button" ng-click="vm.send(vacation)"
                                     class="btn btn-success btn-sm">
                                 <span class="glyphicon glyphicon-send"></span>

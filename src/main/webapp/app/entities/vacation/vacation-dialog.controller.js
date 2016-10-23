@@ -23,6 +23,14 @@
             startingDay: 1
         };
 
+        var lastWeekDate = new Date();
+        lastWeekDate.setDate(lastWeekDate.getDate() - 7);
+        $scope.startDateOptions = {
+            minDate: lastWeekDate,
+            showWeeks: false,
+            startingDay: 1
+        };
+
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
@@ -60,6 +68,8 @@
 
         vm.datePickerOpenStatus.startDate = false;
         vm.datePickerOpenStatus.endDate = false;
+        vm.datePickerOpenStatus.endDateSickLeave = false;
+
 
         function openCalendar (date) {
             vm.datePickerOpenStatus[date] = true;
