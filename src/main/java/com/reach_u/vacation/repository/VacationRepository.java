@@ -27,8 +27,7 @@ public interface VacationRepository extends JpaRepository<Vacation, Long> {
     @Query("select vacation from Vacation vacation where vacation.owner.manager.login = ?#{principal.username} and vacation.stage in ('SENT')")
     Page<Vacation> findAllSubordinateVacations(Pageable pageable);
 
-    // select start_date from vacation v where ( (v.start_date - curdate()) <= 7 and v.stage in ('SAVED') );
-    @Query("select vacation from Vacation vacation where ( (vacation.startDate - current_date) <= 7 and vacation.stage in ('SAVED') )")
+    @Query("select vacation from Vacation vacation where ( (vacation.startDate - current_date) <= 7 and vacation.stage in ('PLANNED') )")
     List<Vacation> getAllUpcomingVacations();
 
 }
