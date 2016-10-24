@@ -27,4 +27,27 @@
 
     </changeSet>
 
+    <!--a
+        date field that can be filled with employee's first work date
+    -->
+
+    <changeSet id="20161024212120-1" author="janno">
+        <addColumn tableName="jhi_user" >
+            <column name="firstWorkDay" type="DATE" >
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!--
+        integer field that will be filled with leftover vacation days from last year
+    -->
+    <changeSet id="20161024213020-1" author="janno">
+        <addColumn tableName="jhi_user" >
+            <column name="unusedVacationDays" type="INT" >
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
