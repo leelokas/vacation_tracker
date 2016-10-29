@@ -55,6 +55,8 @@
                     Auth.resetPreviousState();
                     $state.go(previousState.name, previousState.params);
                 }
+
+                $state.go('vacation');
             }).catch(function () {
                 vm.authenticationError = true;
             });

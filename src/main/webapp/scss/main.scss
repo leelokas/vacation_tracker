@@ -12,41 +12,6 @@ Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
 }
 
 /* ==========================================================================
-Developement Ribbon
-========================================================================== */
-.ribbon {
-    background-color: #a00;
-    box-shadow: 0 0 10px #888;
-    left: -3.5em;
-    moz-box-shadow: 0 0 10px #888;
-    moz-transform: rotate(-45deg);
-    ms-transform: rotate(-45deg);
-    o-transform: rotate(-45deg);
-    overflow: hidden;
-    position: absolute;
-    top: 40px;
-    transform: rotate(-45deg);
-    webkit-box-shadow: 0 0 10px #888;
-    webkit-transform: rotate(-45deg);
-    white-space: nowrap;
-    width: 15em;
-    z-index: 9999;
-    pointer-events: none;
-    a {
-        border: 1px solid #faa;
-        color: #fff;
-        display: block;
-        font: bold 81.25% 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        margin: 1px 0;
-        padding: 10px 50px;
-        text-align: center;
-        text-decoration: none;
-        text-shadow: 0 0 5px #444;
-        pointer-events: none;
-    }
-}
-
-/* ==========================================================================
 Version number in navbar
 ========================================================================== */
 .navbar-version {
@@ -68,55 +33,20 @@ Browser Upgrade Prompt
 Logo styles
 ========================================================================== */
 .navbar-brand {
-    &.logo {
-        padding: 5px 15px;
-        .logo-img {
-            height: 45px;
-            display: inline-block;
-        }
+    &.logo .logo-img {
+        height: 45px;
+        display: inline-block;
+    }
+    span {
+        color: #5F6062;
+        font-size: 24px;
     }
 }
 
 /* ==========================================================================
 Main page styles
 ========================================================================== */
-.hero-unit {
-    margin: 50px auto 0 auto;
-    width: 300px;
-    font-size: 18px;
-    font-weight: 200;
-    line-height: 30px;
-    background-color: #eee;
-    border-radius: 6px;
-    padding: 60px;
-    h1 {
-        font-size: 60px;
-        line-height: 1;
-        letter-spacing: -1px;
-    }
-}
 
-.hipster {
-    display: inline-block;
-    width: 347px;
-    height: 497px;
-    background: url("../images/hipster.png") no-repeat center top;
-    background-size: contain;
-}
-
-/* wait autoprefixer update to allow simple generation of high pixel density media query */
-@media
-only screen and (-webkit-min-device-pixel-ratio: 2),
-only screen and (   min--moz-device-pixel-ratio: 2),
-only screen and (     -o-min-device-pixel-ratio: 2/1),
-only screen and (        min-device-pixel-ratio: 2),
-only screen and (                min-resolution: 192dpi),
-only screen and (                min-resolution: 2dppx) {
-    .hipster {
-        background: url("../images/hipster2x.png") no-repeat center top;
-        background-size: contain;
-    }
-}
 
 /* ==========================================================================
 Generic styles
@@ -341,5 +271,24 @@ ui bootstrap tweaks
     outline: none;
 }
 
+.btn.reach-u_orange {
+    background-color: #F58B1B;
+    border-color: #F47B20;
+}
 
-/* jhipster-needle-scss-add-main JHipster will add new css style */
+h1, h2 {
+    color: #F47B20;
+}
+
+table.rows-as-links tbody tr:hover {
+    background-color: #E3E3E3;
+    cursor: pointer;
+}
+
+.title-and-button div {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    button {
+        float: right;
+    }
+}

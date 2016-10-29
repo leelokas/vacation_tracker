@@ -1,27 +1,25 @@
 <div>
-    <h2 data-translate="vacationTrackerApp.vacation.home.title">Vacations</h2>
+    <h2 data-translate="vacationTrackerApp.vacation.overview.title">Vacations</h2>
     <jhi-alert></jhi-alert>
     <br/>
     <div class="table-responsive">
-        <table class="jh-table table table-striped">
+        <table class="jh-table table table-striped rows-as-links">
             <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                    <th jh-sort-by="id" class="hidden-xs hidden-sm"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="stage"><span data-translate="vacationTrackerApp.vacation.stage">Stage</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="type"><span data-translate="vacationTrackerApp.vacation.type">Type</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="owner.login"><span data-translate="vacationTrackerApp.vacation.owner">Owner</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="startDate"><span data-translate="vacationTrackerApp.vacation.startDate">Start Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="endDate"><span data-translate="vacationTrackerApp.vacation.endDate">End Date</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="owner.login" class="hidden-xs hidden-sm"><span data-translate="vacationTrackerApp.vacation.owner">Owner</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="type"><span data-translate="vacationTrackerApp.vacation.type">Type</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="stage" class="hidden-xs"><span data-translate="vacationTrackerApp.vacation.stage">Stage</span> <span class="glyphicon glyphicon-sort"></span></th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="vacation in vm.vacations track by vacation.id" >
-                    <td class="hidden-xs hidden-sm"><a ui-sref="vacation-detail({id:vacation.id})">{{vacation.id}}</a></td>
-                    <td data-translate="{{'vacationTrackerApp.Stage.' + vacation.stage}}">{{vacation.stage}}</td>
-                    <td data-translate="{{'vacationTrackerApp.VacationType.' + vacation.type}}">{{vacation.type}}</td>
-                    <td>{{vacation.startDate | date:'dd/MM/yyyy'}}</td>
-                    <td>{{vacation.endDate | date:'dd/MM/yyyy'}}</td>
-                    <td class="hidden-xs hidden-sm">{{vacation.owner.login}}</td>
+                <tr ng-repeat="vacation in vm.vacations track by vacation.id">
+                    <td ui-sref="vacation-detail({id:vacation.id})">{{vacation.owner.login}}</td>
+                    <td ui-sref="vacation-detail({id:vacation.id})">{{vacation.startDate | date:'dd/MM/yyyy'}}</td>
+                    <td ui-sref="vacation-detail({id:vacation.id})">{{vacation.endDate | date:'dd/MM/yyyy'}}</td>
+                    <td ui-sref="vacation-detail({id:vacation.id})" data-translate="{{'vacationTrackerApp.VacationType.' + vacation.type}}">{{vacation.type}}</td>
+                    <td ui-sref="vacation-detail({id:vacation.id})" class="hidden-xs" data-translate="{{'vacationTrackerApp.Stage.' + vacation.stage}}">{{vacation.stage}}</td>
                 </tr>
             </tbody>
         </table>

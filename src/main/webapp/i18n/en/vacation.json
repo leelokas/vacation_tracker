@@ -2,10 +2,16 @@
     "vacationTrackerApp": {
         "vacation" : {
             "home": {
-                "title": "Vacations",
-                "createLabel": "Create a new Vacation",
+                "title": "Your vacation requests",
+                "createLabel": "Create new",
                 "createOrEditLabel": "Create or edit a Vacation",
                 "search": "Search for Vacation"
+            },
+            "manager": {
+                "title": "Vacations waiting confirmation"
+            },
+            "overview": {
+                "title": "All vacations"
             },
             "created": "Your vacation request is saved but not sent for confirmation. \nIf your request doesn’t need any changes then please click 'Send to confirmation'",
             "sent": "Your vacation request for dates {{vacation.startDate}} - {{vacation.endDate}} was sent for confirmation to your manager {{manager.firstName}} {{manager.lastName}}.\nNB Have you notified your project manager(s) about your vacation request dates?",
@@ -20,14 +26,15 @@
                 "question": "Are you sure you want to cancel Vacation {{ id }}?"
             },
             "detail": {
-                "title": "Vacation"
+                "title": "Vacation request details"
             },
             "stage": "Stage",
             "type": "Type",
             "payment": "Payment",
             "startDate": "Start Date",
             "endDate": "End Date",
-            "owner": "Owner"
+            "owner": "Owner",
+            "duration": "Duration"
         }
     }
 }
