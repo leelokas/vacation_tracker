@@ -31,6 +31,12 @@
             startingDay: 1
         };
 
+        $scope.endDateOptions = {
+            minDate: vm.vacation.startDate,
+            showWeeks: false,
+            startingDay: 1
+        };
+
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
