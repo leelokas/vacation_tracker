@@ -64,8 +64,8 @@
             <div class="form-group col-md-6">
                 <label class="control-label" data-translate="vacationTrackerApp.vacation.startDate" for="field_startDate_sickLeave">Start Date</label>
                 <div class="input-group">
-                    <input id="field_startDate_sickLeave" type="text" class="form-control" name="startDate" uib-datepicker-popup="{{'dd/MM/yyyy'}}"
-                           ng-disabled="vm.vacation.stage === 'CONFIRMED'" ng-model="vm.vacation.startDate" is-open="vm.datePickerOpenStatus.startDate"
+                    <input id="field_startDate_sickLeave" type="text" class="form-control" name="startDateSickLeave" uib-datepicker-popup="{{'dd/MM/yyyy'}}"
+                           ng-disabled="vm.vacation.stage === 'CONFIRMED'" ng-model="vm.vacation.startDate" is-open="vm.datePickerOpenStatus.startDateSickLeave"
                            datepicker-options="dateOptions" show-button-bar="false"
                            placeholder="vm.vacation.startDate"/>
                     <span class="input-group-btn">
