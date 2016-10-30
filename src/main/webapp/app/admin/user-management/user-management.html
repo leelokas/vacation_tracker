@@ -17,7 +17,7 @@
                 <th jh-sort-by="email"><span data-translate="userManagement.email">Email</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th></th>
                 <th><span data-translate="userManagement.profiles">Roles</span></th>
-                <th><span data-translate="userManagement.manager">Roles</span></th>
+                <th class="hidden-xs hidden-sm"><span data-translate="userManagement.manager">Roles</span></th>
                 <th jh-sort-by="createdDate" class="hidden-xs hidden-sm"><span data-translate="userManagement.createdDate">Created Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="lastModifiedBy" class="hidden-xs"><span data-translate="userManagement.lastModifiedBy">Last Modified By</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="lastModifiedDate" class="hidden-xs"><span data-translate="userManagement.lastModifiedDate">Last Modified Date</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -45,12 +45,6 @@
                 <td ui-sref="user-management-detail({login:user.login})" class="hidden-xs">{{user.lastModifiedDate | date:'dd/MM/yy HH:mm'}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                ui-sref="user-management-detail({login:user.login})"
-                                class="btn btn-info btn-sm">
-                            <span class="glyphicon glyphicon-eye-open"></span>
-                            <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.view"></span>
-                        </button>
                         <button type="submit"
                                 ui-sref="user-management.edit({login:user.login})"
                                 class="btn btn-primary btn-sm">
