@@ -38,7 +38,7 @@ Logo styles
         display: inline-block;
     }
     span {
-        color: #5F6062;
+        color: #555;
         font-size: 24px;
     }
 }
@@ -280,8 +280,23 @@ h1, h2 {
     color: #F47B20;
 }
 
+.well {
+    border: none;
+    background: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+.table-striped > thead > tr {
+    background-color: #F5F5F5;
+}
+
+.table-striped > tbody > tr:nth-of-type(even) {
+    background-color: #F5F5F5;
+}
+
 table.rows-as-links tbody tr:hover {
-    background-color: #E3E3E3;
+    background-color: #EEE;
     cursor: pointer;
 }
 
@@ -290,5 +305,35 @@ table.rows-as-links tbody tr:hover {
     margin-bottom: 10px;
     button {
         float: right;
+    }
+}
+
+.navbar-default {
+    background-color: transparent;
+}
+
+nav.navbar-default ul.navbar-nav.reach-u_orange li.active {
+    a {
+        background-color: transparent;
+    }
+    ::after {
+        height: 5px;
+        content: '';
+        position: absolute;
+        bottom: 4px;
+        left: 12px;
+        right: 12px;
+        background-color: #F47B20;
+    }
+}
+
+.pagination {
+    .active a, .active a:hover {
+        color: #333;
+        background-color: #F5F5F5;
+        border-color: #DDD;
+    }
+    li a, li span {
+        color: #555;
     }
 }

@@ -1,23 +1,23 @@
 <div>
-    <h2 data-translate="userManagement.home.title">Users</h2>
-    <jhi-alert></jhi-alert>
-    <div class="row">
-      <div class="col-md-4">
-          <button class="btn btn-primary" ui-sref="user-management.new">
-              <span class="glyphicon glyphicon-flash"></span> <span data-translate="userManagement.home.createLabel">Create a new User</span>
-          </button>
+    <div class="row title-and-button">
+        <h2 class="col-xs-8" data-translate="userManagement.home.title">Users</h2>
+        <div class="col-xs-4">
+            <button class="btn btn-primary reach-u_orange" ui-sref="user-management.new">
+                <span class="glyphicon glyphicon-flash"></span> <span data-translate="userManagement.home.createLabel">Create a new User</span>
+            </button>
       </div>
     </div>
+    <jhi-alert></jhi-alert>
+    <br/>
     <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-striped rows-as-links">
             <thead>
             <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                <th jh-sort-by="id" class="hidden-xs"><span data-translate="global.field.id">ID</span><span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="login"><span data-translate="userManagement.login">Login</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="email"><span data-translate="userManagement.email">Email</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th></th>
                 <th><span data-translate="userManagement.profiles">Roles</span></th>
-                <th><span data-translate="userManagement.manager">Roles</span></th>
+                <th class="hidden-xs hidden-sm"><span data-translate="userManagement.manager">Roles</span></th>
                 <th jh-sort-by="createdDate" class="hidden-xs hidden-sm"><span data-translate="userManagement.createdDate">Created Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="lastModifiedBy" class="hidden-xs"><span data-translate="userManagement.lastModifiedBy">Last Modified By</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="lastModifiedDate" class="hidden-xs"><span data-translate="userManagement.lastModifiedDate">Last Modified Date</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -26,32 +26,25 @@
             </thead>
             <tbody>
             <tr ng-repeat="user in vm.users track by user.id">
-                <td class="hidden-xs"><a ui-sref="user-management-detail({login:user.login})">{{user.id}}</a></td>
-                <td>{{user.login}}</td>
-                <td>{{user.email}}</td>
+                <td ui-sref="user-management-detail({login:user.login})">{{user.login}}</td>
+                <td ui-sref="user-management-detail({login:user.login})">{{user.email}}</td>
                 <td>
                     <span class="label label-danger" ng-click="vm.setActive(user, true)" ng-show="!user.activated"
                           data-translate="userManagement.deactivated" style="cursor: pointer;">Deactivated</span>
                     <span class="label label-success" ng-click="vm.setActive(user, false)" ng-show="user.activated"
                           data-translate="userManagement.activated" style="cursor: pointer;">Activated</span>
                 </td>
-                <td>
+                <td ui-sref="user-management-detail({login:user.login})">
                     <div ng-repeat="authority in user.authorities">
                         <span class="label label-info">{{ authority }}</span>
                     </div>
                 </td>
-                <td class="hidden-xs hidden-sm">{{user.manager.login}}</td>
-                <td class="hidden-xs hidden-sm">{{user.createdDate | date:'dd/MM/yy HH:mm'}}</td>
-                <td class="hidden-xs">{{user.lastModifiedBy}}</td>
-                <td class="hidden-xs">{{user.lastModifiedDate | date:'dd/MM/yy HH:mm'}}</td>
+                <td ui-sref="user-management-detail({login:user.login})" class="hidden-xs hidden-sm">{{user.manager.login}}</td>
+                <td ui-sref="user-management-detail({login:user.login})" class="hidden-xs hidden-sm">{{user.createdDate | date:'dd/MM/yy HH:mm'}}</td>
+                <td ui-sref="user-management-detail({login:user.login})" class="hidden-xs">{{user.lastModifiedBy}}</td>
+                <td ui-sref="user-management-detail({login:user.login})" class="hidden-xs">{{user.lastModifiedDate | date:'dd/MM/yy HH:mm'}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                ui-sref="user-management-detail({login:user.login})"
-                                class="btn btn-info btn-sm">
-                            <span class="glyphicon glyphicon-eye-open"></span>
-                            <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.view"></span>
-                        </button>
                         <button type="submit"
                                 ui-sref="user-management.edit({login:user.login})"
                                 class="btn btn-primary btn-sm">
