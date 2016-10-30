@@ -16,7 +16,8 @@
             <div class="form-group col-md-6">
                 <label class="control-label" data-translate="vacationTrackerApp.vacation.type" for="field_type">Type</label>
                 <span class="has-error" ng-show="editForm.type.$error.required"></span>
-                <select class="form-control" name="type" ng-model="vm.vacation.type" id="field_type" required>
+                <select class="form-control" name="type" ng-model="vm.vacation.type" id="field_type" required
+                        ng-change="vm.vacation.type === 'SICK_LEAVE' ? vm.vacation.endDate = '' : 0">
                     <option value="PAID" data-translate="vacationTrackerApp.VacationType.PAID">PAID</option>
                     <option value="UNPAID" data-translate="vacationTrackerApp.VacationType.UNPAID">UNPAID</option>
                     <option value="SICK_LEAVE" data-translate="vacationTrackerApp.VacationType.SICK_LEAVE">SICK_LEAVE</option>
@@ -29,16 +30,18 @@
             <div class="form-group col-md-6">
                 <label class="control-label" data-translate="vacationTrackerApp.vacation.payment" for="field_payment">Payment</label>
                 <select class="form-control" name="payment" ng-model="vm.vacation.payment" id="field_payment"
-                        ng-disabled="vm.vacation.type == 'UNPAID' || vm.vacation.type == 'SICK_LEAVE' || vm.vacation.type == 'PREGNANCY_LEAVE' || vm.vacation.type == 'PARENTAL_LEAVE' ">
-                    <option value="BEFORE_VACATION" data-translate="vacationTrackerApp.PaymentType.BEFORE_VACATION">BEFORE_VACATION</option>
+                        ng-disabled="vm.vacation.type == 'UNPAID' || vm.vacation.type == 'SICK_LEAVE' || vm.vacation.type == 'PREGNANCY_LEAVE' || vm.vacation.type == 'PARENTAL_LEAVE'">
                     <option value="WITH_NEXT_SALARY" data-translate="vacationTrackerApp.PaymentType.WITH_NEXT_SALARY">WITH_NEXT_SALARY</option>
+                    <option value="BEFORE_VACATION" data-translate="vacationTrackerApp.PaymentType.BEFORE_VACATION"
+                            ng-selected="vm.vacation.type === 'PAID' || vm.vacation.type === 'STUDY_LEAVE'">BEFORE_VACATION</option>
                 </select>
             </div>
             <div class="form-group col-md-6">
                 <label class="control-label" data-translate="vacationTrackerApp.vacation.startDate" for="field_startDate">Start Date</label>
                 <div class="input-group" >
                     <input id="field_startDate" type="text" class="form-control" name="startDate" uib-datepicker-popup="{{'dd/MM/yyyy'}}" required
-                           ng-model="vm.vacation.startDate" is-open="vm.datePickerOpenStatus.startDate" datepicker-options="vm.vacation.type === 'SICK_LEAVE' ? startDateOptions : dateOptions" show-button-bar="false"/>
+                           ng-model="vm.vacation.startDate" is-open="vm.datePickerOpenStatus.startDate"
+                           datepicker-options="vm.vacation.type === 'SICK_LEAVE' ? startDateOptions : dateOptions" show-button-bar="false"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('startDate')"><i class="glyphicon glyphicon-calendar"></i></button>
                     </span>
@@ -47,8 +50,10 @@
             <div class="form-group col-md-6">
                 <label class="control-label" data-translate="vacationTrackerApp.vacation.endDate" for="field_endDate">End Date</label>
                 <div class="input-group">
-                    <input id="field_endDate" type="text" class="form-control" name="endDate" uib-datepicker-popup="{{'dd/MM/yyyy'}}" ng-required="vm.vacation.type !== 'SICK_LEAVE' "
-                          ng-disabled="vm.vacation.type === 'SICK_LEAVE' " ng-model="vm.vacation.endDate" min="vm.vacation.startDate" is-open="vm.datePickerOpenStatus.endDate" datepicker-options="dateOptions" show-button-bar="false"/>
+                    <input id="field_endDate" type="text" class="form-control" name="endDate" uib-datepicker-popup="{{'dd/MM/yyyy'}}"
+                           ng-required="vm.vacation.type !== 'SICK_LEAVE' " ng-disabled="vm.vacation.type === 'SICK_LEAVE' "
+                           ng-model="vm.vacation.endDate" min="vm.vacation.startDate" is-open="vm.datePickerOpenStatus.endDate"
+                           datepicker-options="dateOptions" show-button-bar="false"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endDate')"><i class="glyphicon glyphicon-calendar"></i></button>
                     </span>
@@ -60,7 +65,8 @@
                 <label class="control-label" data-translate="vacationTrackerApp.vacation.startDate" for="field_startDate_sickLeave">Start Date</label>
                 <div class="input-group">
                     <input id="field_startDate_sickLeave" type="text" class="form-control" name="startDate" uib-datepicker-popup="{{'dd/MM/yyyy'}}"
-                           ng-disabled="vm.vacation.stage === 'CONFIRMED'" ng-model="vm.vacation.startDate" is-open="vm.datePickerOpenStatus.startDate" datepicker-options="dateOptions" show-button-bar="false"
+                           ng-disabled="vm.vacation.stage === 'CONFIRMED'" ng-model="vm.vacation.startDate" is-open="vm.datePickerOpenStatus.startDate"
+                           datepicker-options="dateOptions" show-button-bar="false"
                            placeholder="vm.vacation.startDate"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('startDate')"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -71,7 +77,8 @@
                 <label class="control-label" data-translate="vacationTrackerApp.vacation.endDate" for="field_endDate_sickLeave">End Date</label>
                 <div class="input-group">
                     <input id="field_endDate_sickLeave" type="text" class="form-control" name="endDateSickleave" uib-datepicker-popup="{{'dd/MM/yyyy'}}"
-                           ng-model="vm.vacation.endDate" min="vm.vacation.startDate" is-open="vm.datePickerOpenStatus.endDateSickLeave" datepicker-options="dateOptions" show-button-bar="false" />
+                           ng-model="vm.vacation.endDate" min="vm.vacation.startDate" is-open="vm.datePickerOpenStatus.endDateSickLeave"
+                           datepicker-options="dateOptions" show-button-bar="false" />
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endDateSickLeave')"><i class="glyphicon glyphicon-calendar"></i></button>
                     </span>
