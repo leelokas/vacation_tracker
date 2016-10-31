@@ -1,7 +1,19 @@
 <div>
-    <h2 data-translate="vacationTrackerApp.vacation.overview.title">Vacations</h2>
+    <div class="row title-and-button">
+        <h2 class="col-xs-8" data-translate="vacationTrackerApp.vacation.overview.title">Vacations</h2>
+        <div class="col-xs-4">
+            <button ng-class=" {active: vm.$state.includes('accountant')}"
+                    has-authority="ROLE_ACCOUNTANT"
+                    class="btn reach-u_orange"
+                    type="button"
+                    ng-click="redirect()">
+                <span class="glyphicon glyphicon-download-alt"></span> <span>Download XML</span>
+            </button>
+        </div>
+    </div>
     <jhi-alert></jhi-alert>
     <br/>
+
     <div class="table-responsive">
         <table class="jh-table table table-striped rows-as-links">
             <thead>
@@ -27,12 +39,5 @@
     <div class="text-center">
         <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
         <uib-pagination class="pagination-sm" total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
-    </div>
-    <div class="text-right">
-        <button ng-class="{active: vm.$state.includes('accountant')}"
-                has-authority="ROLE_ACCOUNTANT"
-                class="btn btn-success btn-sm"
-                type="button"
-                ng-click="redirect()">Download XML</button>
     </div>
 </div>

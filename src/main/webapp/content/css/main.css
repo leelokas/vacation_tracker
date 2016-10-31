@@ -28,13 +28,19 @@ Browser Upgrade Prompt
 /* ==========================================================================
 Logo styles
 ========================================================================== */
-.navbar-brand.logo .logo-img {
-  height: 45px;
-  display: inline-block; }
+.navbar-brand.logo {
+  padding: 5px 15px; }
+  .navbar-brand.logo .logo-img {
+    height: 45px;
+    display: inline-block; }
 
 .navbar-brand span {
   color: #555;
   font-size: 24px; }
+
+@media (min-width: 768px) {
+  .navbar > .container .navbar-brand.logo {
+    margin-left: 0px; } }
 
 /* ==========================================================================
 Main page styles
@@ -238,9 +244,13 @@ ui bootstrap tweaks
 .uib-datepicker-popup > li > div.uib-datepicker > table:focus {
   outline: none; }
 
-.btn.reach-u_orange {
+button.reach-u_orange {
   background-color: #F58B1B;
-  border-color: #F47B20; }
+  border-color: #F47B20;
+  color: #FFF; }
+  button.reach-u_orange:hover, button.reach-u_orange:active, button.reach-u_orange:focus {
+    color: #FFF;
+    background-color: #F47B20; }
 
 h1, h2 {
   color: #F47B20; }
@@ -289,3 +299,16 @@ nav.navbar-default ul.navbar-nav.reach-u_orange li.active ::after {
 
 .pagination li a, .pagination li span {
   color: #555; }
+
+#home h1 {
+  text-align: center;
+  margin-bottom: 20px; }
+
+#home input#username, #home input#password {
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid #999;
+  box-shadow: none;
+  background: transparent;
+  height: 45px;
+  outline: none; }

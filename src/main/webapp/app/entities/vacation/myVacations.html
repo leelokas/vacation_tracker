@@ -3,7 +3,7 @@
         <div class="row title-and-button">
             <h2 class="col-xs-8 no-padding-left" data-translate="vacationTrackerApp.vacation.home.title">Your vacation requests</h2>
             <div class="col-xs-4 no-padding-right">
-                <button class="btn btn-primary reach-u_orange" ui-sref="vacation.new">
+                <button class="btn reach-u_orange" ui-sref="vacation.new">
                     <span class="glyphicon glyphicon-plus"></span>
                     <span data-translate="vacationTrackerApp.vacation.home.createLabel">
                         Create new
@@ -38,30 +38,30 @@
                                     ui-sref="vacation.edit({id:vacation.id})"
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.edit"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"></span>
                             </button>
                             <button ng-if="vacation.stage === 'CONFIRMED' && vacation.type === 'SICK_LEAVE' && vacation.endDate === null" type="submit"
                                     ui-sref="vacation.edit({id:vacation.id})"
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.end"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.end"></span>
                             </button>
                             <button ng-if="vacation.stage === 'SAVED'" type="button" ng-click="vm.send(vacation)"
                                     class="btn btn-success btn-sm">
                                 <span class="glyphicon glyphicon-send"></span>
-                                <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.send"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.send"></span>
                             </button>
                             <button ng-if="vacation.stage === 'SAVED'" type="submit"
                                     ui-sref="vacation.delete({id:vacation.id})"
                                     class="btn btn-danger btn-sm">
                                 <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.delete"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.delete"></span>
                             </button>
                             <button ng-if="vacation.stage !== 'SAVED'" type="submit"
                                     ui-sref="vacation.cancel({id:vacation.id})"
                                     class="btn btn-danger btn-sm">
                                 <span class="glyphicon glyphicon-ban-circle"></span>
-                                <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.cancelRequest"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.cancelRequest"></span>
                             </button>
                         </div>
 
