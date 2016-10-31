@@ -9,6 +9,8 @@ import com.reach_u.vacation.web.rest.util.HeaderUtil;
 import com.reach_u.vacation.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +20,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -200,4 +205,22 @@ public class VacationResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+
+    @RequestMapping(value = "/file/vacations",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_XML_VALUE)
+    public void getFile( HttpServletResponse response) throws Exception{
+        try {
+            Resource resource = new ClassPathResource("vacations.xml");
+            InputStream resourceInputStream = resource.getInputStream();
+            response.setContentType("application/xml");
+            response.setHeader("content-Disposition", "attachment; filename=" + "vacations.xml");
+            org.apache.commons.io.IOUtils.copy(resourceInputStream, response.getOutputStream());
+            response.flushBuffer();
+        } catch (IOException ex) {
+            throw new RuntimeException("IOError writing file to output stream");
+        }
+    }
+
 }
+

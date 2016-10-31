@@ -32,7 +32,7 @@
         };
 
         $scope.endDateOptions = {
-            minDate: vm.vacation.startDate,
+            minDate: setMinEndDate(),
             showWeeks: false,
             startingDay: 1
         };
@@ -80,5 +80,12 @@
         function openCalendar (date) {
             vm.datePickerOpenStatus[date] = true;
         }
+
+        function setMinEndDate(){
+            $scope.$watch("vm.vacation.startDate", function() {
+                $scope.endDateOptions.minDate = vm.vacation.startDate;
+            });
+        }
+
     }
 })();

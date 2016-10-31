@@ -34,9 +34,13 @@
             <div class="form-group col-md-6">
                 <label class="control-label" data-translate="vacationTrackerApp.vacation.startDate" for="field_startDate">Start Date</label>
                 <div class="input-group" >
-                    <input id="field_startDate" type="text" class="form-control" name="startDate" uib-datepicker-popup="{{'dd/MM/yyyy'}}" required
-                           ng-model="vm.vacation.startDate" is-open="vm.datePickerOpenStatus.startDate"
-                           datepicker-options="vm.vacation.type === 'SICK_LEAVE' ? startDateOptions : dateOptions" show-button-bar="false"/>
+                    <input id="field_startDate" type="text" class="form-control" name="startDate"
+                           uib-datepicker-popup="{{'dd/MM/yyyy'}}"
+                           required
+                           ng-model="vm.vacation.startDate"
+                           is-open="vm.datePickerOpenStatus.startDate"
+                           datepicker-options="vm.vacation.type === 'SICK_LEAVE' ? startDateOptions : dateOptions"
+                           show-button-bar="false"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('startDate')"><i class="glyphicon glyphicon-calendar"></i></button>
                     </span>
@@ -45,10 +49,14 @@
             <div class="form-group col-md-6">
                 <label class="control-label" data-translate="vacationTrackerApp.vacation.endDate" for="field_endDate">End Date</label>
                 <div class="input-group">
-                    <input id="field_endDate" type="text" class="form-control" name="endDate" uib-datepicker-popup="{{'dd/MM/yyyy'}}"
-                           ng-required="vm.vacation.type !== 'SICK_LEAVE' " ng-disabled="vm.vacation.type === 'SICK_LEAVE' "
-                           ng-model="vm.vacation.endDate" min="vm.vacation.startDate" is-open="vm.datePickerOpenStatus.endDate"
-                           datepicker-options="dateOptions" show-button-bar="false"/>
+                    <input id="field_endDate" type="text" class="form-control" name="endDate"
+                           uib-datepicker-popup="{{'dd/MM/yyyy'}}"
+                           ng-required="vm.vacation.type !== 'SICK_LEAVE' "
+                           ng-disabled="vm.vacation.type === 'SICK_LEAVE' "
+                           ng-model="vm.vacation.endDate"
+                           is-open="vm.datePickerOpenStatus.endDate"
+                           datepicker-options="endDateOptions"
+                           show-button-bar="false"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endDate')"><i class="glyphicon glyphicon-calendar"></i></button>
                     </span>
@@ -59,8 +67,11 @@
             <div class="form-group col-md-6">
                 <label class="control-label" data-translate="vacationTrackerApp.vacation.startDate" for="field_startDate_sickLeave">Start Date</label>
                 <div class="input-group">
-                    <input id="field_startDate_sickLeave" type="text" class="form-control" name="startDateSickLeave" uib-datepicker-popup="{{'dd/MM/yyyy'}}"
-                           ng-model="vm.vacation.startDate" readonly/>
+                    <input id="field_startDate_sickLeave" type="text" class="form-control" name="startDateSickLeave"
+                           is-open="beginDatePickerOpen"
+                           uib-datepicker-popup="{{'dd/MM/yyyy'}}"
+                           ng-model="vm.vacation.startDate"
+                           readonly/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></button>
                     </span>
@@ -69,9 +80,12 @@
             <div class="form-group col-md-6">
                 <label class="control-label" data-translate="vacationTrackerApp.vacation.endDate" for="field_endDate_sickLeave">End Date</label>
                 <div class="input-group">
-                    <input id="field_endDate_sickLeave" type="text" class="form-control" name="endDateSickleave" uib-datepicker-popup="{{'dd/MM/yyyy'}}"
-                           ng-model="vm.vacation.endDate" min="vm.vacation.startDate" is-open="vm.datePickerOpenStatus.endDateSickLeave"
-                           datepicker-options="endDateOptions" show-button-bar="false" />
+                    <input id="field_endDate_sickLeave" type="text" class="form-control" name="endDateSickleave"
+                           uib-datepicker-popup="{{'dd/MM/yyyy'}}"
+                           ng-model="vm.vacation.endDate"
+                           is-open="vm.datePickerOpenStatus.endDateSickLeave"
+                           datepicker-options="endDateOptions"
+                           show-button-bar="false"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endDateSickLeave')"><i class="glyphicon glyphicon-calendar"></i></button>
                     </span>

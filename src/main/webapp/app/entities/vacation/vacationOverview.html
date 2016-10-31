@@ -28,4 +28,11 @@
         <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
         <uib-pagination class="pagination-sm" total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
     </div>
+    <div class="text-right">
+        <button ng-class="{active: vm.$state.includes('accountant')}"
+                has-authority="ROLE_ACCOUNTANT"
+                class="btn btn-success btn-sm"
+                type="button"
+                ng-click="redirect()">Download XML</button>
+    </div>
 </div>

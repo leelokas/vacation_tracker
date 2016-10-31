@@ -55,5 +55,10 @@
                 search: vm.currentSearch
             });
         }
+
+        $scope.redirect = function(){
+            window.location = "api/file/vacations";
+        }
+
     }
 })();
