@@ -5,7 +5,7 @@
         .module('vacationTrackerApp')
         .factory('authExpiredInterceptor', authExpiredInterceptor);
 
-    
+
     authExpiredInterceptor.$inject = ['$rootScope', '$q', '$injector', '$document'];
 
     function authExpiredInterceptor($rootScope, $q, $injector, $document) {
@@ -26,8 +26,6 @@
                 if (to.name !== 'accessdenied') {
                     Auth.storePreviousState(to.name, params);
                 }
-                var LoginService = $injector.get('LoginService');
-                LoginService.open();
             } else if (response.status === 403 && response.config.method !== 'GET' && getCSRF() === '') {
                 // If the CSRF token expired, then try to get a new CSRF token and retry the old request
                 var $http = $injector.get('$http');
