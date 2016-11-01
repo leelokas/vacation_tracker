@@ -105,8 +105,19 @@ public class MailService {
     @Async
     public void sendVacationUpdateEmail(User user, Vacation vacation) {
         log.debug("Sending vacation update  e-mail to '{}'", user.getEmail());
-        String content = "Your vacation stage is updated to " + vacation.getStage() ;
-        String subject = "Vacation stage updated";
-        sendEmail(user.getEmail(), subject, content, false, true);
+        String content = user.getFirstName() + " " + user.getLastName() + " vacation stage is updated to " + vacation.getStage() ;
+        String subject = user.getFirstName() + " " + user.getLastName() + " vacation stage updated";
+        switch (vacation.getStage()){
+            case SENT:  case PLANNED:
+                sendEmail(user.getEmail(), subject, content, false, true);
+                sendEmail(user.getManager().getEmail(), subject, content, false, true);
+                break;
+            // TODO: 1.11.2016 when accountant exists, add accountant
+//            case CONFIRMED:
+//                sendEmail(user.getEmail(), subject, content, false, true);
+//                sendEmail(user.getManager().getEmail(), subject, content, false, true);
+//                sendEmail(user.getManager().getEmail(), subject, content, false, true);
+        }
+
     }
 }
