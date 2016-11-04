@@ -86,6 +86,9 @@
                 $scope.endDateOptions.minDate = vm.vacation.startDate;
             });
         }
+        $scope.$watch("vm.vacation.startDate", function () {
+            vm.vacation.endDate = "";
+        })
 
     }
 })();

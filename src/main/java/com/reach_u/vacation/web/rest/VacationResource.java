@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -211,10 +212,10 @@ public class VacationResource {
         produces = MediaType.APPLICATION_XML_VALUE)
     public void getFile( HttpServletResponse response) throws Exception{
         try {
-            Resource resource = new ClassPathResource("vacations.xml");
+            Resource resource = new ClassPathResource("vacations.xls");
             InputStream resourceInputStream = resource.getInputStream();
-            response.setContentType("application/xml");
-            response.setHeader("content-Disposition", "attachment; filename=" + "vacations.xml");
+            response.setContentType("application/xls");
+            response.setHeader("Content-Disposition", "attachment; filename=vacations.xls");
             org.apache.commons.io.IOUtils.copy(resourceInputStream, response.getOutputStream());
             response.flushBuffer();
         } catch (IOException ex) {
