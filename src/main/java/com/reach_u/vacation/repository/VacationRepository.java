@@ -2,6 +2,9 @@ package com.reach_u.vacation.repository;
 
 import com.reach_u.vacation.domain.Vacation;
 
+import com.reach_u.vacation.domain.enumeration.PaymentType;
+import com.reach_u.vacation.domain.enumeration.Stage;
+import com.reach_u.vacation.domain.enumeration.VacationType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
@@ -29,5 +32,11 @@ public interface VacationRepository extends JpaRepository<Vacation, Long> {
 
     @Query("select vacation from Vacation vacation where ( (vacation.startDate - current_date) <= 7 and vacation.stage in ('PLANNED') )")
     List<Vacation> getAllUpcomingVacations();
+
+    List<Vacation> findAllVacationsByType(VacationType vacationType);
+
+    List<Vacation> findAllVacationsByPayment(PaymentType paymentType);
+
+    List<Vacation> findAllVacationsByStage(Stage stage);
 
 }

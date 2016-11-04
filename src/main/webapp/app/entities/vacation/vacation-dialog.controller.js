@@ -87,7 +87,9 @@
             });
         }
         $scope.$watch("vm.vacation.startDate", function () {
-            vm.vacation.endDate = "";
+            if (vm.vacation.startDate > vm.vacation.endDate){
+                vm.vacation.endDate = "";
+            }
         })
 
     }

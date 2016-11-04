@@ -3,6 +3,9 @@ package com.reach_u.vacation.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.reach_u.vacation.domain.Vacation;
 
+import com.reach_u.vacation.domain.enumeration.PaymentType;
+import com.reach_u.vacation.domain.enumeration.Stage;
+import com.reach_u.vacation.domain.enumeration.VacationType;
 import com.reach_u.vacation.repository.VacationRepository;
 import com.reach_u.vacation.service.MailService;
 import com.reach_u.vacation.web.rest.util.HeaderUtil;
@@ -24,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -127,10 +129,59 @@ public class VacationResource {
         log.debug("REST request to get Vacation : {}", id);
         Vacation vacation = vacationRepository.findOne(id);
         return Optional.ofNullable(vacation)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
+            .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+    /**
+     * GET  /vacations/type/:type : get the correct "type" vacation.
+     *
+     * @param type the vacation type
+     * @return the ResponseEntity with status 200 (OK) and with body the vacation, or with status 404 (Not Found)
+     */
+
+    @RequestMapping(value = "/vacations/type/{type}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<Vacation>> getVacationsByType(@PathVariable VacationType type)
+        throws URISyntaxException {
+            log.debug("REST request to get vacation types : {}", type);
+            List<Vacation> list = vacationRepository.findAllVacationsByType(type);
+            return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    /**
+     * GET /vacations/payment/:type : get payments with requested type
+     *
+     * @param paymentType the payment type
+     * @return the ResponseEntity with status 200 (OK) and with body the vacation, or with status 404 (Not Found)
+     */
+
+    @RequestMapping(value = "/vacations/payment/{paymentType}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<Vacation>> getVacationsByPaymentType(@PathVariable PaymentType paymentType)
+        throws URISyntaxException {
+        log.debug("REST request to get vacation : {}", paymentType);
+        List<Vacation> list = vacationRepository.findAllVacationsByPayment(paymentType);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+    /**
+     * GET /vacations/stage/:type : get vacations with requested stage
+     *
+     * @param vacationStage the vacation stage type
+     * @return the ResponseEntity with status 200 (OK) and with body the vacation, or with status 404 (Not Found)
+     */
+    @RequestMapping(value = "/vacations/stage/{vacationStage}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<Vacation>> getVacationsByStageType(@PathVariable Stage vacationStage)
+        throws URISyntaxException {
+        log.debug("REST request to get vacations : {}", vacationStage);
+        List<Vacation> list = vacationRepository.findAllVacationsByStage(vacationStage);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     /**
@@ -206,6 +257,10 @@ public class VacationResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    /**
+     * GET /file/vacations : get vacation.xls file
+     * @return vacations.xls file - automatic download
+     */
 
     @RequestMapping(value = "/file/vacations",
         method = RequestMethod.GET,
@@ -222,6 +277,8 @@ public class VacationResource {
             throw new RuntimeException("IOError writing file to output stream");
         }
     }
+
+
 
 }
 
