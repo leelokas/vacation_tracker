@@ -7,6 +7,7 @@ import com.reach_u.vacation.domain.enumeration.PaymentType;
 import com.reach_u.vacation.domain.enumeration.Stage;
 import com.reach_u.vacation.domain.enumeration.VacationType;
 import com.reach_u.vacation.repository.VacationRepository;
+import com.reach_u.vacation.repository.VacationSpecifications;
 import com.reach_u.vacation.service.MailService;
 import com.reach_u.vacation.web.rest.util.HeaderUtil;
 import com.reach_u.vacation.web.rest.util.PaginationUtil;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -132,55 +134,30 @@ public class VacationResource {
             .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
     /**
-     * GET  /vacations/type/:type : get the correct "type" vacation.
+     * GET /vacations/filter : get vacations with requested filter
      *
-     * @param type the vacation type
+     * @param vacationType the vacation type
+     * @param vacationStage the vacation stage
+     * @param paymentType the vacation payment type
+     * @param startDate the vacation minimum start date
+     * @param endDate the vacation maximum end date
      * @return the ResponseEntity with status 200 (OK) and with body the vacation, or with status 404 (Not Found)
      */
-
-    @RequestMapping(value = "/vacations/type/{type}",
+    @RequestMapping(value = "/vacations/filter",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<Vacation>> getVacationsByType(@PathVariable VacationType type)
+    public ResponseEntity<List<Vacation>> getVacationsByFilter(@RequestParam(value = "type", required = false) VacationType vacationType,
+                                                               @RequestParam(value = "stage", required = false) Stage vacationStage,
+                                                               @RequestParam(value = "payment", required = false) PaymentType paymentType,
+                                                               @RequestParam(value = "startDate", required = false) Date startDate,
+                                                               @RequestParam(value = "endDate", required = false) Date endDate)
         throws URISyntaxException {
-            log.debug("REST request to get vacation types : {}", type);
-            List<Vacation> list = vacationRepository.findAllVacationsByType(type);
-            return new ResponseEntity<>(list, HttpStatus.OK);
-    }
-
-    /**
-     * GET /vacations/payment/:type : get payments with requested type
-     *
-     * @param paymentType the payment type
-     * @return the ResponseEntity with status 200 (OK) and with body the vacation, or with status 404 (Not Found)
-     */
-
-    @RequestMapping(value = "/vacations/payment/{paymentType}",
-        method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity<List<Vacation>> getVacationsByPaymentType(@PathVariable PaymentType paymentType)
-        throws URISyntaxException {
-        log.debug("REST request to get vacation : {}", paymentType);
-        List<Vacation> list = vacationRepository.findAllVacationsByPayment(paymentType);
-        return new ResponseEntity<>(list, HttpStatus.OK);
-    }
-    /**
-     * GET /vacations/stage/:type : get vacations with requested stage
-     *
-     * @param vacationStage the vacation stage type
-     * @return the ResponseEntity with status 200 (OK) and with body the vacation, or with status 404 (Not Found)
-     */
-    @RequestMapping(value = "/vacations/stage/{vacationStage}",
-        method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity<List<Vacation>> getVacationsByStageType(@PathVariable Stage vacationStage)
-        throws URISyntaxException {
-        log.debug("REST request to get vacations : {}", vacationStage);
-        List<Vacation> list = vacationRepository.findAllVacationsByStage(vacationStage);
+        log.debug("REST request to get vacations : vacationStage: {}, paymentType: {}, vacationType: {}, startDate: {}, endDate: {}",
+            vacationStage, paymentType, vacationType, startDate, endDate);
+        List<Vacation> list = vacationRepository.findAll(VacationSpecifications.byQuery(vacationType, paymentType, vacationStage));
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
