@@ -7,7 +7,8 @@ import com.reach_u.vacation.domain.enumeration.VacationType;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
-import java.util.ArrayList;
+import java.util.ArrayList;;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,7 +16,8 @@ import java.util.List;
  */
 public class VacationSpecifications {
 
-    public static Specification<Vacation> byQuery(VacationType type, PaymentType paymentType, Stage stage) {
+    public static Specification<Vacation> byQuery(VacationType type, PaymentType paymentType, Stage stage,
+                                                  Date startDate, Date endDate) {
         return new Specification<Vacation>() {
             @Override
             public Predicate toPredicate(Root<Vacation> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
@@ -28,6 +30,12 @@ public class VacationSpecifications {
                 }
                 if (stage != null) {
                     expressions.add(criteriaBuilder.equal(root.get("stage"), stage));
+                }
+                if (startDate != null) {
+                    expressions.add(criteriaBuilder.equal(root.get("startDate"), startDate));
+                }
+                if (endDate != null) {
+                    expressions.add(criteriaBuilder.equal(root.get("endDate"), endDate));
                 }
 
                 return criteriaBuilder.and(expressions.toArray(new Predicate[0]));

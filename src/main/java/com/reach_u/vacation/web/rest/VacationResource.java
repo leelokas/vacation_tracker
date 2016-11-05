@@ -17,6 +17,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -152,12 +154,14 @@ public class VacationResource {
     public ResponseEntity<List<Vacation>> getVacationsByFilter(@RequestParam(value = "type", required = false) VacationType vacationType,
                                                                @RequestParam(value = "stage", required = false) Stage vacationStage,
                                                                @RequestParam(value = "payment", required = false) PaymentType paymentType,
-                                                               @RequestParam(value = "startDate", required = false) Date startDate,
-                                                               @RequestParam(value = "endDate", required = false) Date endDate)
+                                                               @RequestParam(value = "startDate",required = false)
+                                                                   @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+                                                               @RequestParam(value = "endDate", required = false)
+                                                                   @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate)
         throws URISyntaxException {
         log.debug("REST request to get vacations : vacationStage: {}, paymentType: {}, vacationType: {}, startDate: {}, endDate: {}",
             vacationStage, paymentType, vacationType, startDate, endDate);
-        List<Vacation> list = vacationRepository.findAll(VacationSpecifications.byQuery(vacationType, paymentType, vacationStage));
+        List<Vacation> list = vacationRepository.findAll(VacationSpecifications.byQuery(vacationType, paymentType, vacationStage, startDate, endDate));
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
