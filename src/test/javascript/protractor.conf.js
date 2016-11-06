@@ -9,7 +9,7 @@ var webbrowserDriver= '';
 if (os.platform() === 'win32') {
     webbrowserDriver = prefix + 'node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.25.exe';
 } else {
-    webbrowserDriver = prefix + 'node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.25.exe';
+    webbrowserDriver = prefix + 'node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.25';
 }
 
 exports.config = {
