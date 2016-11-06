@@ -14,10 +14,10 @@ describe('E2e tests', function () {
     var submit = element(by.css('button[type=submit]'));
     var addNew = element(by.css('[ui-sref="vacation.new"]'));
 
-    var vacationTypeColumn = element(by.xpath('//table/tbody/tr[last()]/td[2]'));
-    var vacationStageColumn = element(by.xpath('//table/tbody/tr[last()]/td[3]'));
-    var vacationPaymentColumn = element(by.xpath('//table/tbody/tr[last()]/td[4]'));
-    var vacationButtonColumn = element(by.xpath('//table/tbody/tr[last()]/td[5]'));
+    var vacationTypeColumn = element(by.xpath('//table/tbody/tr[last()]/td[3]'));
+    var vacationStageColumn = element(by.xpath('//table/tbody/tr[last()]/td[4]'));
+    var vacationPaymentColumn = element(by.xpath('//table/tbody/tr[last()]/td[5]'));
+    var vacationButtonColumn = element(by.xpath('//table/tbody/tr[last()]/td[6]'));
     var vacationDateColumn = element(by.xpath('//table/tbody/tr[last()]/td[1]'));
 
     var date = new Date();
