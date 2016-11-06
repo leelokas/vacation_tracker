@@ -32,24 +32,48 @@
 
     <button type="submit" ui-sref="{{ vm.previousState }}" class="btn btn-info">
         <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;
-        <span data-translate="entity.action.back"> Back</span>
+        <span class="hidden-xs" data-translate="entity.action.back">Back</span>
     </button>
 
-    <button ng-show="vm.vacation.stage === 'SAVED'" type="button"
-            ui-sref="vacation-detail.edit({id:vm.vacation.id})" class="btn btn-primary">
-        <span class="glyphicon glyphicon-pencil"></span>
-        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
+    <button ng-if="vm.vacation.stage === 'SAVED'" type="button"
+            ui-sref="vacation.edit({id:vm.vacation.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>&nbsp;
+        <span class="hidden-xs" data-translate="entity.action.edit">Edit</span>
     </button>
 
-    <button ng-show="vm.vacation.stage === 'SAVED'" type="submit"
+    <button ng-if="vm.vacation.stage === 'CONFIRMED' && vm.vacation.type === 'SICK_LEAVE' && vm.vacation.endDate === null"
+            type="button" ui-sref="vacation.edit({id:vm.vacation.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>&nbsp;
+        <span class="hidden-xs" data-translate="entity.action.end">End date</span>
+    </button>
+
+    <button ng-if="vm.vacation.stage === 'SAVED'" type="button" ng-click="vm.send()"
+            class="btn btn-success">
+        <span class="glyphicon glyphicon-send"></span>&nbsp;
+        <span class="hidden-xs" data-translate="entity.action.send">Send to confirmation</span>
+    </button>
+
+    <button ng-if="vm.vacation.stage === 'SAVED'" type="submit"
             ui-sref="vacation.delete({id:vm.vacation.id})" class="btn btn-danger">
-        <span class="glyphicon glyphicon-remove-circle"></span>
-        <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.delete"></span>
+        <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;
+        <span class="hidden-xs" data-translate="entity.action.delete">Delete</span>
     </button>
 
-    <button ng-show="vm.vacation.stage !== 'SAVED' && vm.vacation.owner.login === vm.currentUser.login" type="submit"
+    <button ng-if="vm.vacation.stage !== 'SAVED' && vm.vacation.owner.login === vm.currentUser.login" type="submit"
             ui-sref="vacation.cancel({id:vm.vacation.id})" class="btn btn-danger">
+        <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;
+        <span class="hidden-xs" data-translate="entity.action.cancelRequest">Cancel</span>
+    </button>
+
+    <button ng-if="vm.vacation.stage === 'SENT' && vm.vacation.owner.manager.login === vm.currentUser.login" type="button" ng-click="vm.confirm()"
+            class="btn btn-success">
+        <span class="glyphicon glyphicon-ok"></span>
+        <span class="hidden-xs" data-translate="entity.action.confirm"></span>
+    </button>
+
+    <button ng-if="vm.vacation.stage === 'SENT' && vm.vacation.owner.manager.login === vm.currentUser.login" type="button" ng-click="vm.reject()"
+            class="btn btn-danger">
         <span class="glyphicon glyphicon-ban-circle"></span>
-        <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.cancelRequest"></span>
+        <span class="hidden-xs" data-translate="entity.action.reject"></span>
     </button>
 </div>

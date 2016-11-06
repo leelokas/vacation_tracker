@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('ManagerViewController', managerViewController);
 
-    managerViewController.$inject = ['$scope', '$state', 'Vacation', 'ParseLinks', 'AlertService', 'pagingParams', 'paginationConstants'];
+    managerViewController.$inject = ['$state', 'Vacation', 'ParseLinks', 'AlertService', 'pagingParams', 'paginationConstants'];
 
-    function managerViewController ($scope, $state, Vacation, ParseLinks, AlertService, pagingParams, paginationConstants) {
+    function managerViewController ($state, Vacation, ParseLinks, AlertService, pagingParams, paginationConstants) {
         var vm = this;
 
         vm.loadPage = loadPage;

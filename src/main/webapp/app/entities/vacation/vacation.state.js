@@ -179,31 +179,6 @@
                 }]
             }
         })
-        .state('vacation-detail.edit', {
-            parent: 'vacation-detail',
-            url: '/detail/edit',
-            data: {
-                authorities: ['ROLE_USER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/vacation/vacation-dialog.html',
-                    controller: 'VacationDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: ['Vacation', function(Vacation) {
-                            return Vacation.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('^', {}, { reload: false });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
-        })
         .state('vacation.new', {
             parent: 'vacation',
             url: '/new',

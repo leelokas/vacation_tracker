@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('VacationController', VacationController);
 
-    VacationController.$inject = ['$scope', '$state', '$filter', 'Vacation', 'ParseLinks', 'AlertService', 'pagingParams', 'paginationConstants'];
+    VacationController.$inject = ['$state', '$filter', 'Vacation', 'ParseLinks', 'AlertService', 'pagingParams', 'paginationConstants'];
 
-    function VacationController ($scope, $state, $filter, Vacation, ParseLinks, AlertService, pagingParams, paginationConstants) {
+    function VacationController ($state, $filter, Vacation, ParseLinks, AlertService, pagingParams, paginationConstants) {
         var vm = this;
 
         vm.loadPage = loadPage;
@@ -58,15 +58,11 @@
         }
 
         function send (vacation) {
-            if(vacation.type === "SICK_LEAVE"){
-                vacation.stage = "CONFIRMED";
-            }
-            else {
-                vacation.stage = "SENT";
-            }
+            vacation.stage = (vacation.type === "SICK_LEAVE") ? "CONFIRMED" : "SENT";
+
             Vacation.update(vacation, function (result) {
                 loadAll();
-                if(vacation.owner.manager){
+                if (vacation.owner.manager) {
                     AlertService.info("vacationTrackerApp.vacation.sent", {
                         vacation: {
                             startDate: $filter('date')(new Date(result.startDate), "dd/MM/yyyy"),
@@ -74,13 +70,10 @@
                         },
                         manager: vacation.owner.manager
                     });
-                }
-
-                else {
+                } else {
                     AlertService.warning("User doesn't have a manager. This step will be redundant for managers without managers in later development");
                 }
             });
-
         }
     }
 })();
