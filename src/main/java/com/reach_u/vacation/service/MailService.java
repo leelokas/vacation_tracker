@@ -115,7 +115,9 @@ public class MailService {
             // TODO: 1.11.2016 when accountant exists, add accountant
             case CONFIRMED:
                 sendEmail(user.getEmail(), subject, content, false, true);
-                sendEmail(user.getManager().getEmail(), subject, content, false, true);
+                if (user.getManager() != null) {
+                    sendEmail(user.getManager().getEmail(), subject, content, false, true);
+                }
 //                sendEmail(user.getManager().getEmail(), subject, content, false, true);
         }
 
