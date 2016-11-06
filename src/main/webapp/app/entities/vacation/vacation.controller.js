@@ -58,7 +58,7 @@
         }
 
         function send (vacation) {
-            vacation.stage = (vacation.type === "SICK_LEAVE") ? "CONFIRMED" : "SENT";
+            vacation.stage = (vacation.type === "SICK_LEAVE" || !vacation.owner.manager) ? "CONFIRMED" : "SENT";
 
             Vacation.update(vacation, function (result) {
                 loadAll();
@@ -70,8 +70,6 @@
                         },
                         manager: vacation.owner.manager
                     });
-                } else {
-                    AlertService.warning("User doesn't have a manager. This step will be redundant for managers without managers in later development");
                 }
             });
         }
