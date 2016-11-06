@@ -14,9 +14,17 @@
     </div>
     <jhi-alert></jhi-alert>
     <br/>
-    <div class="table-responsive">
-        <table class="jh-table table table-striped rows-as-links">
-            <thead>
+
+    <div class="row">
+        <div class="col-sm-3 paidDays" title="Backend is not yet implemented (task #16), this is here only for design">
+            <h3 class="" data-translate="vacationTrackerApp.vacation.home.paidDaysLeft.endOfYear">Unused paid vacation until the end of year</h3>
+            <span>{{vm.paidDaysLeft.endOfYear}}</span>
+            <h3 class="" data-translate="vacationTrackerApp.vacation.home.paidDaysLeft.current">Current paid vacation days balance</h3>
+            <span>{{vm.paidDaysLeft.current}}</span>
+        </div>
+        <div class="col-sm-9 table-responsive">
+            <table class="jh-table table table-striped rows-as-links">
+                <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                     <th jh-sort-by="startDate"><span data-translate="vacationTrackerApp.vacation.duration">Duration</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="type"><span data-translate="vacationTrackerApp.vacation.type">Type</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -24,10 +32,11 @@
                     <th jh-sort-by="payment" class="hidden-xs"><span data-translate="vacationTrackerApp.vacation.payment">Payment</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <tr ng-repeat="vacation in vm.vacations track by vacation.id">
-                    <td ui-sref="vacation-detail({id:vacation.id})">{{vacation.startDate | date:'dd/MM/yyyy'}} - {{vacation.endDate | date:'dd/MM/yyyy'}}</td>
+                    <td ui-sref="vacation-detail({id:vacation.id})" class="hidden-xs hidden-sm">{{vacation.startDate | date:'dd/MM/yyyy'}} - {{vacation.endDate | date:'dd/MM/yyyy'}}</td>
+                    <td ui-sref="vacation-detail({id:vacation.id})" class="hidden-md hidden-lg">{{vacation.startDate | date:'d/M/yy'}} - {{vacation.endDate | date:'d/M/yy'}}</td>
                     <td ui-sref="vacation-detail({id:vacation.id})" data-translate="{{'vacationTrackerApp.VacationType.' + vacation.type}}">{{vacation.type}}</td>
                     <td ui-sref="vacation-detail({id:vacation.id})" data-translate="{{'vacationTrackerApp.Stage.' + vacation.stage}}">{{vacation.stage}}</td>
                     <td ui-sref="vacation-detail({id:vacation.id})" class="hidden-xs" data-translate="{{'vacationTrackerApp.PaymentType.' + vacation.payment}}">{{vacation.payment}}</td>
@@ -38,38 +47,40 @@
                                     ui-sref="vacation.edit({id:vacation.id})"
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"></span>
+                                <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.edit"></span>
                             </button>
                             <button ng-if="vacation.stage === 'CONFIRMED' && vacation.type === 'SICK_LEAVE' && vacation.endDate === null" type="submit"
                                     ui-sref="vacation.edit({id:vacation.id})"
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-xs hidden-sm" data-translate="entity.action.end"></span>
+                                <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.end"></span>
                             </button>
                             <button ng-if="vacation.stage === 'SAVED'" type="button" ng-click="vm.send(vacation)"
                                     class="btn btn-success btn-sm">
                                 <span class="glyphicon glyphicon-send"></span>
-                                <span class="hidden-xs hidden-sm" data-translate="entity.action.send"></span>
+                                <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.send"></span>
                             </button>
                             <button ng-if="vacation.stage === 'SAVED'" type="submit"
                                     ui-sref="vacation.delete({id:vacation.id})"
                                     class="btn btn-danger btn-sm">
                                 <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-xs hidden-sm" data-translate="entity.action.delete"></span>
+                                <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.delete"></span>
                             </button>
                             <button ng-if="vacation.stage !== 'SAVED'" type="submit"
                                     ui-sref="vacation.cancel({id:vacation.id})"
                                     class="btn btn-danger btn-sm">
                                 <span class="glyphicon glyphicon-ban-circle"></span>
-                                <span class="hidden-xs hidden-sm" data-translate="entity.action.cancelRequest"></span>
+                                <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.cancelRequest"></span>
                             </button>
                         </div>
 
                     </td>
                 </tr>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
+
     <div class="text-center">
         <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
         <uib-pagination class="pagination-sm" total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>

@@ -16,6 +16,10 @@
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.send = send;
+        vm.paidDaysLeft = { // TODO fix after #16 is done
+            current: 20,
+            endOfYear: 28
+        };
 
         loadAll();
 

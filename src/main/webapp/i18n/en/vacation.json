@@ -5,7 +5,11 @@
                 "title": "Your vacation requests",
                 "createLabel": "Create new",
                 "createOrEditLabel": "Create or edit a Vacation",
-                "search": "Search for Vacation"
+                "search": "Search for Vacation",
+                "paidDaysLeft": {
+                    "current": "Current paid vacation days balance",
+                    "endOfYear": "Vacation days left until the end of year"
+                }
             },
             "manager": {
                 "title": "Vacations waiting confirmation"

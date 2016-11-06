@@ -306,6 +306,12 @@ h1, h2 {
     -webkit-box-shadow: none;
 }
 
+@media screen and (max-width: 767px) {
+    .table-responsive {
+        border: none;
+    }
+}
+
 .table-striped > thead > tr {
     background-color: #F5F5F5;
 }
@@ -389,5 +395,27 @@ nav.navbar-default ul.navbar-nav.reach-u_orange > li.active {
                 display: inline !important;
             }
         }
+    }
+}
+
+.paidDays {
+    float: right;
+    text-align: center;
+    @media (min-width: 768px) {
+        border-width: 0px 0 30px 2px;
+        border-style: solid;
+        -webkit-border-image: -webkit-gradient(linear, 0 0, 0 100%, from(black), to(transparent)) 1 100%;
+        -webkit-border-image: -webkit-linear-gradient(black, transparent) 1 100%;
+        -moz-border-image: -moz-linear-gradient(black, transparent) 1 100%;
+        -o-border-image: -o-linear-gradient(black, transparent) 1 100%;
+        border-image: linear-gradient(to bottom, black, transparent) 50 100%;
+    }
+    @media (max-width: 767px) {
+        float: none !important;
+    }
+    span {
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 1.1;
     }
 }
