@@ -31,7 +31,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -143,25 +142,24 @@ public class VacationResource {
      * @param vacationType the vacation type
      * @param vacationStage the vacation stage
      * @param paymentType the vacation payment type
-     * @param startDate the vacation minimum start date
-     * @param endDate the vacation maximum end date
+     * @param from the vacation minimum start date
+     * @param until the vacation maximum end date
      * @return the ResponseEntity with status 200 (OK) and with body the vacation, or with status 404 (Not Found)
      */
     @RequestMapping(value = "/vacations/filter",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<Vacation>> getVacationsByFilter(@RequestParam(value = "type", required = false) VacationType vacationType,
-                                                               @RequestParam(value = "stage", required = false) Stage vacationStage,
-                                                               @RequestParam(value = "payment", required = false) PaymentType paymentType,
-                                                               @RequestParam(value = "startDate",required = false)
-                                                                   @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-                                                               @RequestParam(value = "endDate", required = false)
-                                                                   @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate)
+    public ResponseEntity<List<Vacation>> getVacationsByFilter(
+        @RequestParam(value = "type", required = false) VacationType vacationType,
+        @RequestParam(value = "stage", required = false) Stage vacationStage,
+        @RequestParam(value = "payment", required = false) PaymentType paymentType,
+        @RequestParam(value = "from",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date from,
+        @RequestParam(value = "until", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date until)
         throws URISyntaxException {
-        log.debug("REST request to get vacations : vacationStage: {}, paymentType: {}, vacationType: {}, startDate: {}, endDate: {}",
-            vacationStage, paymentType, vacationType, startDate, endDate);
-        List<Vacation> list = vacationRepository.findAll(VacationSpecifications.byQuery(vacationType, paymentType, vacationStage, startDate, endDate));
+        log.debug("REST request to get vacations : vacationStage: {}, paymentType: {}, vacationType: {}, from: {}, until: {}",
+            vacationStage, paymentType, vacationType, from, until);
+        List<Vacation> list = vacationRepository.findAll(VacationSpecifications.byQuery(vacationType, paymentType, vacationStage, from, until));
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 

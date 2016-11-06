@@ -12,8 +12,8 @@
         <dd>
             <span data-translate="{{'vacationTrackerApp.VacationType.' + vm.vacation.type}}">{{vm.vacation.type}}</span>
         </dd>
-        <dt><span data-translate="vacationTrackerApp.vacation.payment">Payment</span></dt>
-        <dd>
+        <dt ng-if="vm.vacation.owner.login === vm.currentUser.login"><span data-translate="vacationTrackerApp.vacation.payment">Payment</span></dt>
+        <dd ng-if="vm.vacation.owner.login === vm.currentUser.login">
             <span data-translate="{{'vacationTrackerApp.PaymentType.' + vm.vacation.payment}}">{{vm.vacation.payment}}</span>
         </dd>
         <dt><span data-translate="vacationTrackerApp.vacation.startDate">Start Date</span></dt>
@@ -35,25 +35,25 @@
         <span class="hidden-xs" data-translate="entity.action.back">Back</span>
     </button>
 
-    <button ng-if="vm.vacation.stage === 'SAVED'" type="button"
+    <button ng-if="vm.vacation.stage === 'SAVED' && vm.vacation.owner.login === vm.currentUser.login" type="button"
             ui-sref="vacation.edit({id:vm.vacation.id})" class="btn btn-primary">
         <span class="glyphicon glyphicon-pencil"></span>&nbsp;
         <span class="hidden-xs" data-translate="entity.action.edit">Edit</span>
     </button>
 
-    <button ng-if="vm.vacation.stage === 'CONFIRMED' && vm.vacation.type === 'SICK_LEAVE' && vm.vacation.endDate === null"
+    <button ng-if="vm.vacation.stage === 'CONFIRMED' && vm.vacation.type === 'SICK_LEAVE' && vm.vacation.endDate === null && vm.vacation.owner.login === vm.currentUser.login"
             type="button" ui-sref="vacation.edit({id:vm.vacation.id})" class="btn btn-primary">
         <span class="glyphicon glyphicon-pencil"></span>&nbsp;
         <span class="hidden-xs" data-translate="entity.action.end">End date</span>
     </button>
 
-    <button ng-if="vm.vacation.stage === 'SAVED'" type="button" ng-click="vm.send()"
+    <button ng-if="vm.vacation.stage === 'SAVED' && vm.vacation.owner.login === vm.currentUser.login" type="button" ng-click="vm.send()"
             class="btn btn-success">
         <span class="glyphicon glyphicon-send"></span>&nbsp;
         <span class="hidden-xs" data-translate="entity.action.send">Send to confirmation</span>
     </button>
 
-    <button ng-if="vm.vacation.stage === 'SAVED'" type="submit"
+    <button ng-if="vm.vacation.stage === 'SAVED' && vm.vacation.owner.login === vm.currentUser.login" type="submit"
             ui-sref="vacation.delete({id:vm.vacation.id})" class="btn btn-danger">
         <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;
         <span class="hidden-xs" data-translate="entity.action.delete">Delete</span>

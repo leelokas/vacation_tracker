@@ -53,6 +53,14 @@
                     return getMethodCallback(data);
                 }
             },
+            'getFilteredVacations': {
+                method: 'GET',
+                url: 'api/vacations/filter',
+                isArray: true,
+                transformResponse: function (data) {
+                    return getMethodCallback(data);
+                }
+            },
             'update': {
                 method: 'PUT',
                 transformRequest: function (data) {

@@ -3,6 +3,10 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #333; }
 
+@media (min-width: 768px) and (max-width: 991px) {
+  .container {
+    width: 770px; } }
+
 /* ==========================================================================
 Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
 ========================================================================== */
@@ -280,17 +284,16 @@ table.rows-as-links tbody tr:hover {
 .navbar-default {
   background-color: transparent; }
 
-nav.navbar-default ul.navbar-nav.reach-u_orange li.active a {
+nav.navbar-default ul.navbar-nav.reach-u_orange > li.active > a {
   background-color: transparent; }
-
-nav.navbar-default ul.navbar-nav.reach-u_orange li.active ::after {
-  height: 5px;
-  content: '';
-  position: absolute;
-  bottom: 4px;
-  left: 12px;
-  right: 12px;
-  background-color: #F47B20; }
+  nav.navbar-default ul.navbar-nav.reach-u_orange > li.active > a ::after {
+    height: 5px;
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 12px;
+    right: 12px;
+    background-color: #F47B20; }
 
 .pagination .active a, .pagination .active a:hover {
   color: #333;
@@ -312,3 +315,17 @@ nav.navbar-default ul.navbar-nav.reach-u_orange li.active ::after {
   background: transparent;
   height: 45px;
   outline: none; }
+
+.filterForm {
+  padding-bottom: 10px; }
+  .filterForm .filterBtn {
+    line-height: 78px; }
+    @media (min-width: 1200px) {
+      .filterForm .filterBtn .visible-lg {
+        display: inline !important; } }
+    @media (max-width: 767px) {
+      .filterForm .filterBtn {
+        float: right;
+        margin-right: 16px; }
+        .filterForm .filterBtn .visible-xs {
+          display: inline !important; } }

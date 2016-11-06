@@ -12,7 +12,8 @@
             },
             "overview": {
                 "title": "All vacations",
-                "download": "Download vacations"
+                "download": "Download vacations",
+                "filter": "Filter"
             },
             "created": "Your vacation request is saved but not sent for confirmation. \nIf your request doesn’t need any changes then please click 'Send to confirmation'",
             "sent": "Your vacation request for dates {{vacation.startDate}} - {{vacation.endDate}} was sent for confirmation to your manager {{manager.firstName}} {{manager.lastName}}.\nNB Have you notified your project manager(s) about your vacation request dates?",
@@ -35,7 +36,9 @@
             "startDate": "Start Date",
             "endDate": "End Date",
             "owner": "Owner",
-            "duration": "Duration"
+            "duration": "Duration",
+            "from": "From",
+            "until": "Until"
         }
     }
 }
