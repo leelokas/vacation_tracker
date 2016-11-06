@@ -113,9 +113,9 @@ public class MailService {
                 sendEmail(user.getManager().getEmail(), subject, content, false, true);
                 break;
             // TODO: 1.11.2016 when accountant exists, add accountant
-//            case CONFIRMED:
-//                sendEmail(user.getEmail(), subject, content, false, true);
-//                sendEmail(user.getManager().getEmail(), subject, content, false, true);
+            case CONFIRMED:
+                sendEmail(user.getEmail(), subject, content, false, true);
+                sendEmail(user.getManager().getEmail(), subject, content, false, true);
 //                sendEmail(user.getManager().getEmail(), subject, content, false, true);
         }
 
