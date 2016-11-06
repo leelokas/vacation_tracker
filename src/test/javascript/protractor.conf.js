@@ -7,9 +7,9 @@ const prefix = 'src/test/javascript/'.replace(/[^/]+/g,'..');
 
 var webbrowserDriver= '';
 if (os.platform() === 'win32') {
-    webbrowserDriver = prefix + 'node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.22.exe';
+    webbrowserDriver = prefix + 'node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.24.exe';
 } else {
-    webbrowserDriver = prefix + 'node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.22';
+    webbrowserDriver = prefix + 'node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.24.exe';
 }
 
 exports.config = {
@@ -18,13 +18,13 @@ exports.config = {
     allScriptsTimeout: 20000,
 
     suites: {
-        account: './e2e/account/*.js',
-        admin: './e2e/admin/*.js',
+       // account: './e2e/account/*.js',
+        // admin: './e2e/admin/*.js',
         entity: './e2e/entities/*.js'
     },
 
     capabilities: {
-        'browserName': 'firefox',
+        'browserName': 'chrome',
         'phantomjs.binary.path': require('phantomjs-prebuilt').path,
         'phantomjs.ghostdriver.cli.args': ['--loglevel=DEBUG']
     },
