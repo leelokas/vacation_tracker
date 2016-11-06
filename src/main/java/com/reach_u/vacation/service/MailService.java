@@ -110,7 +110,9 @@ public class MailService {
         switch (vacation.getStage()){
             case SENT:  case PLANNED:
                 sendEmail(user.getEmail(), subject, content, false, true);
-                sendEmail(user.getManager().getEmail(), subject, content, false, true);
+                if (user.getManager() != null) {
+                    sendEmail(user.getManager().getEmail(), subject, content, false, true);
+                }
                 break;
             // TODO: 1.11.2016 when accountant exists, add accountant
             case CONFIRMED:
