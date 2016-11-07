@@ -150,7 +150,7 @@ describe('E2e tests', function () {
                 });
                 element.all(by.xpath('//table/tbody/tr')).count().then(function(originalCount) {
                     var requests2 = originalCount;
-                    vacationButtonColumn.element(by.buttonText('Confirm')).click();
+                    element(by.xpath('//table/tbody/tr[last()]/td[5]')).element(by.buttonText('Confirm')).click();
                     var new_requests2 = element.all(by.xpath('//table/tbody/tr')).count();
                     expect(new_requests2).toBe(requests2 - 1);
                 });
@@ -171,7 +171,7 @@ describe('E2e tests', function () {
                 element.all(by.css('[ui-sref="manager"]')).first().click();
                 element.all(by.xpath('//table/tbody/tr')).count().then(function(originalCount) {
                     var requests2 = originalCount;
-                    vacationButtonColumn.element(by.buttonText('Reject')).click();
+                    element(by.xpath('//table/tbody/tr[last()]/td[5]')).element(by.buttonText('Reject')).click();
                     var new_requests2 = element.all(by.xpath('//table/tbody/tr')).count();
                     expect(new_requests2).toBe(requests2 - 1);
                 });
@@ -230,12 +230,12 @@ describe('E2e tests', function () {
 
     it('should check that the request was rejected (i.e in SAVED state now) and delete the request', function() {
         element.all(by.css('[ui-sref="vacation"]')).first().click();
-        element(by.xpath('//table/tbody/tr[last()-2]/td[3]')).getAttribute('data-translate').then(function(value) {
+        element(by.xpath('//table/tbody/tr[last()-2]/td[4]')).getAttribute('data-translate').then(function(value) {
             expect(value).toMatch(/vacationTrackerApp.Stage.SAVED/);
         });
         element.all(by.xpath('//table/tbody/tr')).count().then(function(originalCount) {
             var requests = originalCount;
-            element(by.xpath('//table/tbody/tr[last()-2]/td[5]')).element(by.buttonText('Delete')).click();
+            element(by.xpath('//table/tbody/tr[last()-2]/td[6]')).element(by.buttonText('Delete')).click();
             element(by.id('deleteForm')).submit();
             var new_requests = element.all(by.xpath('//table/tbody/tr')).count();
             expect(new_requests).toBe(requests - 1);
