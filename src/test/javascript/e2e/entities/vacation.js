@@ -262,5 +262,20 @@ describe('E2e tests', function () {
             });
         });
     });
+
+    it('should delete the other 2 requests', function() {
+        element.all(by.css('[ui-sref="vacation"]')).first().click();
+        element.all(by.xpath('//table/tbody/tr')).count().then(function(originalCount) {
+            var requests = originalCount;
+            vacationButtonColumn.element(by.buttonText('Delete')).click();
+            element(by.id('deleteForm')).submit();
+            vacationButtonColumn.element(by.buttonText('Cancel request')).click();
+            element(by.id('cancelForm')).submit();
+            vacationButtonColumn.element(by.buttonText('Delete')).click();
+            element(by.id('deleteForm')).submit();
+            var new_requests = element.all(by.xpath('//table/tbody/tr')).count();
+            expect(new_requests).toBe(requests - 2);
+        });
+    });
 });
 
