@@ -36,10 +36,8 @@
                 }
                 return result;
             }
-            function onSuccess(data, headers) {
-                vm.links = ParseLinks.parse(headers('link'));
-                vm.totalItems = headers('X-Total-Count');
-                vm.queryCount = vm.totalItems;
+            function onSuccess(data) {
+                vm.totalItems = data.length;
                 vm.vacations = data;
                 vm.page = pagingParams.page;
             }
