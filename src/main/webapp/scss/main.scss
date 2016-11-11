@@ -232,12 +232,15 @@ entity tables helpers
    justify-content: flex-end;
 }
 
-.jh-table > {
-    tbody > tr > td {
+.jh-table {
+    @media screen and (max-width: 767px) {
+        margin-top: 20px;
+    }
+    > tbody > tr > td {
         /* Align text in td verifically (top aligned by Bootstrap) */
         vertical-align: middle;
     }
-    thead > tr > th > {
+    > thead > tr > th > {
         .glyphicon-sort, .glyphicon-sort-by-attributes, .glyphicon-sort-by-attributes-alt {
             /* less visible sorting icons */
             opacity: 0.5;
@@ -416,6 +419,9 @@ nav.navbar-default ul.navbar-nav.reach-u_orange > li.active {
     }
     @media (max-width: 767px) {
         float: none !important;
+        h3:first-of-type {
+            margin-top: 0;
+        }
     }
     span {
         font-size: 24px;

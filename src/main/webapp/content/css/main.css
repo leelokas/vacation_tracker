@@ -208,6 +208,10 @@ entity tables helpers
   -webkit-justify-content: flex-end;
   justify-content: flex-end; }
 
+@media screen and (max-width: 767px) {
+  .jh-table {
+    margin-top: 20px; } }
+
 .jh-table > tbody > tr > td {
   /* Align text in td verifically (top aligned by Bootstrap) */
   vertical-align: middle; }
@@ -348,7 +352,9 @@ nav.navbar-default ul.navbar-nav.reach-u_orange > li.active > a {
       border-image: linear-gradient(to bottom, black, transparent) 50 100%; } }
   @media (max-width: 767px) {
     .paidDays {
-      float: none !important; } }
+      float: none !important; }
+      .paidDays h3:first-of-type {
+        margin-top: 0; } }
   .paidDays span {
     font-size: 24px;
     font-weight: bold;
