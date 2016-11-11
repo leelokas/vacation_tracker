@@ -46,6 +46,7 @@
         }
         function onSuccess(data) {
             vm.totalItems = data.length;
+            vm.queryCount = vm.totalItems;
             vm.vacations = data;
             vm.page = pagingParams.page;
         }

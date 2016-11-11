@@ -51,13 +51,15 @@
             }, onSuccess, onError);
         }
 
-        function onSuccess(data) {
-            for (var i = data.length - 1; i >= 0; i--) {
-                if (data[i]['login'] === 'anonymoususer' || data[i]['login'] === 'system') {
+        function onSuccess(data, headers) {
+            //hide anonymous user from user management: it's a required user for Spring Security
+            for (var i in data) {
+                if (data[i]['login'] === 'anonymoususer') {
                     data.splice(i, 1);
                 }
             }
-            vm.totalItems = data.length;
+            vm.links = ParseLinks.parse(headers('link'));
+            vm.totalItems = headers('X-Total-Count');
             vm.queryCount = vm.totalItems;
             vm.page = pagingParams.page;
             vm.users = data;
