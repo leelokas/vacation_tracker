@@ -14,10 +14,10 @@
             </thead>
             <tbody>
             <tr ng-repeat="vacation in vm.vacations track by vacation.id">
-                <td ui-sref="vacation-detail({id:vacation.id})">{{vacation.owner.login}}</td>
-                <td ui-sref="vacation-detail({id:vacation.id})" data-translate="{{'vacationTrackerApp.VacationType.' + vacation.type}}">{{vacation.type}}</td>
-                <td ui-sref="vacation-detail({id:vacation.id})">{{vacation.startDate | date:'dd/MM/yyyy'}}</td>
-                <td ui-sref="vacation-detail({id:vacation.id})">{{vacation.endDate | date:'dd/MM/yyyy'}}</td>
+                <td ui-sref="manager.vacation-detail({id:vacation.id})">{{vacation.owner.login}}</td>
+                <td ui-sref="manager.vacation-detail({id:vacation.id})" data-translate="{{'vacationTrackerApp.VacationType.' + vacation.type}}">{{vacation.type}}</td>
+                <td ui-sref="manager.vacation-detail({id:vacation.id})">{{vacation.startDate | date:'dd/MM/yyyy'}}</td>
+                <td ui-sref="manager.vacation-detail({id:vacation.id})">{{vacation.endDate | date:'dd/MM/yyyy'}}</td>
                 <td class="text-right">
 
                     <div class="btn-group flex-btn-group-container">

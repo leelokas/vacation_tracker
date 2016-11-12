@@ -5,14 +5,14 @@
         .module('vacationTrackerApp')
         .controller('VacationDetailController', VacationDetailController);
 
-    VacationDetailController.$inject = ['$scope', '$rootScope', 'previousState', 'entity', 'Vacation', 'User', 'Principal', 'AlertService'];
+    VacationDetailController.$inject = ['$uibModalInstance', 'entity', 'Vacation', 'User', 'Principal', 'AlertService'];
 
-    function VacationDetailController($scope, $rootScope, previousState, entity, Vacation, User, Principal, AlertService) {
+    function VacationDetailController ($uibModalInstance, entity, Vacation, User, Principal, AlertService) {
         var vm = this;
 
         vm.vacation = entity;
-        vm.previousState = previousState.name;
         vm.currentUser = null;
+        vm.clear = clear;
         vm.send = send;
         vm.confirm = confirm;
         vm.reject = reject;
@@ -25,13 +25,18 @@
             });
         }
 
-        var unsubscribe = $rootScope.$on('vacationTrackerApp:vacationUpdate', function(event, result) {
-            vm.vacation = result;
-        });
-        $scope.$on('$destroy', unsubscribe);
+        function clear () {
+            $uibModalInstance.dismiss('cancel');
+        }
 
-        function send() {
-            vm.vacation.stage = (vm.vacation.type === "SICK_LEAVE") ? "CONFIRMED" : "SENT";
+        function send () {
+            if (vm.vacation.type === "SICK_LEAVE") {
+                vm.vacation.stage = "CONFIRMED";
+            } else if (!vm.vacation.owner.manager) {
+                vm.vacation.stage = "PLANNED";
+            } else {
+                vm.vacation.stage = "SENT";
+            }
 
             Vacation.update(vm.vacation, function (result) {
                 if (vm.vacation.owner.manager) {
@@ -42,9 +47,8 @@
                         },
                         manager: vm.vacation.owner.manager
                     });
-                } else {
-                    AlertService.warning("User doesn't have a manager. This step will be redundant for managers without managers in later development");
                 }
+                $uibModalInstance.close(true);
             });
         }
 
@@ -54,6 +58,7 @@
                 AlertService.info("vacationTrackerApp.vacation.confirmed", {
                     owner: result.owner
                 });
+                $uibModalInstance.close(true);
             });
         }
 
@@ -63,7 +68,9 @@
                 AlertService.info("vacationTrackerApp.vacation.rejected", {
                     owner: result.owner
                 });
+                $uibModalInstance.close(true);
             });
         }
+
     }
 })();

@@ -90,7 +90,7 @@
             if (vm.vacation.startDate > vm.vacation.endDate){
                 vm.vacation.endDate = "";
             }
-        })
+        });
 
         $scope.$watch("vm.vacation.type", function () {
             if (vm.vacation.type === 'PAID' || vm.vacation.type === 'STUDY_LEAVE'){
@@ -98,7 +98,7 @@
             } else {
                 vm.vacation.payment = "WITH_NEXT_SALARY";
             }
-        })
+        });
 
     }
 })();
