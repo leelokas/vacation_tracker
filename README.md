@@ -1,6 +1,8 @@
-# vacationTracker
+# Vacation Tracker
 
 This application was generated using JHipster, you can find documentation and help at [https://jhipster.github.io](https://jhipster.github.io).
+
+Find our wiki [here](https://github.com/leelokas/vacation_tracker/wiki).
 
 ## Development
 
@@ -52,30 +54,6 @@ Unit tests are run by [Karma][] and written with [Jasmine][]. They're located in
 
 UI end-to-end tests are powered by [Protractor][], which is built on top of WebDriverJS. They're located in `src/test/javascript/e2e`
 and can be run by starting Spring Boot in one terminal (`./mvnw spring-boot:run`) and running the tests (`gulp itest`) in a second one.
-    
-## Continuous Integration
-
-To setup this project in Jenkins, use the following configuration:
-
-* Project name: `vacationTracker`
-* Source Code Management
-    * Git Repository: `git@github.com:xxxx/vacationTracker.git`
-    * Branches to build: `*/master`
-    * Additional Behaviours: `Wipe out repository & force clone`
-* Build Triggers
-    * Poll SCM / Schedule: `H/5 * * * *`
-* Build
-    * Invoke Maven / Tasks: `-Pprod clean package`
-    * Execute Shell / Command:
-        ````
-        ./mvnw spring-boot:run &
-        bootPid=$!
-        sleep 30s
-        gulp itest
-        kill $bootPid
-        ````
-* Post-build Actions
-    * Publish JUnit test result report / Test Report XMLs: `build/test-results/*.xml,build/reports/e2e/*.xml`
 
 [JHipster]: https://jhipster.github.io/
 [Gatling]: http://gatling.io/
