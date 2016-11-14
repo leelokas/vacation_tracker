@@ -8,9 +8,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import com.reach_u.vacation.domain.enumeration.Stage;
-
 import com.reach_u.vacation.domain.enumeration.VacationType;
-
 import com.reach_u.vacation.domain.enumeration.PaymentType;
 
 /**
@@ -164,6 +162,7 @@ public class Vacation implements Serializable {
             ", payment='" + payment + "'" +
             ", startDate='" + startDate + "'" +
             ", endDate='" + endDate + "'" +
+            ", owner='" + owner + "'" +
             '}';
     }
 }

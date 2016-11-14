@@ -1,5 +1,6 @@
 package com.reach_u.vacation.repository;
 
+import com.reach_u.vacation.domain.User;
 import com.reach_u.vacation.domain.Vacation;
 import com.reach_u.vacation.domain.enumeration.PaymentType;
 import com.reach_u.vacation.domain.enumeration.Stage;
@@ -17,7 +18,7 @@ import java.util.List;
 public class VacationSpecifications {
 
     public static Specification<Vacation> byQuery(VacationType type, PaymentType paymentType, Stage stage,
-                                                  Date startDate, Date endDate) {
+                                                  Date startDate, Date endDate, String login, String manager) {
         return new Specification<Vacation>() {
             @Override
             public Predicate toPredicate(Root<Vacation> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
@@ -36,6 +37,12 @@ public class VacationSpecifications {
                 }
                 if (endDate != null) {
                     expressions.add(criteriaBuilder.lessThanOrEqualTo(root.get("endDate"), endDate));
+                }
+                if (login != null) {
+                    expressions.add(criteriaBuilder.equal(root.get("owner").get("login"), login));
+                }
+                if (manager != null) {
+                    expressions.add(criteriaBuilder.equal(root.get("owner").get("manager").get("login"), manager));
                 }
 
                 return criteriaBuilder.and(expressions.toArray(new Predicate[0]));

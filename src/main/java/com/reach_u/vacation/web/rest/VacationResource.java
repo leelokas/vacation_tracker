@@ -1,6 +1,7 @@
 package com.reach_u.vacation.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.reach_u.vacation.domain.User;
 import com.reach_u.vacation.domain.Vacation;
 
 import com.reach_u.vacation.domain.enumeration.PaymentType;
@@ -155,11 +156,13 @@ public class VacationResource {
         @RequestParam(value = "stage", required = false) Stage vacationStage,
         @RequestParam(value = "payment", required = false) PaymentType paymentType,
         @RequestParam(value = "from",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date from,
-        @RequestParam(value = "until", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date until)
+        @RequestParam(value = "until", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date until,
+        @RequestParam(value = "owner", required = false) String login,
+        @RequestParam(value = "manager", required = false) String manager)
         throws URISyntaxException {
-        log.debug("REST request to get vacations : vacationStage: {}, paymentType: {}, vacationType: {}, from: {}, until: {}",
+        log.debug("REST request to get vacations : vacationStage: {}, paymentType: {}, vacationType: {}, from: {}, until: {}, login: {}, manager: {}",
             vacationStage, paymentType, vacationType, from, until);
-        List<Vacation> list = vacationRepository.findAll(VacationSpecifications.byQuery(vacationType, paymentType, vacationStage, from, until));
+        List<Vacation> list = vacationRepository.findAll(VacationSpecifications.byQuery(vacationType, paymentType, vacationStage, from, until, login, manager));
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
