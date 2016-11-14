@@ -380,3 +380,10 @@ footer {
       display: inline-block; }
     footer .container .right {
       float: right; }
+
+@media screen and (min-width: 768px) {
+  .dl-horizontal.jh-entity-details {
+    margin-bottom: -15px; }
+    .dl-horizontal.jh-entity-details > dd:last-of-type {
+      border-bottom: none;
+      margin-bottom: 0; } }

@@ -144,41 +144,6 @@
                 }]
             }
         })
-        .state('vacation-detail', {
-            parent: 'entity',
-            url: '/vacation/{id}',
-            data: {
-                authorities: ['ROLE_USER'],
-                pageTitle: 'vacationTrackerApp.vacation.detail.title'
-            },
-            views: {
-                'content@': {
-                    templateUrl: 'app/entities/vacation/vacation-detail.html',
-                    controller: 'VacationDetailController',
-                    controllerAs: 'vm'
-                }
-            },
-            resolve: {
-                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('vacation');
-                    $translatePartialLoader.addPart('stage');
-                    $translatePartialLoader.addPart('vacationType');
-                    $translatePartialLoader.addPart('paymentType');
-                    return $translate.refresh();
-                }],
-                entity: ['$stateParams', 'Vacation', function($stateParams, Vacation) {
-                    return Vacation.get({id : $stateParams.id}).$promise;
-                }],
-                previousState: ["$state", function ($state) {
-                    var currentStateData = {
-                        name: $state.current.name || 'vacation',
-                        params: $state.params,
-                        url: $state.href($state.current.name, $state.params)
-                    };
-                    return currentStateData;
-                }]
-            }
-        })
         .state('vacation.new', {
             parent: 'vacation',
             url: '/new',
@@ -231,6 +196,81 @@
                     }
                 }).result.then(function() {
                     $state.go('vacation', null, { reload: 'vacation' });
+                }, function() {
+                    $state.go('^');
+                });
+            }]
+        })
+        .state('vacation-detail', {
+            parent: 'vacation',
+            url: '/{id}/details',
+            data: {
+                authorities: ['ROLE_USER']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/entities/vacation/vacation-detail.html',
+                    controller: 'VacationDetailController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: ['Vacation', function(Vacation) {
+                            return Vacation.get({id : $stateParams.id}).$promise;
+                        }]
+                    }
+                }).result.then(function() {
+                    $state.go('vacation', null, { reload: 'vacation' });
+                }, function() {
+                    $state.go('^');
+                });
+            }]
+        })
+        .state('manager.vacation-detail', {
+            parent: 'manager',
+            url: '/{id}/details',
+            data: {
+                authorities: ['ROLE_USER']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/entities/vacation/vacation-detail.html',
+                    controller: 'VacationDetailController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: ['Vacation', function(Vacation) {
+                            return Vacation.get({id : $stateParams.id}).$promise;
+                        }]
+                    }
+                }).result.then(function() {
+                    $state.go('manager', null, { reload: 'manager' });
+                }, function() {
+                    $state.go('^');
+                });
+            }]
+        })
+        .state('overview.vacation-detail', {
+            parent: 'overview',
+            url: '/{id}/details',
+            data: {
+                authorities: ['ROLE_USER']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/entities/vacation/vacation-detail.html',
+                    controller: 'VacationDetailController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: ['Vacation', function(Vacation) {
+                            return Vacation.get({id : $stateParams.id}).$promise;
+                        }]
+                    }
+                }).result.then(function() {
+                    $state.go('overview', null, { reload: 'overview' });
                 }, function() {
                     $state.go('^');
                 });

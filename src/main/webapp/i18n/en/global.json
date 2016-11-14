@@ -129,6 +129,10 @@
         "emailexists": "E-mail is already in use!",
         "idexists": "A new {{ entityName }} cannot already have an ID"
     },
-    "footer": "This is your footer",
+    "footer": {
+        "copyright": "© 2016 Reach-U",
+        "forInfoContact": "If you have questions, problems or feature requests then turn to",
+        "email": "liis@reach-u.com"
+    },
     "queryInfo": "Showing {{totalItems==0 ? 0 : ((page-1)*itemsPerPage)==0 ? 1 : ((page-1)*itemsPerPage)}} - {{(page*itemsPerPage)<totalItems ? (page*itemsPerPage) : totalItems}} of {{totalItems}} items."
 }

@@ -449,3 +449,13 @@ footer {
         }
     }
 }
+
+@media screen and (min-width: 768px) {
+    .dl-horizontal.jh-entity-details {
+        margin-bottom: -15px;
+        > dd:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+    }
+}
