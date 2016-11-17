@@ -14,8 +14,8 @@
             <dd>
                 <span data-translate="{{'vacationTrackerApp.VacationType.' + vm.vacation.type}}">{{vm.vacation.type}}</span>
             </dd>
-            <dt ng-if="vm.vacation.owner.login === vm.currentUser.login"><span data-translate="vacationTrackerApp.vacation.payment">Payment</span></dt>
-            <dd ng-if="vm.vacation.owner.login === vm.currentUser.login">
+            <dt ng-if="vm.vacation.owner.login === vm.currentUser.login || vm.currentUser.authorities.indexOf('ROLE_ACCOUNTANT') > -1"><span data-translate="vacationTrackerApp.vacation.payment">Payment</span></dt>
+            <dd ng-if="vm.vacation.owner.login === vm.currentUser.login || vm.currentUser.authorities.indexOf('ROLE_ACCOUNTANT') > -1">
                 <span data-translate="{{'vacationTrackerApp.PaymentType.' + vm.vacation.payment}}">{{vm.vacation.payment}}</span>
             </dd>
             <dt><span data-translate="vacationTrackerApp.vacation.startDate">Start Date</span></dt>

@@ -78,6 +78,7 @@
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                     <th jh-sort-by="owner.login"><span data-translate="vacationTrackerApp.vacation.owner">Owner</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="type"><span data-translate="vacationTrackerApp.vacation.type">Type</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th has-authority="ROLE_ACCOUNTANT" jh-sort-by="payment"><span data-translate="vacationTrackerApp.vacation.payment">Payment</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="startDate"><span data-translate="vacationTrackerApp.vacation.startDate">Start Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="endDate"><span data-translate="vacationTrackerApp.vacation.endDate">End Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="stage" class="hidden-xs"><span data-translate="vacationTrackerApp.vacation.stage">Stage</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -87,6 +88,7 @@
                 <tr ng-repeat="vacation in vm.vacations track by vacation.id">
                     <td ui-sref="overview.vacation-detail({id:vacation.id})">{{vacation.owner.login}}</td>
                     <td ui-sref="overview.vacation-detail({id:vacation.id})" data-translate="{{'vacationTrackerApp.VacationType.' + vacation.type}}">{{vacation.type}}</td>
+                    <td has-authority="ROLE_ACCOUNTANT" ui-sref="overview.vacation-detail({id:vacation.id})" data-translate="{{'vacationTrackerApp.PaymentType.' + vacation.payment}}">{{vacation.payment}}</td>
                     <td ui-sref="overview.vacation-detail({id:vacation.id})">{{vacation.startDate | date:'dd/MM/yyyy'}}</td>
                     <td ui-sref="overview.vacation-detail({id:vacation.id})">{{vacation.endDate | date:'dd/MM/yyyy'}}</td>
                     <td ui-sref="overview.vacation-detail({id:vacation.id})" class="hidden-xs" data-translate="{{'vacationTrackerApp.Stage.' + vacation.stage}}">{{vacation.stage}}</td>
