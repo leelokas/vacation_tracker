@@ -76,6 +76,7 @@
         <table class="jh-table table table-striped rows-as-links">
             <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th><input type="checkbox" ng-model="vm.selectAll" ng-click="vm.toggle()"></th>
                     <th jh-sort-by="owner.login"><span data-translate="vacationTrackerApp.vacation.owner">Owner</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="type"><span data-translate="vacationTrackerApp.vacation.type">Type</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th has-authority="ROLE_ACCOUNTANT" jh-sort-by="payment"><span data-translate="vacationTrackerApp.vacation.payment">Payment</span> <span class="glyphicon glyphicon-sort"></span></th>
@@ -86,6 +87,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="vacation in vm.vacations track by vacation.id">
+                    <td><input type="checkbox" ng-model="vacation.checked"></td>
                     <td ui-sref="overview.vacation-detail({id:vacation.id})">{{vacation.owner.login}}</td>
                     <td ui-sref="overview.vacation-detail({id:vacation.id})" data-translate="{{'vacationTrackerApp.VacationType.' + vacation.type}}">{{vacation.type}}</td>
                     <td has-authority="ROLE_ACCOUNTANT" ui-sref="overview.vacation-detail({id:vacation.id})" data-translate="{{'vacationTrackerApp.PaymentType.' + vacation.payment}}">{{vacation.payment}}</td>

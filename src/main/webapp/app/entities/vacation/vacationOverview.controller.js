@@ -15,6 +15,8 @@
         vm.openCalendar = openCalendar;
         vm.filter = filter;
         vm.redirect = redirect;
+        vm.selectAll = false;
+        vm.toggle = toggle;
 
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -103,8 +105,20 @@
             }, onError);
         }
 
-        function redirect(){
+        function redirect() {
             window.location = "api/file/vacations";
+            var selectedVacations = [];
+            for (var i = 0; i < vm.vacations.length; i++) {
+                if (vm.vacations[i].checked) {
+                    selectedVacations.push(vm.vacations[i]);
+                }
+            }
+            console.log(selectedVacations);
+        }
+        function toggle() {
+            for (var i = 0; i < vm.vacations.length; i++) {
+                vm.vacations[i].checked = vm.selectAll;
+            }
         }
 
     }
