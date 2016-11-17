@@ -113,13 +113,12 @@
                     selectedVacations.push(vm.vacations[i]);
                 }
             }
-            console.log(selectedVacations);
         }
+
         function toggle() {
             for (var i = 0; i < vm.vacations.length; i++) {
                 vm.vacations[i].checked = vm.selectAll;
             }
         }
-
     }
 })();
