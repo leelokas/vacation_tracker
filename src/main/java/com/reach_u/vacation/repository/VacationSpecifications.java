@@ -1,6 +1,5 @@
 package com.reach_u.vacation.repository;
 
-import com.reach_u.vacation.domain.User;
 import com.reach_u.vacation.domain.Vacation;
 import com.reach_u.vacation.domain.enumeration.PaymentType;
 import com.reach_u.vacation.domain.enumeration.Stage;

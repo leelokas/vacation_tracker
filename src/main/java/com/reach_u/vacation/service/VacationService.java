@@ -33,8 +33,5 @@ public class VacationService {
             vacation.setStage(Stage.CONFIRMED);
         }
     }
-
-
-
 }
 

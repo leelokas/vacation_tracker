@@ -4,6 +4,7 @@ import com.reach_u.vacation.config.Constants;
 import com.codahale.metrics.annotation.Timed;
 import com.reach_u.vacation.domain.User;
 import com.reach_u.vacation.repository.UserRepository;
+import com.reach_u.vacation.repository.UserSpecifications;
 import com.reach_u.vacation.security.AuthoritiesConstants;
 import com.reach_u.vacation.service.MailService;
 import com.reach_u.vacation.service.UserService;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
+import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -199,4 +202,23 @@ public class UserResource {
         userService.deleteUser(login);
         return ResponseEntity.ok().headers(HeaderUtil.createAlert( "userManagement.deleted", login)).build();
     }
+
+    @RequestMapping(value = "/users/filter",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<User>> getUsersByFilter(
+        @RequestParam(value = "firstName", required = false) String firstName,
+        @RequestParam(value = "lastName", required = false) String lastName,
+        @RequestParam(value = "login", required = false) String login,
+        @RequestParam(value = "manager", required = false) String manager)
+
+        throws URISyntaxException{
+        log.debug("REST request to get vacations : firstName: {}, lastName: {}, login: {}",
+            firstName, lastName, login);
+        List<User> list = userRepository.findAll(UserSpecifications.byQuery(firstName, lastName, login, manager));
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+
 }
