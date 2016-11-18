@@ -5,23 +5,23 @@
         .module('vacationTrackerApp')
         .controller('VacationOverviewController', VacationOverviewController);
 
-    VacationOverviewController.$inject = ['$state', '$filter', 'Vacation', 'AlertService', 'pagingParams', 'paginationConstants'];
+    VacationOverviewController.$inject = ['$state', '$filter', '$translate', 'Vacation', 'AlertService', 'XlsExportService', 'pagingParams', 'paginationConstants'];
 
-    function VacationOverviewController ($state, $filter, Vacation, AlertService, pagingParams, paginationConstants) {
+    function VacationOverviewController ($state, $filter, $translate, Vacation, AlertService, XlsExportService, pagingParams, paginationConstants) {
         var vm = this;
 
         vm.loadPage = loadPage;
         vm.transition = transition;
         vm.openCalendar = openCalendar;
         vm.filter = filter;
-        vm.redirect = redirect;
-        vm.selectAll = false;
+        vm.exportFile = exportFile;
         vm.toggle = toggle;
 
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
 
+        vm.selectAll = false;
         vm.dateOptions = {
             showWeeks: false,
             startingDay: 1
@@ -105,14 +105,31 @@
             }, onError);
         }
 
-        function redirect() {
-            window.location = "api/file/vacations";
-            var selectedVacations = [];
-            for (var i = 0; i < vm.vacations.length; i++) {
+        function getRowObject(obj) {
+            var oneDay = 24 * 60 * 60 * 1000,
+                startDate = new Date(obj.startDate),
+                endDate = obj.endDate ? new Date(obj.endDate) : null;
+            return {
+                name: obj.owner.firstName + " " + obj.owner.lastName,
+                startDate: obj.startDate,
+                endDate: obj.endDate,
+                duration: endDate ? Math.round(Math.abs((startDate.getTime() - endDate.getTime()) / (oneDay))) + 1 : null,
+                type: $translate.instant('vacationTrackerApp.VacationType.' + obj.type),
+                payment: $translate.instant('vacationTrackerApp.PaymentType.' + obj.payment)
+            };
+        }
+
+        function exportFile() {
+            var i, selectedVacations = [], exportData = [];
+            for (i = 0; i < vm.vacations.length; i++) {
                 if (vm.vacations[i].checked) {
                     selectedVacations.push(vm.vacations[i]);
                 }
             }
+            for (i = 0; i < selectedVacations.length; i++) {
+                exportData.push(getRowObject(selectedVacations[i]));
+            }
+            XlsExportService.downloadXls(exportData);
         }
 
         function toggle() {
