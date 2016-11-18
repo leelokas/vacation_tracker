@@ -6,7 +6,7 @@
         <h4 class="modal-title" id="myVacationLabel" data-translate="vacationTrackerApp.vacation.home.createOrEditLabel">Create or edit a Vacation</h4>
     </div>
     <div class="modal-body">
-        <div class="row" ng-hide="vm.vacation.stage === 'CONFIRMED'">
+        <div class="row" ng-hide="vm.vacation.stage === 'PLANNED' || vm.vacation.stage === 'CONFIRMED'">
             <div class="form-group col-md-6">
                 <label class="control-label" data-translate="vacationTrackerApp.vacation.type" for="field_type">Type</label>
                 <span class="has-error" ng-show="editForm.type.$error.required"></span>
@@ -61,7 +61,7 @@
                 </div>
             </div>
         </div>
-        <div class="row" ng-show="vm.vacation.type === 'SICK_LEAVE' && vm.vacation.stage === 'CONFIRMED'">
+        <div class="row" ng-show="vm.vacation.type === 'SICK_LEAVE' && (vm.vacation.stage === 'PLANNED' || vm.vacation.stage === 'CONFIRMED')">
             <div class="form-group col-md-6">
                 <label class="control-label" data-translate="vacationTrackerApp.vacation.startDate" for="field_startDate_sickLeave">Start Date</label>
                 <div class="input-group">

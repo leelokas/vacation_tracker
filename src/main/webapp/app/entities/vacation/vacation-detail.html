@@ -43,7 +43,7 @@
             <span class="glyphicon glyphicon-pencil"></span>&nbsp;
             <span class="hidden-xs" data-translate="entity.action.edit">Edit</span>
         </button>
-        <button ng-if="vm.vacation.stage === 'CONFIRMED' && vm.vacation.type === 'SICK_LEAVE' && vm.vacation.endDate === null && vm.vacation.owner.login === vm.currentUser.login"
+        <button ng-if="(vm.vacation.stage === 'PLANNED' || vm.vacation.stage === 'CONFIRMED') && vm.vacation.type === 'SICK_LEAVE' && vm.vacation.endDate === null && vm.vacation.owner.login === vm.currentUser.login"
                 type="button" ui-sref="vacation.edit({id:vm.vacation.id})" class="btn btn-primary" ng-click="vm.clear()">
             <span class="glyphicon glyphicon-pencil"></span>&nbsp;
             <span class="hidden-xs" data-translate="entity.action.end">End date</span>

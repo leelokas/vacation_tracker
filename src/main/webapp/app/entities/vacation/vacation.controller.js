@@ -82,13 +82,7 @@
         }
 
         function send (vacation) {
-            if (vacation.type === "SICK_LEAVE") {
-                vacation.stage = "CONFIRMED";
-            } else if (!vacation.owner.manager) {
-                vacation.stage = "PLANNED";
-            } else {
-                vacation.stage = "SENT";
-            }
+            vacation.stage = (vacation.type === "SICK_LEAVE" || !vacation.owner.manager) ? "PLANNED" : "SENT";
 
             Vacation.update(vacation, function (result) {
                 loadAll();

@@ -122,7 +122,7 @@
                                 <span class="glyphicon glyphicon-pencil"></span>
                                 <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.edit"></span>
                             </button>
-                            <button ng-if="vacation.stage === 'CONFIRMED' && vacation.type === 'SICK_LEAVE' && vacation.endDate === null" type="submit"
+                            <button ng-if="(vacation.stage === 'PLANNED' || vacation.stage === 'CONFIRMED') && vacation.type === 'SICK_LEAVE' && vacation.endDate === null" type="submit"
                                     ui-sref="vacation.edit({id:vacation.id})"
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>
