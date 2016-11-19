@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('VacationController', VacationController);
 
-    VacationController.$inject = ['$state', '$filter', 'Vacation', 'AlertService', 'pagingParams', 'paginationConstants'];
+    VacationController.$inject = ['$state', '$filter', 'Vacation', 'AlertService', 'pagingParams', 'User', 'Principal', 'paginationConstants'];
 
-    function VacationController ($state, $filter, Vacation, AlertService, pagingParams, paginationConstants) {
+    function VacationController ($state, $filter, Vacation, AlertService, pagingParams, User, Principal, paginationConstants) {
         var vm = this;
 
         vm.loadPage = loadPage;
@@ -15,10 +15,20 @@
         vm.send = send;
         vm.openCalendar = openCalendar;
         vm.filter = filter;
+        vm.currentUser = null;
 
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
+
+        setCurrentUser();
+
+
+        function setCurrentUser() {
+            Principal.identity().then(function(account) {
+                vm.currentUser = User.get({login: account.login});
+            });
+        }
 
         vm.paidDaysLeft = { // TODO fix after #16 is done
             current: 20,
@@ -104,9 +114,9 @@
 
         function filter() {
             var dateFormat = 'yyyy-MM-dd';
-            //TODO add owner filter #70
             Vacation.getFilteredVacations({
                 type: vm.filterParams.type,
+                owner: vm.currentUser.login,
                 stage: vm.filterParams.stage,
                 payment: vm.filterParams.payment,
                 from: $filter('date')(vm.filterParams.from, dateFormat),

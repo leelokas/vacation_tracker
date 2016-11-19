@@ -32,6 +32,7 @@
         };
         vm.filterParams = {
             owner: null,
+            manager: null,
             type: null,
             from: null,
             until: null
@@ -85,7 +86,8 @@
             Vacation.getFilteredVacations({
                 stage: "PLANNED",
                 type: vm.filterParams.type,
-                owner: vm.filterParams.owner === '' ? vm.filterParams.owner = null : vm.filterParams.owner,
+                owner: vm.filterParams.owner === '' ? null : vm.filterParams.owner,
+                manager: vm.filterParams.manager === '' ? null : vm.filterParams.manager,
                 from: $filter('date')(vm.filterParams.from, dateFormat),
                 until: $filter('date')(vm.filterParams.until, dateFormat),
                 page: pagingParams.page - 1,
@@ -95,7 +97,8 @@
                 Vacation.getFilteredVacations({
                     stage: "CONFIRMED",
                     type: vm.filterParams.type,
-                    owner: vm.filterParams.owner === '' ? vm.filterParams.owner = null : vm.filterParams.owner,
+                    owner: vm.filterParams.owner === '' ? null : vm.filterParams.owner,
+                    manager: vm.filterParams.manager === '' ? null : vm.filterParams.manager,
                     from: $filter('date')(vm.filterParams.from, dateFormat),
                     until: $filter('date')(vm.filterParams.until, dateFormat),
                     page: pagingParams.page - 1,
