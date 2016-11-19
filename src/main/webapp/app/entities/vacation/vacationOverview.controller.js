@@ -85,6 +85,7 @@
             Vacation.getFilteredVacations({
                 stage: "PLANNED",
                 type: vm.filterParams.type,
+                owner: vm.filterParams.owner === '' ? vm.filterParams.owner = null : vm.filterParams.owner,
                 from: $filter('date')(vm.filterParams.from, dateFormat),
                 until: $filter('date')(vm.filterParams.until, dateFormat),
                 page: pagingParams.page - 1,
@@ -94,6 +95,7 @@
                 Vacation.getFilteredVacations({
                     stage: "CONFIRMED",
                     type: vm.filterParams.type,
+                    owner: vm.filterParams.owner === '' ? vm.filterParams.owner = null : vm.filterParams.owner,
                     from: $filter('date')(vm.filterParams.from, dateFormat),
                     until: $filter('date')(vm.filterParams.until, dateFormat),
                     page: pagingParams.page - 1,
