@@ -8,8 +8,6 @@ describe('E2e tests', function () {
         h.login('user','user');
     });
 
-
-
     it('should load Vacations', function () {
         h.checkTitle('[ui-sref="vacation"]', 'h2', /vacationTrackerApp.vacation.home.title/);
     });
@@ -54,7 +52,7 @@ describe('E2e tests', function () {
 
         h.clickButton(h.vacationButtonColumn,'Send to confirmation');
 
-        h.checkRequestData(h.vacationStageColumn,/vacationTrackerApp.Stage.CONFIRMED/);
+        h.checkRequestData(h.vacationStageColumn,/vacationTrackerApp.Stage.PLANNED/);
 
         expect(h.vacationButtonColumn.element(by.buttonText('End date')).isPresent()).toBe(true);
     });
