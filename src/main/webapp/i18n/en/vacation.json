@@ -34,6 +34,9 @@
             "detail": {
                 "title": "Vacation request details"
             },
+            "dialog": {
+                "sickLeaveTooltip": "When going on a sick leave, You are generally taking off undetermined amount of days. You can enter end date (e.g end your sick leave) after sending the request to confirmation"
+            },
             "stage": "Stage",
             "type": "Type",
             "payment": "Payment",

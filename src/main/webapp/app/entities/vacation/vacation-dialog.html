@@ -46,6 +46,7 @@
             </div>
             <div class="form-group col-md-6">
                 <label class="control-label" data-translate="vacationTrackerApp.vacation.endDate" for="field_endDate">End Date</label>
+                <i ng-if="vm.vacation.type === 'SICK_LEAVE'" class="fa fa-question-circle-o" uib-tooltip="{{'vacationTrackerApp.vacation.dialog.sickLeaveTooltip' | translate}}" aria-hidden="true"></i>
                 <div class="input-group">
                     <input id="field_endDate" type="text" class="form-control" name="endDate"
                            uib-datepicker-popup="{{'dd/MM/yyyy'}}"
