@@ -1,7 +1,6 @@
 package com.reach_u.vacation.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.reach_u.vacation.domain.User;
 import com.reach_u.vacation.domain.Vacation;
 
 import com.reach_u.vacation.domain.enumeration.PaymentType;
@@ -9,11 +8,11 @@ import com.reach_u.vacation.domain.enumeration.Stage;
 import com.reach_u.vacation.domain.enumeration.VacationType;
 import com.reach_u.vacation.repository.VacationRepository;
 import com.reach_u.vacation.repository.VacationSpecifications;
+import com.reach_u.vacation.security.SecurityUtils;
 import com.reach_u.vacation.service.MailService;
 import com.reach_u.vacation.service.XlsService;
 import com.reach_u.vacation.web.rest.util.HeaderUtil;
 import com.reach_u.vacation.web.rest.util.PaginationUtil;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +30,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -270,6 +267,8 @@ public class VacationResource {
 
     /**
      * GET /file/vacationsByIds : get vacations.xls file for requested IDs
+     *
+     * @param ids of vacations to export
      * @return vacations.xls file - automatic download
      */
 
@@ -280,7 +279,7 @@ public class VacationResource {
         @RequestParam(value = "id", required = true) Long[] ids,
         HttpServletResponse response) throws Exception{
         try {
-            Workbook wb = xlsService.generateXlsFile(ids);
+            Workbook wb = xlsService.generateXlsFile(ids, SecurityUtils.isCurrentUserInRole("ROLE_ACCOUNTANT"));
             response.setContentType("application/xls");
             response.setHeader("Content-Disposition", "attachment; filename=vacations.xls");
             wb.write(response.getOutputStream());

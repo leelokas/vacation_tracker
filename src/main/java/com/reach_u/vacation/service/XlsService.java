@@ -1,24 +1,18 @@
 package com.reach_u.vacation.service;
 
 import com.reach_u.vacation.domain.Vacation;
-import com.reach_u.vacation.domain.enumeration.Stage;
 import com.reach_u.vacation.repository.VacationRepository;
-import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -38,35 +32,38 @@ public class XlsService {
     private static final String[] header = {"Name", "Start Date", "End Date", "Duration", "Type", "Payment"};
 
 
-    public Workbook generateXlsFile(Long[] ids){
+    public Workbook generateXlsFile(Long[] ids, boolean showPaymentType){
         List<Vacation> itemList = vacationRepository.getVacationsByIds(ids);
         itemList.stream().forEach(v -> log.debug("Found vacation for export {}", v.toString()));
 
         Workbook wb = new HSSFWorkbook();
         Sheet sheet = wb.createSheet();
-        generateHeaderRow(getHeaderCellStyle(wb), sheet);
-        generateItemRows(getDateCellStyle(wb), sheet, itemList);
+        generateHeaderRow(getHeaderCellStyle(wb), sheet, showPaymentType);
+        generateItemRows(getDateCellStyle(wb), sheet, showPaymentType, itemList);
         for (int i = 0; i < header.length; ++i) {
             sheet.autoSizeColumn(i);
         }
         return wb;
     }
 
-    private void generateHeaderRow(CellStyle headerRowStyle, Sheet sheet) {
+    private void generateHeaderRow(CellStyle headerRowStyle, Sheet sheet, boolean showPaymentType) {
         Row headerRow = sheet.createRow(0);
         for (int i = 0; i < header.length; ++i) {
+            if (header[i].equals("Payment") && !showPaymentType) {
+                continue;
+            }
             addCellWithValueAndStyle(headerRowStyle, headerRow, i, header[i]);
         }
     }
 
-    private void generateItemRows(CellStyle dateCellStyle, Sheet sheet, List<Vacation> itemList) {
+    private void generateItemRows(CellStyle dateCellStyle, Sheet sheet, boolean showPaymentType, List<Vacation> itemList) {
         for (int i = 0; i < itemList.size(); ++i) {
             Row itemRow = sheet.createRow(i+1);
-            addCellsToRow(itemRow, dateCellStyle, itemList.get(i));
+            addCellsToRow(itemRow, dateCellStyle, itemList.get(i), showPaymentType);
         }
     }
 
-    private void addCellsToRow(Row row, CellStyle dateCellStyle, Vacation item) {
+    private void addCellsToRow(Row row, CellStyle dateCellStyle, Vacation item, boolean showPaymentType) {
         row.createCell(0, CellType.STRING).setCellValue(item.getOwner().getFullName());
 
         Date startDate = Date.from(item.getStartDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -79,7 +76,9 @@ public class XlsService {
         }
 
         row.createCell(4, CellType.STRING).setCellValue(item.getType().toString());
-        row.createCell(5, CellType.STRING).setCellValue(item.getPayment().toString());
+        if (showPaymentType) {
+            row.createCell(5, CellType.STRING).setCellValue(item.getPayment().toString());
+        }
     }
 
     private CellStyle getHeaderCellStyle(Workbook wb) {
