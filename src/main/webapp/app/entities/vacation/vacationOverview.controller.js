@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('VacationOverviewController', VacationOverviewController);
 
-    VacationOverviewController.$inject = ['$state', '$filter', '$translate', 'Vacation', 'AlertService', 'XlsExportService', 'pagingParams', 'paginationConstants'];
+    VacationOverviewController.$inject = ['$state', '$filter', 'Vacation', 'AlertService', 'pagingParams', 'paginationConstants'];
 
-    function VacationOverviewController ($state, $filter, $translate, Vacation, AlertService, XlsExportService, pagingParams, paginationConstants) {
+    function VacationOverviewController ($state, $filter, Vacation, AlertService, pagingParams, paginationConstants) {
         var vm = this;
 
         vm.loadPage = loadPage;
@@ -110,31 +110,14 @@
             }, onError);
         }
 
-        function getRowObject(obj) {
-            var oneDay = 24 * 60 * 60 * 1000,
-                startDate = new Date(obj.startDate),
-                endDate = obj.endDate ? new Date(obj.endDate) : null;
-            return {
-                name: obj.owner.firstName + " " + obj.owner.lastName,
-                startDate: obj.startDate,
-                endDate: obj.endDate,
-                duration: endDate ? Math.round(Math.abs((startDate.getTime() - endDate.getTime()) / (oneDay))) + 1 : null,
-                type: $translate.instant('vacationTrackerApp.VacationType.' + obj.type),
-                payment: $translate.instant('vacationTrackerApp.PaymentType.' + obj.payment)
-            };
-        }
-
         function exportFile() {
-            var i, selectedVacations = [], exportData = [];
+            var i, selectedVacationIds = [];
             for (i = 0; i < vm.vacations.length; i++) {
                 if (vm.vacations[i].checked) {
-                    selectedVacations.push(vm.vacations[i]);
+                    selectedVacationIds.push(vm.vacations[i].id);
                 }
             }
-            for (i = 0; i < selectedVacations.length; i++) {
-                exportData.push(getRowObject(selectedVacations[i]));
-            }
-            XlsExportService.downloadXls(exportData);
+            window.location = "api/file/vacationsByIds?id=" + selectedVacationIds.join("&id=");
         }
 
         function toggle() {

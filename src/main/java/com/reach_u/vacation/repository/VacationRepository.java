@@ -29,4 +29,7 @@ public interface VacationRepository extends JpaRepository<Vacation, Long>, JpaSp
     @Query("select vacation from Vacation vacation where ( (vacation.startDate - current_date) <= 7 and vacation.stage in ('PLANNED') )")
     List<Vacation> getAllUpcomingVacations();
 
+    @Query("select vacation from Vacation vacation where ( vacation.id in (?1) )")
+    List<Vacation> getVacationsByIds(Long ids[]);
+
 }

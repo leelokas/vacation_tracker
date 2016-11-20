@@ -10,8 +10,11 @@ import com.reach_u.vacation.domain.enumeration.VacationType;
 import com.reach_u.vacation.repository.VacationRepository;
 import com.reach_u.vacation.repository.VacationSpecifications;
 import com.reach_u.vacation.service.MailService;
+import com.reach_u.vacation.service.XlsService;
 import com.reach_u.vacation.web.rest.util.HeaderUtil;
 import com.reach_u.vacation.web.rest.util.PaginationUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -28,6 +31,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -50,6 +55,9 @@ public class VacationResource {
 
     @Inject
     private MailService mailService;
+
+    @Inject
+    private XlsService xlsService;
 
     /**
      * POST  /vacations : Create a new vacation.
@@ -79,7 +87,7 @@ public class VacationResource {
      * @param vacation the vacation to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated vacation,
      * or with status 400 (Bad Request) if the vacation is not valid,
-     * or with status 500 (Internal Server Error) if the vacation couldnt be updated
+     * or with status 500 (Internal Server Error) if the vacation couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @RequestMapping(value = "/vacations",
@@ -240,14 +248,14 @@ public class VacationResource {
     }
 
     /**
-     * GET /file/vacations : get vacation.xls file
+     * GET /file/vacations : get vacations.xls file
      * @return vacations.xls file - automatic download
      */
 
     @RequestMapping(value = "/file/vacations",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_XML_VALUE)
-    public void getFile( HttpServletResponse response) throws Exception{
+    public void getFile(HttpServletResponse response) throws Exception{
         try {
             Resource resource = new ClassPathResource("vacations.xls");
             InputStream resourceInputStream = resource.getInputStream();
@@ -260,7 +268,27 @@ public class VacationResource {
         }
     }
 
+    /**
+     * GET /file/vacationsByIds : get vacations.xls file for requested IDs
+     * @return vacations.xls file - automatic download
+     */
 
+    @RequestMapping(value = "/file/vacationsByIds",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_XML_VALUE)
+    public void getXlsFile(
+        @RequestParam(value = "id", required = true) Long[] ids,
+        HttpServletResponse response) throws Exception{
+        try {
+            Workbook wb = xlsService.generateXlsFile(ids);
+            response.setContentType("application/xls");
+            response.setHeader("Content-Disposition", "attachment; filename=vacations.xls");
+            wb.write(response.getOutputStream());
+            response.flushBuffer();
+        } catch (IOException ex) {
+            throw new RuntimeException("IOError writing file to output stream");
+        }
+    }
 
 }
 
