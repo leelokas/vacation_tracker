@@ -200,9 +200,18 @@ public class UserResource {
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUser(login);
-        return ResponseEntity.ok().headers(HeaderUtil.createAlert( "userManagement.deleted", login)).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createAlert("userManagement.deleted", login)).build();
     }
 
+    /**
+     * GET /users/filter : get users with requested filter.
+     *
+     * @param firstName the user's first name
+     * @param lastName the user's last name
+     * @param login the user's login
+     * @param manager the user's manager's login
+     * @return the ResponseEntity with status 200 (OK)
+     */
     @RequestMapping(value = "/users/filter",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
@@ -214,11 +223,28 @@ public class UserResource {
         @RequestParam(value = "manager", required = false) String manager)
 
         throws URISyntaxException{
-        log.debug("REST request to get vacations : firstName: {}, lastName: {}, login: {}",
-            firstName, lastName, login);
+        log.debug("REST request to get vacations : firstName: {}, lastName: {}, login: {}, manager: {}",
+            firstName, lastName, login, manager);
         List<User> list = userRepository.findAll(UserSpecifications.byQuery(firstName, lastName, login, manager));
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    /**
+     * GET  /users/remainingDays : get the counts of remaining days that the currently logged in user has.
+     *
+     * @return a Map with counts of remaining paid vacation days.
+     * @throws URISyntaxException if the pagination headers couldn't be generated
+     */
+    @RequestMapping(value = "/users/remainingDays",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public Map<String,Integer> getRemainingDaysOfCurrentUser() throws URISyntaxException {
+        Map<String,Integer> result = new HashMap<>();
+        //TODO calculations of task #16
+        result.put("current", 20);
+        result.put("endOfYear", 28);
+        return result;
+    }
 
 }

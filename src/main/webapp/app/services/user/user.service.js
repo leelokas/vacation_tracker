@@ -17,6 +17,10 @@
                     return data;
                 }
             },
+            'getRemainingPaidDays': {
+                method: 'GET',
+                url: 'api/users/remainingDays'
+            },
             'save': { method:'POST' },
             'update': { method:'PUT' },
             'delete':{ method:'DELETE'}

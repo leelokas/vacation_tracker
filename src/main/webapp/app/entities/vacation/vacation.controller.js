@@ -30,10 +30,7 @@
             });
         }
 
-        vm.paidDaysLeft = { // TODO fix after #16 is done
-            current: 20,
-            endOfYear: 28
-        };
+        vm.paidDaysLeft = {};
         vm.dateOptions = {
             showWeeks: false,
             startingDay: 1
@@ -51,6 +48,7 @@
         };
 
         loadAll();
+        loadRemainingPaidDays();
 
         function sort() {
             var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
@@ -125,6 +123,10 @@
                 size: vm.itemsPerPage,
                 sort: sort()
             }, onSuccess, onError);
+        }
+
+        function loadRemainingPaidDays () {
+            User.getRemainingPaidDays({}, function(data) {vm.paidDaysLeft = data;}, onError);
         }
     }
 })();
