@@ -63,10 +63,17 @@ jhipster:
         corePoolSize: 2
         maxPoolSize: 50
         queueCapacity: 10000
-    security:
-        rememberMe:
-            # security key (this key should be unique for your application, and kept secret)
-            key: 93821e366f8ddfb2fbb16e4f9ee67911df772341
+   security:
+           rememberMe:
+               # security key (this key should be unique for your application, and kept secret)
+               key: 93821e366f8ddfb2fbb16e4f9ee67911df772341
+           ldap:
+               url: ldap://192.168.115.119:3268
+               domain: reachu.com
+               phoneNrAttr: extensionattribute2
+               mailAttr: mail
+               givenNameAttr: givenname
+               lastNameAttr: sn
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
     swagger:
