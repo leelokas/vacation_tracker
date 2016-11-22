@@ -1,9 +1,12 @@
 package com.reach_u.vacation.security;
 
+import com.reach_u.vacation.config.SecurityConfiguration;
 import com.reach_u.vacation.domain.PersistentToken;
+import com.reach_u.vacation.domain.User;
 import com.reach_u.vacation.repository.PersistentTokenRepository;
 import com.reach_u.vacation.repository.UserRepository;
 import com.reach_u.vacation.config.JHipsterProperties;
+import com.reach_u.vacation.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -21,6 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Custom implementation of Spring Security's RememberMeServices.
@@ -47,7 +52,7 @@ import java.util.Arrays;
  */
 @Service
 public class CustomPersistentRememberMeServices extends
-    AbstractRememberMeServices {
+        AbstractRememberMeServices {
 
     private final Logger log = LoggerFactory.getLogger(CustomPersistentRememberMeServices.class);
 
@@ -69,8 +74,11 @@ public class CustomPersistentRememberMeServices extends
     private UserRepository userRepository;
 
     @Inject
+    private UserService userService;
+
+    @Inject
     public CustomPersistentRememberMeServices(JHipsterProperties jHipsterProperties, org.springframework.security.core.userdetails
-        .UserDetailsService userDetailsService) {
+            .UserDetailsService userDetailsService) {
 
         super(jHipsterProperties.getSecurity().getRememberMe().getKey(), userDetailsService);
         random = new SecureRandom();
@@ -78,7 +86,7 @@ public class CustomPersistentRememberMeServices extends
 
     @Override
     protected UserDetails processAutoLoginCookie(String[] cookieTokens, HttpServletRequest request,
-        HttpServletResponse response) {
+                                                 HttpServletResponse response) {
 
         PersistentToken token = getPersistentToken(cookieTokens);
         String login = token.getUser().getLogin();
@@ -100,28 +108,41 @@ public class CustomPersistentRememberMeServices extends
     }
 
     @Override
-    protected void onLoginSuccess(HttpServletRequest request, HttpServletResponse response, Authentication
-        successfulAuthentication) {
-
+    protected void onLoginSuccess(HttpServletRequest request, HttpServletResponse response, Authentication successfulAuthentication) {
         String login = successfulAuthentication.getName();
 
-        log.debug("Creating new persistent login for user {}", login);
-        PersistentToken token = userRepository.findOneByLogin(login).map(u -> {
-            PersistentToken t = new PersistentToken();
-            t.setSeries(generateSeriesData());
-            t.setUser(u);
-            t.setTokenValue(generateTokenData());
-            t.setTokenDate(LocalDate.now());
-            t.setIpAddress(request.getRemoteAddr());
-            t.setUserAgent(request.getHeader("User-Agent"));
-            return t;
-        }).orElseThrow(() -> new UsernameNotFoundException("User " + login + " was not found in the database"));
+        Optional<User> user = userRepository.findOneByLogin(login);
+        PersistentToken token = null;
+        if (user.isPresent()) {
+            log.debug("Logging in with existing user {}", login);
+            token = getPersistentToken(user.get(), request);
+        } else {
+            log.debug("Creating new user {}", login);
+            CustomUserDetails customUserDetails = (CustomUserDetails) successfulAuthentication.getPrincipal();
+            //TODO generate random password for ldap users
+            User newUser = userService.createUser(login, UUID.randomUUID().toString(), customUserDetails.getGivenname(), customUserDetails.getLastname(), customUserDetails.getEmail(), customUserDetails.getLangKey());
+            newUser.setAuthorities(customUserDetails.getAppAuthorities());
+            newUser.setActivated(true);
+            token = getPersistentToken(newUser, request);
+        }
+
         try {
             persistentTokenRepository.saveAndFlush(token);
             addCookie(token, request, response);
         } catch (DataAccessException e) {
             log.error("Failed to save persistent token ", e);
         }
+    }
+
+    private PersistentToken getPersistentToken(User user, HttpServletRequest request) {
+        PersistentToken t = new PersistentToken();
+        t.setSeries(generateSeriesData());
+        t.setUser(user);
+        t.setTokenValue(generateTokenData());
+        t.setTokenDate(LocalDate.now());
+        t.setIpAddress(request.getRemoteAddr());
+        t.setUserAgent(request.getHeader("User-Agent"));
+        return t;
     }
 
     /**
@@ -154,7 +175,7 @@ public class CustomPersistentRememberMeServices extends
     private PersistentToken getPersistentToken(String[] cookieTokens) {
         if (cookieTokens.length != 2) {
             throw new InvalidCookieException("Cookie token did not contain " + 2 +
-                " tokens, but contained '" + Arrays.asList(cookieTokens) + "'");
+                    " tokens, but contained '" + Arrays.asList(cookieTokens) + "'");
         }
         String presentedSeries = cookieTokens[0];
         String presentedToken = cookieTokens[1];
@@ -171,7 +192,7 @@ public class CustomPersistentRememberMeServices extends
             // Token doesn't match series value. Delete this session and throw an exception.
             persistentTokenRepository.delete(token);
             throw new CookieTheftException("Invalid remember-me token (Series/token) mismatch. Implies previous " +
-                "cookie theft attack.");
+                    "cookie theft attack.");
         }
 
         if (token.getTokenDate().plusDays(TOKEN_VALIDITY_DAYS).isBefore(LocalDate.now())) {
@@ -195,7 +216,7 @@ public class CustomPersistentRememberMeServices extends
 
     private void addCookie(PersistentToken token, HttpServletRequest request, HttpServletResponse response) {
         setCookie(
-            new String[]{token.getSeries(), token.getTokenValue()},
-            TOKEN_VALIDITY_SECONDS, request, response);
+                new String[]{token.getSeries(), token.getTokenValue()},
+                TOKEN_VALIDITY_SECONDS, request, response);
     }
 }

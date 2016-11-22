@@ -151,6 +151,79 @@ public class JHipsterProperties {
 
     public static class Security {
 
+        private final Ldap ldap = new Ldap();
+
+        public Ldap getLdap() { return ldap; }
+
+        public static class Ldap {
+
+            @NotNull
+            private String url;
+
+            @NotNull
+            private String domain;
+
+            @NotNull
+            private String phoneNrAttr;
+
+            @NotNull
+            private String mailAttr;
+
+            @NotNull
+            private String givenNameAttr;
+
+            @NotNull
+            private String lastNameAttr;
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
+
+            public String getDomain() {
+                return domain;
+            }
+
+            public void setDomain(String domain) {
+                this.domain = domain;
+            }
+
+            public String getPhoneNrAttr() {
+                return phoneNrAttr;
+            }
+
+            public void setPhoneNrAttr(String phoneNrAttr) {
+                this.phoneNrAttr = phoneNrAttr;
+            }
+
+            public String getMailAttr() {
+                return mailAttr;
+            }
+
+            public void setMailAttr(String mailAttr) {
+                this.mailAttr = mailAttr;
+            }
+
+            public String getGivenNameAttr() {
+                return givenNameAttr;
+            }
+
+            public void setGivenNameAttr(String givenNameAttr) {
+                this.givenNameAttr = givenNameAttr;
+            }
+
+            public String getLastNameAttr() {
+                return lastNameAttr;
+            }
+
+            public void setLastNameAttr(String lastNameAttr) {
+                this.lastNameAttr = lastNameAttr;
+            }
+        }
+
         private final RememberMe rememberMe = new RememberMe();
 
         public RememberMe getRememberMe() {
@@ -169,6 +242,7 @@ public class JHipsterProperties {
             public void setKey(String key) {
                 this.key = key;
             }
+
         }
     }
 

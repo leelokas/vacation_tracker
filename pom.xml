@@ -378,6 +378,22 @@
             <artifactId>poi-ooxml</artifactId>
             <version>3.15</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.ldap/spring-ldap-core -->
+        <!--<dependency>-->
+        <!--<groupId>org.springframework.ldap</groupId>-->
+        <!--<artifactId>spring-ldap-core</artifactId>-->
+        <!--<version>2.1.0.RELEASE</version>-->
+        <!--</dependency>-->
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-ldap -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-ldap</artifactId>
+            <version>4.2.0.RELEASE</version>
+        </dependency>
+
+
     </dependencies>
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>
@@ -503,7 +519,7 @@
                         </goals>
                         <configuration>
                             <includes>
-                              <include>**/*Cucumber*.java</include>
+                                <include>**/*Cucumber*.java</include>
                             </includes>
                         </configuration>
                     </execution>
@@ -701,7 +717,7 @@
                         </lifecycleMappingMetadata>
                     </configuration>
                 </plugin>
-             </plugins>
+            </plugins>
         </pluginManagement>
     </build>
 

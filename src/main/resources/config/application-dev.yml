@@ -39,7 +39,7 @@ spring:
     mail:
         host: smtp.gmail.com
         port: 587
-        username: 
+        username:
         password:
         protocol: smtp
         tls: true
@@ -67,6 +67,13 @@ jhipster:
         rememberMe:
             # security key (this key should be unique for your application, and kept secret)
             key: 93821e366f8ddfb2fbb16e4f9ee67911df772341
+        ldap:
+            url: ldap://192.168.115.119:3268
+            domain: reachu.com
+            phoneNrAttr: extensionattribute2
+            mailAttr: mail
+            givenNameAttr: givenname
+            lastNameAttr: sn
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: vacationTracker@localhost
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
