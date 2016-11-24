@@ -78,7 +78,8 @@
         },
         "ribbon": {
             "dev":"Development"
-        }
+        },
+        "filter": "Filter"
     },
     "entity": {
         "action": {

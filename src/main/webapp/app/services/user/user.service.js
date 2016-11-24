@@ -21,6 +21,15 @@
                 method: 'GET',
                 url: 'api/users/remainingDays'
             },
+            'getFilteredUsers': {
+                method: 'GET',
+                url: 'api/users/filter',
+                isArray: true,
+                transformResponse: function (data) {
+                    data = angular.fromJson(data);
+                    return data;
+                }
+            },
             'save': { method:'POST' },
             'update': { method:'PUT' },
             'delete':{ method:'DELETE'}

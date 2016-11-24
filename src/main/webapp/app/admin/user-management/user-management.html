@@ -9,6 +9,45 @@
     </div>
     <jhi-alert></jhi-alert>
     <br/>
+
+    <div class="row filterForm">
+        <div class="col-sm-11 no-padding">
+            <div class="col-md-7 no-padding">
+                <div class="form-group col-xs-4">
+                    <label data-translate="userManagement.login" for="field_login">Login</label>
+                    <input id="field_login" type="text" class="form-control" ng-model="vm.filterParams.login"/>
+                </div>
+                <div class="form-group col-xs-4">
+                    <label data-translate="userManagement.firstName" for="field_firstName">First Name</label>
+                    <input id="field_firstName" type="text" class="form-control" ng-model="vm.filterParams.firstName"/>
+                </div>
+                <div class="form-group col-xs-4">
+                    <label data-translate="userManagement.lastName" for="field_lastName">Last Name</label>
+                    <input id="field_lastName" type="text" class="form-control" ng-model="vm.filterParams.lastName"/>
+                </div>
+            </div>
+            <div class="col-md-5 no-padding">
+                <div class="form-group col-xs-6">
+                    <label data-translate="userManagement.profiles" for="field_profiles">Roles</label>
+                    <select id="field_profiles" class="form-control" name="authority" ng-model="vm.filterParams.role"
+                            ng-options="authority for authority in vm.authorities">
+                        <option value=""></option>
+                    </select>
+                </div>
+                <div class="form-group col-xs-6">
+                    <label data-translate="userManagement.manager" for="field_manager">Last Name</label>
+                    <input id="field_manager" type="text" class="form-control" ng-model="vm.filterParams.manager"/>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-1 no-padding filterBtn">
+            <button class="btn btn-default" type="button" ng-click="vm.filter()">
+                <span class="fa fa-filter fa-lg"></span>&nbsp;
+                <span class="visible-xs visible-lg" data-translate="global.filter">Filter</span>
+            </button>
+        </div>
+    </div>
+
     <div class="table-responsive">
         <table class="table table-striped rows-as-links">
             <thead>
@@ -17,7 +56,7 @@
                 <th jh-sort-by="email"><span data-translate="userManagement.email">Email</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th></th>
                 <th><span data-translate="userManagement.profiles">Roles</span></th>
-                <th class="hidden-xs hidden-sm"><span data-translate="userManagement.manager">Roles</span></th>
+                <th class="hidden-xs hidden-sm"><span data-translate="userManagement.manager">Manager</span></th>
                 <th jh-sort-by="createdDate" class="hidden-xs hidden-sm"><span data-translate="userManagement.createdDate">Created Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="lastModifiedBy" class="hidden-xs"><span data-translate="userManagement.lastModifiedBy">Last Modified By</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="lastModifiedDate" class="hidden-xs"><span data-translate="userManagement.lastModifiedDate">Last Modified Date</span> <span class="glyphicon glyphicon-sort"></span></th>
