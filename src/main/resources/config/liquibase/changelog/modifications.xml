@@ -48,4 +48,28 @@
         </addColumn>
     </changeSet>
 
+    <!--
+        add authorities to test user
+    -->
+    <changeSet id="20161127161520-1" author="leelo">
+        <insert tableName="jhi_user_authority" >
+            <column name="user_id" value="3" />
+            <column name="authority_name" value="ROLE_MANAGER" />
+        </insert>
+        <insert tableName="jhi_user_authority" >
+            <column name="user_id" value="3" />
+            <column name="authority_name" value="ROLE_ACCOUNTANT" />
+        </insert>
+    </changeSet>
+
+    <!--
+        add manager value to test user
+    -->
+    <changeSet id="20161127161520-2" author="leelo">
+        <update tableName="jhi_user">
+            <column name="manager_id" value="3"/>
+            <where>id = 4</where>
+        </update>
+    </changeSet>
+
 </databaseChangeLog>
