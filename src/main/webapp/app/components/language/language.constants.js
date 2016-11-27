@@ -10,7 +10,8 @@
          */
         .constant('LANGUAGES', [
             'en',
-            'sv'
+            'sv',
+            'et'
         ]
     );
 })();

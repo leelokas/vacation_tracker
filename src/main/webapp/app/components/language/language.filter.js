@@ -11,7 +11,8 @@
         function findLanguageFromKeyFilter(lang) {
             return {
                 'en': 'English',
-                'sv': 'Svenska'
+                'sv': 'Svenska',
+                'et': 'Eesti'
             }[lang];
         }
     }
