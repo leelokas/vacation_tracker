@@ -8,7 +8,8 @@
                 "search": "Search for Vacation",
                 "paidDaysLeft": {
                     "current": "Current paid vacation days balance",
-                    "endOfYear": "Vacation days left until the end of year"
+                    "endOfYear": "Vacation days left until the end of year",
+                    "studyLeave": "Study leave vacation until the end of year"
                 }
             },
             "manager": {

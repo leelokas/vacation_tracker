@@ -3,8 +3,10 @@ package com.reach_u.vacation.web.rest;
 import com.reach_u.vacation.config.Constants;
 import com.codahale.metrics.annotation.Timed;
 import com.reach_u.vacation.domain.User;
+import com.reach_u.vacation.domain.Vacation;
 import com.reach_u.vacation.repository.UserRepository;
 import com.reach_u.vacation.repository.UserSpecifications;
+import com.reach_u.vacation.repository.VacationRepository;
 import com.reach_u.vacation.security.AuthoritiesConstants;
 import com.reach_u.vacation.service.MailService;
 import com.reach_u.vacation.service.UserService;
@@ -15,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,8 +27,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
-import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.time.Year;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -63,6 +66,9 @@ public class UserResource {
 
     @Inject
     private UserRepository userRepository;
+
+    @Inject
+    private VacationRepository vacationRepository;
 
     @Inject
     private MailService mailService;
@@ -230,9 +236,9 @@ public class UserResource {
     }
 
     /**
-     * GET  /users/remainingDays : get the counts of remaining days that the currently logged in user has.
+     * GET  /users/remainingDays : get the counts of remaining study leave / paid vacation days that the currently logged in user has.
      *
-     * @return a Map with counts of remaining paid vacation days.
+     * @return a Map with counts of remaining study leave / paid vacation days.
      * @throws URISyntaxException if the pagination headers couldn't be generated
      */
     @RequestMapping(value = "/users/remainingDays",
@@ -244,7 +250,33 @@ public class UserResource {
         //TODO calculations of task #16
         result.put("current", 20);
         result.put("endOfYear", 28);
+
+        result.put("studyLeaveRemaining", getRemainingStudyLeaveDays());
         return result;
+    }
+
+    private int getRemainingStudyLeaveDays() {
+        int studyLeaveRemaining = 30, currentYear = Year.now().getValue();
+        LocalDate timeFrameStart = LocalDate.parse(String.valueOf(currentYear) + "-01-01"), timeFrameEnd = LocalDate.parse(String.valueOf(currentYear) + "-12-31");
+        List<Vacation> list = vacationRepository.findAllStudyLeaveVacationsWithTimeframe(timeFrameStart, timeFrameEnd);
+
+        for (Vacation vacation : list) {
+            if (vacation.getStartDate().compareTo(timeFrameStart) < 0) {
+                studyLeaveRemaining -= getDurationInDays(timeFrameStart, vacation.getEndDate());
+            } else if (vacation.getEndDate().compareTo(timeFrameEnd) > 0){
+                studyLeaveRemaining -= getDurationInDays(vacation.getStartDate(), timeFrameEnd);
+            } else {
+                studyLeaveRemaining -= getDurationInDays(vacation.getStartDate(), vacation.getEndDate());
+            }
+        }
+        return studyLeaveRemaining;
+    }
+
+    private Long getDurationInDays(LocalDate start, LocalDate end) {
+        if (end != null) {
+            return start.until(end, ChronoUnit.DAYS) + 1;
+        }
+        return null;
     }
 
 }

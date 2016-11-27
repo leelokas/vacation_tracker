@@ -48,7 +48,6 @@
         };
 
         loadAll();
-        loadRemainingPaidDays();
 
         function sort() {
             var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
@@ -74,6 +73,8 @@
                 size: vm.itemsPerPage,
                 sort: sort()
             }, onSuccess, onError);
+
+            loadRemainingPaidDays();
         }
 
         function loadPage (page) {
