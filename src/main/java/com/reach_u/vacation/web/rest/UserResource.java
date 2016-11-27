@@ -4,6 +4,7 @@ import com.reach_u.vacation.config.Constants;
 import com.codahale.metrics.annotation.Timed;
 import com.reach_u.vacation.domain.User;
 import com.reach_u.vacation.domain.Vacation;
+import com.reach_u.vacation.domain.enumeration.VacationType;
 import com.reach_u.vacation.repository.UserRepository;
 import com.reach_u.vacation.repository.UserSpecifications;
 import com.reach_u.vacation.repository.VacationRepository;
@@ -251,14 +252,29 @@ public class UserResource {
         result.put("current", 20);
         result.put("endOfYear", 28);
 
-        result.put("studyLeaveRemaining", getRemainingStudyLeaveDays());
+        int currentYear = Year.now().getValue();
+        LocalDate timeFrameStart = LocalDate.parse(String.valueOf(currentYear) + "-01-01"), timeFrameEnd = LocalDate.parse(String.valueOf(currentYear) + "-12-31");
+        result.put("hasTwoWeekPaidVacation", hasAnyTwoWeekPaidVacation(timeFrameStart, timeFrameEnd));
+        result.put("studyLeaveRemaining", getRemainingStudyLeaveDays(timeFrameStart, timeFrameEnd));
+
         return result;
     }
 
-    private int getRemainingStudyLeaveDays() {
-        int studyLeaveRemaining = 30, currentYear = Year.now().getValue();
-        LocalDate timeFrameStart = LocalDate.parse(String.valueOf(currentYear) + "-01-01"), timeFrameEnd = LocalDate.parse(String.valueOf(currentYear) + "-12-31");
-        List<Vacation> list = vacationRepository.findAllStudyLeaveVacationsWithTimeframe(timeFrameStart, timeFrameEnd);
+    private int hasAnyTwoWeekPaidVacation(LocalDate timeFrameStart, LocalDate timeFrameEnd) {
+        List<Vacation> list = vacationRepository.findAllVacationsOfTypeWithTimeframe(timeFrameStart, timeFrameEnd, VacationType.PAID);
+        for (Vacation vacation : list) {
+            if (vacation.getStartDate().compareTo(timeFrameStart) < 0 && getDurationInDays(timeFrameStart, vacation.getEndDate()) >= 14
+                || vacation.getEndDate().compareTo(timeFrameEnd) > 0 && getDurationInDays(vacation.getStartDate(), timeFrameEnd) >= 14
+                || getDurationInDays(vacation.getStartDate(), vacation.getEndDate()) >= 14) {
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    private int getRemainingStudyLeaveDays(LocalDate timeFrameStart, LocalDate timeFrameEnd) {
+        int studyLeaveRemaining = 30;
+        List<Vacation> list = vacationRepository.findAllVacationsOfTypeWithTimeframe(timeFrameStart, timeFrameEnd, VacationType.STUDY_LEAVE);
 
         for (Vacation vacation : list) {
             if (vacation.getStartDate().compareTo(timeFrameStart) < 0) {

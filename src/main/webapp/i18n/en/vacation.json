@@ -47,7 +47,8 @@
             "manager": "Manager",
             "duration": "Duration",
             "from": "From",
-            "until": "Until"
+            "until": "Until",
+            "twoWeekPaidVacationRequired": "By the Estonian law you are required to plan a vacation with at least 14 consecutive days for every year (Puhkuseseadus § 20)"
         }
     }
 }

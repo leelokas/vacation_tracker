@@ -127,7 +127,12 @@
         }
 
         function loadRemainingPaidDays () {
-            User.getRemainingPaidDays({}, function(data) {vm.paidDaysLeft = data;}, onError);
+            User.getRemainingPaidDays({}, function(data) {
+                vm.paidDaysLeft = data;
+                if (!data.hasTwoWeekPaidVacation) {
+                    AlertService.warning("vacationTrackerApp.vacation.twoWeekPaidVacationRequired");
+                }
+            }, onError);
         }
     }
 })();

@@ -2,6 +2,7 @@ package com.reach_u.vacation.repository;
 
 import com.reach_u.vacation.domain.Vacation;
 
+import com.reach_u.vacation.domain.enumeration.VacationType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
@@ -34,6 +35,6 @@ public interface VacationRepository extends JpaRepository<Vacation, Long>, JpaSp
     List<Vacation> getVacationsByIds(Long ids[]);
 
     @Query("select vacation from Vacation vacation where vacation.owner.login = ?#{principal.username} " +
-        "and vacation.type = 'STUDY_LEAVE' and vacation.stage in ('SENT', 'PLANNED', 'CONFIRMED') and vacation.endDate >= ?1 and vacation.startDate <= ?2")
-    List<Vacation> findAllStudyLeaveVacationsWithTimeframe(LocalDate start, LocalDate end);
+        "and vacation.type = ?3 and vacation.stage in ('SENT', 'PLANNED', 'CONFIRMED') and vacation.endDate >= ?1 and vacation.startDate <= ?2")
+    List<Vacation> findAllVacationsOfTypeWithTimeframe(LocalDate start, LocalDate end, VacationType type);
 }
