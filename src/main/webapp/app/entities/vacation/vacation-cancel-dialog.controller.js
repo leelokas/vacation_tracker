@@ -19,6 +19,9 @@
         }
 
         function confirmCancel () {
+            if(vm.vacation.type == 'SICK_LEAVE') {
+                vm.vacation.endDate = null;
+            }
             vm.vacation.stage = "SAVED";
             Vacation.update(vm.vacation, function () {
                 $uibModalInstance.close(true);
