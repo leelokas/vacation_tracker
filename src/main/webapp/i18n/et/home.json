@@ -1,0 +1,22 @@
+{
+    "home": {
+        "title": "Tere tulemast!",
+        "subtitle": "See on Sinu pealeht",
+        "logged": {
+            "message": "Sa oled sisse loginud kasutajaga \"{{username}}\"."
+        },
+        "question": "Kui Sul on JHipsteri kohta küsimusi:",
+        "link": {
+            "homepage": "JHipster'i koduleht",
+            "stackoverflow": "JHipster Stack Overflow",
+            "bugtracker": "JHipster vigade leht",
+            "chat": "JHipster avalik juturuum",
+            "follow": "Jälgi @java_hipster Twitteris"
+        },
+        "like": "If you like JHipster, don't forget to give us a star on",
+        "github": "GitHub",
+        "vacation": {
+            "create": "Loo uus puhkus"
+        }
+    }
+}

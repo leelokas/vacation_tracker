@@ -1,0 +1,9 @@
+{
+    "activate": {
+        "title": "Aktiveerimine",
+        "messages": {
+            "success": "<strong>Kasutaja on aktiveeritud.</strong> Palun <a class=\"alert-link\" href=\"\" ng-click=\"vm.login()\">logi sisse</a>.",
+            "error": "<strong> Teie kasutajat ei saa aktiveerida. </strong> Palun kasutage registreerimisvormi, et sisse logida."
+        }
+    }
+}

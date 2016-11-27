@@ -1,0 +1,53 @@
+{
+    "vacationTrackerApp": {
+        "vacation" : {
+            "home": {
+                "title": "Sinu puhkuse taotlused",
+                "createLabel": "Loo uus",
+                "createOrEditLabel": "Loo või muuda puhkus",
+                "search": "Otsi puhkust",
+                "paidDaysLeft": {
+                    "current": "Hetkeseisuga kogutud puhkuse päevad",
+                    "endOfYear": "Puhkusepäevi selle aasta lõpuni jäänud",
+                    "studyLeave": "Õppepuhkust selle aasta lõpuni jäänud"
+                }
+            },
+            "managerView": {
+                "title": "Puhkused, mis ootavad kinnitamist"
+            },
+            "overview": {
+                "title": "Kõik puhkused",
+                "download": "Lae puhkused alla",
+                "filter": "Filter"
+            },
+            "created": "Sinu puhkuse taotlus on salvestatud, kuid pole saadetud kinnitamiseks. \nKui taotlus ei vaja mingeid muudatusi, siis palun klõpsa 'Saada kinnitamiseks'",
+            "sent": "Puhkuse taotlus kuupäevadega {{vacation.startDate}} - {{vacation.endDate}} saadeti Sinu juhile {{manager.firstName}} {{manager.lastName}} kinnitamiseks.\nNB Kas oled teatanud projektijuht(e) oma puhkuse kuupäevest?",
+            "confirmed": "Puhkuse taotlus kasutajal {{owner.firstName}} {{owner.lastName}} on nüüd kinnitatud ja nähtav on puhkuse ülevaadate lehel. \nNB Kas projektijuht on teadlik Sinu puhkusest?",
+            "updated": "Puhkus on uuendatud ID-ga {{ param }}",
+            "deleted": "Puhkus on kustutatud ID-ga {{ param }}",
+            "rejected": "Kasutaja {{owner.firstName}} {{owner.lastName}} puhkuse taotlus lükati tagasi.",
+            "delete": {
+                "question": "Kas oled kindel, et tahad kustutada puhkust {{ id }}?"
+            },
+            "cancel": {
+                "question": "Kas oled kindel, et tahad tühistada puhkust {{ id }}?"
+            },
+            "detail": {
+                "title": "Puhkuse taotluse detailid"
+            },
+            "dialog": {
+                "sickLeaveTooltip": "Kui lähed haiguslehele, võtad Sa puhkuse teadmata ajaks. Seetõttu saad Sa lisada lõppkuupäeva ka pärast puhkuse kinnitamist"
+            },
+            "stage": "Staatus",
+            "type": "Tüüp",
+            "payment": "Tasumine",
+            "startDate": "Alguskuupäev",
+            "endDate": "Lõppkuupäev",
+            "owner": "Omanik",
+            "manager": "Juht",
+            "duration": "Kestvus",
+            "from": "Alates",
+            "until": "Kuni"
+        }
+    }
+}

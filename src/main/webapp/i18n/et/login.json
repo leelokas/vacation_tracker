@@ -1,0 +1,19 @@
+{
+    "login": {
+        "title": "Logi sisse",
+        "form": {
+            "password": "Parool",
+            "password.placeholder": "Sinu parool",
+            "rememberme": "Jäta mind meelde",
+            "button": "Logi sisse"
+        },
+        "messages": {
+            "error": {
+                "authentication": "<strong>Sisselogimine ebaõnnestus!</strong> Kontrolli oma kasutajanime ja parooli ning proovi uuesti."
+            }
+        },
+        "password" : {
+            "forgot": "Kas unustasid oma parooli?"
+        }
+    }
+}

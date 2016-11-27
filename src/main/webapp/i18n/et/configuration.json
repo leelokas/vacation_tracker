@@ -1,0 +1,10 @@
+{
+    "configuration": {
+        "title": "Konfiguratsioon",
+        "filter": "Filtreeri (eesliite järgi)",
+        "table": {
+            "prefix": "Eesliide",
+            "properties": "Atribuudid"
+        }
+    }
+}

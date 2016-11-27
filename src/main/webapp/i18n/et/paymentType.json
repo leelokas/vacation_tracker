@@ -1,0 +1,9 @@
+{
+    "vacationTrackerApp": {
+        "PaymentType" : {
+            "null": "",
+            "BEFORE_VACATION": "Enne puhkust",
+            "WITH_NEXT_SALARY": "Järgmise palgaga"
+        }
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "userManagement": {
+        "home": {
+            "title": "Kasutajad",
+            "createLabel": "Loos uus kasutaja",
+            "createOrEditLabel": "Loo või muuda kasutajat"
+        },
+        "created": "Uus kasutaja on loodud ID-ga '{{ param }}'",
+        "updated": "Uus kasutaja on uuendatud ID-ga '{{ param }}'",
+        "managerNotUpdated": "Kasutaja ei saa olla enda juht. Juhi välja ei uuendatud.",
+        "deleted": "Kasutaja on kustutatud ID-ga '{{ param }}'",
+        "delete": {
+            "question": "Kas oled kindel, et tahad kustutada kasutajat '{{ login }}'?"
+        },
+        "detail": {
+            "title": "Kasutaja"
+        },
+        "login": "Logi sisse",
+        "firstName": "Eesnimi",
+        "lastName": "Perekonnanimi",
+        "email": "E-mail",
+        "activated": "Aktiveeritud",
+        "deactivated": "Deaktiveeritud",
+        "profiles": "Rollid",
+        "langKey": "Keel",
+        "createdBy": "Loodud",
+        "createdDate": "Loomise kuupäev",
+        "lastModifiedBy": "Muudetud",
+        "lastModifiedDate": "Muutmise kuupäev",
+        "manager": "Juht"
+    }
+}

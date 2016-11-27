@@ -1,0 +1,138 @@
+{
+    "global": {
+        "title": "Vacation Tracker",
+        "browsehappy": "Kasutusel on <strong>vanamoodne</strong> veebilehitseja. Palun <a href=\"http://browsehappy.com/?locale=en\">uuenda oma veebilehitsejat</a>.",
+        "menu": {
+            "home": "Kodu",
+            "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+            "entities": {
+                "myVacation": "Minu puhkused",
+                "vacation": "Ülevaade",
+                "confirmationNeeded": "Kinnitust vajavad",
+                "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+            },
+            "account": {
+                "main": "Konto",
+                "settings": "Seaded",
+                "password": "Parool",
+                "sessions": "Seanss",
+                "login": "Logi sisse",
+                "logout": "Logi Välja",
+                "register": "Registreeri"
+            },
+            "admin": {
+                "main": "Administratsioon",
+                "userManagement": "Kasutaja haldus",
+                "tracker": "Kasutaja jälgimine",
+                "metrics": "Mõõtmed",
+                "health": "Tervis",
+                "configuration": "Konfiguratsioon",
+                "logs": "Logid",
+                "audits": "Auditid",
+                "apidocs": "API",
+                "database": "Andmebaas",
+                "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+            },
+            "language": "Keel"
+        },
+        "form": {
+            "username": "Kasutajanimi",
+            "username.placeholder": "Sinu kasutajanimi",
+            "newpassword": "Uus parool",
+            "newpassword.placeholder": "Uus parool",
+            "confirmpassword": "Uue parooli kinnitamine",
+            "confirmpassword.placeholder": "Kinnita uus parool",
+            "email": "E-mail",
+            "email.placeholder": "Sinu e-mail"
+        },
+        "messages": {
+            "info": {
+                "register": "Sul puudub kasutaja? <a class=\"alert-link\" href=\"\" ng-click=\"vm.register()\">Registreeri uus kasutaja</a>"
+            },
+            "error": {
+                "dontmatch": "Paroolid ei kattu!"
+            },
+            "validate": {
+                "newpassword": {
+                    "required": "Sinu parool on vajalik.",
+                    "minlength": "Sinu parool peab olema vähemalt 4 tähemärki.",
+                    "maxlength": "Sinu parool ei tohi olla pikem kui 50 tähemärki.",
+                    "strength": "Parooli tugevus:"
+                },
+                "confirmpassword": {
+                    "required": "Sa pead kinnitama oma parooli.",
+                    "minlength": "Kinnitatud parool peab olema vähemalt 4 tähemärki.",
+                    "maxlength": "Sinu kinnitatud parool ei tohi olla pikem kui 50 tähemärki."
+                },
+                "email": {
+                    "required": "Sinu e-mail on vajalik.",
+                    "invalid": "Sinu e-mail ei ole sobilik.",
+                    "minlength": "Sinu e-mail peab olema vähemalt 5 tähemärki pikk.",
+                    "maxlength": "Sinu e-mail ei tohi olla pikem kui 50 tähemärki."
+                }
+            }
+        },
+        "field": {
+            "id": "ID"
+        },
+        "ribbon": {
+            "dev":"Arendus"
+        },
+        "filter": "Filter"
+    },
+    "entity": {
+        "action": {
+            "addblob": "Lisa laik",
+            "addimage": "Lida pilt",
+            "back": "Tagasi",
+            "cancel": "Tühista",
+            "cancelRequest": "Tühista taotlus",
+            "delete": "Kustuta",
+            "edit": "Muuda",
+            "open": "Ava",
+            "save": "Salvesta",
+            "view": "Vaata",
+            "send": "Saada kinnitamisele",
+            "confirm": "Kinnita",
+            "reject": "Lükka tagasi",
+            "end": "Lõppkuupäev"
+        },
+        "detail": {
+            "field": "Väli",
+            "value": "Väärtus"
+        },
+        "delete": {
+            "title": "Kinnita kustutamine"
+        },
+        "cancel": {
+            "title": "Kinnita tühistamine"
+        },
+        "validation": {
+            "required": "See väli on kohustuslik.",
+            "minlength": "See väli peab olema vähemalt {{ min }} tähemärki pikk.",
+            "maxlength": "See väli ei tohi olla pikem kui {{ max }} tähemärki.",
+            "min": "See väli peab olema pikem kui {{ min }} tähemärki.",
+            "max": "See väli ei tohi olla pikem kui {{ max }} tähemärki.",
+            "minbytes": "See väli peab olema suurem kui {{ min }} baiti.",
+            "maxbytes": "See väli ei tohi olla suurem kui {{ max }} baiti.",
+            "pattern": "See väli peaks järgima mustrit {{ pattern }}.",
+            "number": "See väli peaks olema numbriline.",
+            "datetimelocal": "See väli peaks sisaldama kuupäeva ja aega."
+        }
+    },
+    "error": {
+        "server.not.reachable": "Server ei ole kättesaadav",
+        "url.not.found": "Ei leitud",
+        "NotNull": "Väli {{ fieldName }} ei saa olla tühi!",
+        "Size": "Väli {{ fieldName }} ei vasta min/max mõõtmetele!",
+        "userexists": "Kasutajanimi juba kasutusel!",
+        "emailexists": "E-mail on juba kasutusel!",
+        "idexists": "Uus {{ entityName }} ei saa omada ID-d"
+    },
+    "footer": {
+        "copyright": "© 2016 Reach-U",
+        "forInfoContact": "Kui Sul on küsimusi, probleeme või soovitusi, siis kirjuta",
+        "email": "liis@reach-u.com"
+    },
+    "queryInfo": "Showing {{totalItems==0 ? 0 : ((page-1)*itemsPerPage)==0 ? 1 : ((page-1)*itemsPerPage)}} - {{(page*itemsPerPage)<totalItems ? (page*itemsPerPage) : totalItems}} of {{totalItems}} items."
+}

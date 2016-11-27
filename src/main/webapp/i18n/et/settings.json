@@ -1,0 +1,32 @@
+{
+    "settings": {
+        "title": "Seaded kasutajale <b>{{username}}</b>",
+        "form": {
+            "firstname": "Eesnimi",
+            "firstname.placeholder": "Sinu eesnimi",
+            "lastname": "Perekonnanimi",
+            "lastname.placeholder": "Sinu perekonnanimi",
+            "language": "Keel",
+            "button": "Salvesta"
+        },
+        "messages": {
+            "error": {
+                "fail": "<strong>Viga!</strong> Seadeid ei saa salvestada.",
+                "emailexists": "<strong>E-mail on juba kasutusel!</strong> Palun vali uus."
+            },
+            "success": "<strong>Seaded salvestatud!</strong>",
+            "validate": {
+                "firstname": {
+                    "required": "Sinu eesnimi on kohustuslik.",
+                    "minlength": "Sinu eesnimi peab olema vähemalt 1 tähemärk pikk",
+                    "maxlength": "Sinu eesnimi ei tohi olla pikem kui 50 tähemärki"
+                },
+                "lastname": {
+                    "required": "Sinu perekonnanimi on kohustuslik.",
+                    "minlength": "Sinu perekonnanimi peab olema vähemalt 1 tähemärk pikk",
+                    "maxlength": "Sinu perekonnanimi ei tohi olla pikem kui 50 tähemärki"
+                }
+            }
+        }
+    }
+}

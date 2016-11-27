@@ -1,0 +1,27 @@
+{
+    "audits": {
+        "title": "Auditid",
+        "filter": {
+            "title": "Filtreeri kuupäevade järgi",
+            "from": "alates",
+            "to": "kuni",
+            "button": {
+                "weeks": "Nädalad",
+                "today": "Täna",
+                "clear": "Tühjenda",
+                "close": "Sulge"
+            }
+        },
+        "table": {
+            "header": {
+                "principal": "Kasutaja",
+                "date": "Kuupäev",
+                "status": "Staatus",
+                "data": "Lisa andmed"
+            },
+            "data": {
+                "remoteAddress": "Kaugandmed:"
+            }
+        }
+    }
+}

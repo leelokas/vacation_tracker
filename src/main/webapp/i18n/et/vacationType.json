@@ -1,0 +1,13 @@
+{
+    "vacationTrackerApp": {
+        "VacationType" : {
+            "null": "",
+            "PAID": "Palgaga puhkus",
+            "UNPAID": "Palgata puhkus",
+            "SICK_LEAVE": "Haigusleht",
+            "STUDY_LEAVE": "Õppepuhkus",
+            "PREGNANCY_LEAVE": "Rasedus- ja sünnituspuhkus",
+            "PARENTAL_LEAVE": "Vanema puhkus"
+        }
+    }
+}

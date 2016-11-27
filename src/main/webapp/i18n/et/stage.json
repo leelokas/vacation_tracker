@@ -1,0 +1,11 @@
+{
+    "vacationTrackerApp": {
+        "Stage" : {
+            "null": "",
+            "SAVED": "Salvestatud",
+            "SENT": "Saadetud",
+            "PLANNED": "Planeeritud",
+            "CONFIRMED": "Kinnitatud"
+        }
+    }
+}

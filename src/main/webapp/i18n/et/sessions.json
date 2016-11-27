@@ -1,0 +1,15 @@
+{
+    "sessions": {
+        "title": "Aktiivne seanss kasutajal [<b>{{username}}</b>]",
+        "table": {
+            "ipaddress": "IP aadress",
+            "useragent": "User Agent",
+            "date": "Kuupäev",
+            "button": "Logi välja"
+        },
+        "messages": {
+            "success": "<strong>Sessioon kehtetuks muudetud!</strong>",
+            "error": "<strong>Ilmnes viga!</strong> Sessiooni ei saa muuta."
+        }
+    }
+}
