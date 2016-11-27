@@ -93,7 +93,7 @@ describe('E2e tests', function () {
             element.all(by.xpath('//table/tbody/tr')).count().then(function(originalCount) {
                 var requests = originalCount;
 
-                h.checkTitle('[ui-sref="manager"]','h2',/vacationTrackerApp.vacation.manager.title/);
+                h.checkTitle('[ui-sref="manager"]','h2',/vacationTrackerApp.vacation.managerView.title/);
 
                 element.all(by.xpath('//table/tbody/tr')).count().then(function(originalCount) {
                     var requests2 = originalCount;
