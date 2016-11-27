@@ -15,7 +15,6 @@
         vm.credentials = {};
         vm.login = login;
         vm.password = null;
-        vm.register = register;
         vm.rememberMe = true;
         vm.requestResetPassword = requestResetPassword;
         vm.username = null;
@@ -60,11 +59,6 @@
             }).catch(function () {
                 vm.authenticationError = true;
             });
-        }
-
-        function register () {
-            $uibModalInstance.dismiss('cancel');
-            $state.go('register');
         }
 
         function requestResetPassword () {

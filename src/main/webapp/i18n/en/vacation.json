@@ -12,7 +12,7 @@
                     "studyLeave": "Study leave vacation until the end of year"
                 }
             },
-            "manager": {
+            "managerView": {
                 "title": "Vacations waiting confirmation"
             },
             "overview": {
