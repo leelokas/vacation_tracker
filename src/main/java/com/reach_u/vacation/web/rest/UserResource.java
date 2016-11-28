@@ -224,7 +224,7 @@ public class UserResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<User>> getUsersByFilter(
+    public ResponseEntity<List<ManagedUserVM>> getUsersByFilter(
         @RequestParam(value = "firstName", required = false) String firstName,
         @RequestParam(value = "lastName", required = false) String lastName,
         @RequestParam(value = "login", required = false) String login,
@@ -235,12 +235,10 @@ public class UserResource {
         log.debug("REST request to get vacations : firstName: {}, lastName: {}, login: {}, manager: {}, authority: {}",
             firstName, lastName, login, manager, auth);
         List<User> partlyFilteredUsers = userRepository.findAll(UserSpecifications.byQuery(firstName, lastName, login, manager));
-        List<User> response = new ArrayList<>();
-        for (User user : partlyFilteredUsers) {
-            if (user.getAuthorities().contains(auth)) {
-                response.add(user);
-            }
-        }
+        List<ManagedUserVM> response = partlyFilteredUsers.stream()
+            .filter(user -> user.getAuthorities().contains(auth))
+            .map(user -> new ManagedUserVM(user))
+            .collect(Collectors.toList());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

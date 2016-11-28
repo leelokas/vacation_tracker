@@ -1,14 +1,11 @@
 package com.reach_u.vacation.repository;
 
-import com.reach_u.vacation.domain.Authority;
 import com.reach_u.vacation.domain.User;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by tanel
@@ -16,8 +13,6 @@ import java.util.Set;
 public class UserSpecifications {
 
     public static Specification<User> byQuery(String firstName, String lastName, String login, String manager){
-
-
 
         return new Specification<User>() {
             @Override
@@ -36,7 +31,6 @@ public class UserSpecifications {
                 if (manager != null) {
                     expressions.add(criteriaBuilder.equal(root.get("manager").get("login"), manager));
                 }
-
 
                 return criteriaBuilder.and(expressions.toArray(new Predicate[0]));
             }
