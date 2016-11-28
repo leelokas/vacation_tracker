@@ -166,7 +166,7 @@ public class VacationResource {
         @RequestParam(value = "manager", required = false) String manager)
         throws URISyntaxException {
         log.debug("REST request to get vacations : vacationStage: {}, paymentType: {}, vacationType: {}, from: {}, until: {}, login: {}, manager: {}",
-            vacationStage, paymentType, vacationType, from, until);
+            vacationStage, paymentType, vacationType, from, until, login, manager);
         List<Vacation> list = vacationRepository.findAll(VacationSpecifications.byQuery(vacationType, paymentType, vacationStage, from, until, login, manager));
         return new ResponseEntity<>(list, HttpStatus.OK);
     }

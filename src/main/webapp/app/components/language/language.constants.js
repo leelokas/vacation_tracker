@@ -10,7 +10,6 @@
          */
         .constant('LANGUAGES', [
             'en',
-            'sv',
             'et'
         ]
     );

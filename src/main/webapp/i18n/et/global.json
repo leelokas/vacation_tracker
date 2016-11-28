@@ -134,5 +134,5 @@
         "forInfoContact": "Kui Sul on küsimusi, probleeme või soovitusi, siis kirjuta",
         "email": "liis@reach-u.com"
     },
-    "queryInfo": "Showing {{totalItems==0 ? 0 : ((page-1)*itemsPerPage)==0 ? 1 : ((page-1)*itemsPerPage)}} - {{(page*itemsPerPage)<totalItems ? (page*itemsPerPage) : totalItems}} of {{totalItems}} items."
+    "queryInfo": "Näitan {{totalItems==0 ? 0 : ((page-1)*itemsPerPage)==0 ? 1 : ((page-1)*itemsPerPage)}} - {{(page*itemsPerPage)<totalItems ? (page*itemsPerPage) : totalItems}} kogu {{totalItems}} vastest."
 }

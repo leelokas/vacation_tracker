@@ -392,12 +392,6 @@
             <artifactId>spring-security-ldap</artifactId>
             <version>4.2.0.RELEASE</version>
         </dependency>
-        <dependency>
-            <groupId>p2.osgi.bundle</groupId>
-            <artifactId>org.eclipse.ui.workbench</artifactId>
-            <version>3.106.2.v20150204-1030</version>
-        </dependency>
-
 
     </dependencies>
     <build>

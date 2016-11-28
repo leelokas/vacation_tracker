@@ -234,13 +234,6 @@ public class UserResource {
             firstName, lastName, login, manager);
         List<User> list = userRepository.findAll(UserSpecifications.byQuery(firstName, lastName, login, manager));
 
-        for (User elem : list) {
-            System.out.println("#1 Modified date " + elem.getLastModifiedDate());
-            System.out.println("#2 Modified by:  " + elem.getLastModifiedBy());
-            System.out.println("#3 Created date  " + elem.getCreatedDate());
-            System.out.println("#4 Roles: " + elem.getLastModifiedDate());
-        }
-
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
