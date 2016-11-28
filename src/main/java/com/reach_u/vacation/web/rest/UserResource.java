@@ -2,6 +2,7 @@ package com.reach_u.vacation.web.rest;
 
 import com.reach_u.vacation.config.Constants;
 import com.codahale.metrics.annotation.Timed;
+import com.reach_u.vacation.domain.Authority;
 import com.reach_u.vacation.domain.User;
 import com.reach_u.vacation.domain.Vacation;
 import com.reach_u.vacation.domain.enumeration.VacationType;
@@ -227,14 +228,20 @@ public class UserResource {
         @RequestParam(value = "firstName", required = false) String firstName,
         @RequestParam(value = "lastName", required = false) String lastName,
         @RequestParam(value = "login", required = false) String login,
-        @RequestParam(value = "manager", required = false) String manager)
+        @RequestParam(value = "manager", required = false) String manager,
+        @RequestParam(value = "role", required = false) Authority auth)
 
         throws URISyntaxException{
-        log.debug("REST request to get vacations : firstName: {}, lastName: {}, login: {}, manager: {}",
-            firstName, lastName, login, manager);
-        List<User> list = userRepository.findAll(UserSpecifications.byQuery(firstName, lastName, login, manager));
-
-        return new ResponseEntity<>(list, HttpStatus.OK);
+        log.debug("REST request to get vacations : firstName: {}, lastName: {}, login: {}, manager: {}, authority: {}",
+            firstName, lastName, login, manager, auth);
+        List<User> partlyFilteredUsers = userRepository.findAll(UserSpecifications.byQuery(firstName, lastName, login, manager));
+        List<User> response = new ArrayList<>();
+        for (User user : partlyFilteredUsers) {
+            if (user.getAuthorities().contains(auth)) {
+                response.add(user);
+            }
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     /**

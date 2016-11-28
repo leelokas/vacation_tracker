@@ -74,11 +74,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name="manager_id")
     private User manager;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "manager")
-    private Set<User> subordinates;
-
-
     @Column(name = "reset_date", nullable = true)
     private ZonedDateTime resetDate = null;
 
@@ -201,10 +196,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public Set<PersistentToken> getPersistentTokens() {
         return persistentTokens;
-    }
-
-    public Set<User> getSubordinates() {
-        return subordinates;
     }
 
     public void setPersistentTokens(Set<PersistentToken> persistentTokens) {
