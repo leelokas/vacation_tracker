@@ -7,7 +7,7 @@
         },
         "created": "Uus kasutaja on loodud ID-ga '{{ param }}'",
         "updated": "Uus kasutaja on uuendatud ID-ga '{{ param }}'",
-        "managerNotUpdated": "Kasutaja ei saa olla enda juht. Juhi välja ei uuendatud.",
+        "managerNotUpdated": "Kasutaja ei saa olla enda otsene ülemus. Otsese ülemuse välja ei uuendatud.",
         "deleted": "Kasutaja on kustutatud ID-ga '{{ param }}'",
         "delete": {
             "question": "Kas oled kindel, et tahad kustutada kasutajat '{{ login }}'?"
@@ -15,7 +15,7 @@
         "detail": {
             "title": "Kasutaja"
         },
-        "login": "Logi sisse",
+        "login": "Kasutajanimi",
         "firstName": "Eesnimi",
         "lastName": "Perekonnanimi",
         "email": "E-mail",
@@ -27,6 +27,6 @@
         "createdDate": "Loomise kuupäev",
         "lastModifiedBy": "Muudetud",
         "lastModifiedDate": "Muutmise kuupäev",
-        "manager": "Juht"
+        "manager": "Otsene ülemus"
     }
 }

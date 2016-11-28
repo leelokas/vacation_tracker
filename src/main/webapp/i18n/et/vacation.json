@@ -4,7 +4,7 @@
             "home": {
                 "title": "Sinu puhkuse taotlused",
                 "createLabel": "Loo uus",
-                "createOrEditLabel": "Loo või muuda puhkus",
+                "createOrEditLabel": "Loo või muuda puhkust",
                 "search": "Otsi puhkust",
                 "paidDaysLeft": {
                     "current": "Hetkeseisuga kogutud puhkuse päevad",
@@ -20,9 +20,9 @@
                 "download": "Lae puhkused alla",
                 "filter": "Filter"
             },
-            "created": "Sinu puhkuse taotlus on salvestatud, kuid pole saadetud kinnitamiseks. \nKui taotlus ei vaja mingeid muudatusi, siis palun klõpsa 'Saada kinnitamiseks'",
-            "sent": "Puhkuse taotlus kuupäevadega {{vacation.startDate}} - {{vacation.endDate}} saadeti Sinu juhile {{manager.firstName}} {{manager.lastName}} kinnitamiseks.\nNB Kas oled teatanud projektijuht(e) oma puhkuse kuupäevest?",
-            "confirmed": "Puhkuse taotlus kasutajal {{owner.firstName}} {{owner.lastName}} on nüüd kinnitatud ja nähtav on puhkuse ülevaadate lehel. \nNB Kas projektijuht on teadlik Sinu puhkusest?",
+            "created": "Sinu puhkuse taotlus on salvestatud, kuid pole saadetud kinnitamiseks. \nKui taotlus ei vaja mingeid muudatusi, siis palun klõpsa 'Saada kinnitamisele'",
+            "sent": "Puhkuse taotlus kuupäevadega {{vacation.startDate}} - {{vacation.endDate}} saadeti Sinu juhile {{manager.firstName}} {{manager.lastName}} kinnitamiseks.\nNB! Kas oled teatanud projektijuhti oma puhkuse kuupäevadest?",
+            "confirmed": "Puhkuse taotlus kasutajal {{owner.firstName}} {{owner.lastName}} on nüüd kinnitatud ja nähtav on puhkuse ülevaadate lehel. \nNB! Kas projektijuht on teadlik sellest puhkusest?",
             "updated": "Puhkus on uuendatud ID-ga {{ param }}",
             "deleted": "Puhkus on kustutatud ID-ga {{ param }}",
             "rejected": "Kasutaja {{owner.firstName}} {{owner.lastName}} puhkuse taotlus lükati tagasi.",
@@ -36,18 +36,19 @@
                 "title": "Puhkuse taotluse detailid"
             },
             "dialog": {
-                "sickLeaveTooltip": "Kui lähed haiguslehele, võtad Sa puhkuse teadmata ajaks. Seetõttu saad Sa lisada lõppkuupäeva ka pärast puhkuse kinnitamist"
+                "sickLeaveTooltip": "Kui lähed haiguslehele, võtad Sa tavaliselt puhkuse teadmata ajaks. Seetõttu saad Sa lisada lõppkuupäeva pärast puhkuse kinnitamist"
             },
             "stage": "Staatus",
             "type": "Tüüp",
             "payment": "Tasumine",
             "startDate": "Alguskuupäev",
             "endDate": "Lõppkuupäev",
-            "owner": "Omanik",
-            "manager": "Juht",
+            "owner": "Puhkuse taotleja",
+            "manager": "Otsene ülemus",
             "duration": "Kestvus",
             "from": "Alates",
-            "until": "Kuni"
+            "until": "Kuni",
+            "twoWeekPaidVacationRequired": "Seaduse järgi on sul kohustus võtta igal aastal palgaline puhkus, mis kestab vähemalt 14 päeva (Puhkuseseadus § 20)"
         }
     }
 }

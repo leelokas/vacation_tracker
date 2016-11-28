@@ -22,7 +22,7 @@
             },
             "admin": {
                 "main": "Administratsioon",
-                "userManagement": "Kasutaja haldus",
+                "userManagement": "Kasutajate haldus",
                 "tracker": "Kasutaja jälgimine",
                 "metrics": "Mõõtmed",
                 "health": "Tervis",
@@ -78,7 +78,7 @@
         "ribbon": {
             "dev":"Arendus"
         },
-        "filter": "Filter"
+        "filter": "Filtreeri"
     },
     "entity": {
         "action": {

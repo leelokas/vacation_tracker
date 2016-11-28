@@ -43,7 +43,7 @@
             "payment": "Payment",
             "startDate": "Start Date",
             "endDate": "End Date",
-            "owner": "Owner",
+            "owner": "Vacation requester",
             "manager": "Manager",
             "duration": "Duration",
             "from": "From",
