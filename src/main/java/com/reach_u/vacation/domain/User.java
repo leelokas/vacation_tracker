@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -47,6 +48,12 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Size(max = 50)
     @Column(name = "last_name", length = 50)
     private String lastName;
+
+    @Column(name="firstworkday", length = 20)
+    private Date firstWorkday;
+
+    @Column(name="unusedvacationdays", length = 5)
+    private Integer unusedVacationDays;
 
     @Email
     @Size(max = 100)
@@ -240,5 +247,21 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public String getFullName() {
         return firstName + " " + lastName;
+    }
+
+    public Date getFirstWorkday() {
+        return firstWorkday;
+    }
+
+    public void setFirstWorkday(Date firstWorkday) {
+        this.firstWorkday = firstWorkday;
+    }
+
+    public Integer getUnusedVacationDays() {
+        return unusedVacationDays;
+    }
+
+    public void setUnusedVacationDays(Integer unusedVacationDays) {
+        this.unusedVacationDays = unusedVacationDays;
     }
 }

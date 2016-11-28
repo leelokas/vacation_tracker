@@ -10,11 +10,13 @@ import com.reach_u.vacation.repository.UserRepository;
 import com.reach_u.vacation.repository.UserSpecifications;
 import com.reach_u.vacation.repository.VacationRepository;
 import com.reach_u.vacation.security.AuthoritiesConstants;
+import com.reach_u.vacation.security.SecurityUtils;
 import com.reach_u.vacation.service.MailService;
 import com.reach_u.vacation.service.UserService;
 import com.reach_u.vacation.web.rest.vm.ManagedUserVM;
 import com.reach_u.vacation.web.rest.util.HeaderUtil;
 import com.reach_u.vacation.web.rest.util.PaginationUtil;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -254,9 +256,32 @@ public class UserResource {
     @Timed
     public Map<String,Integer> getRemainingDaysOfCurrentUser() throws URISyntaxException {
         Map<String,Integer> result = new HashMap<>();
-        //TODO calculations of task #16
-        result.put("current", 20);
-        result.put("endOfYear", 28);
+        userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(u -> {
+            DateTime dateTime = new DateTime();
+
+            // TODO: 28-Nov-16 When first work day field exists and is filled , uncomment
+            //            DateTime firstWorkDayDate = new DateTime(u.getFirstWorkday());
+            DateTime firstWorkDayDate = dateTime.withYear(2000);
+
+            double firstWorkDay = firstWorkDayDate.getDayOfYear();
+            boolean isLeapYear = dateTime.year().isLeap();
+            double currentDay = dateTime.getDayOfYear();
+            double numOfDaysInYear = 365;
+
+            if (isLeapYear){
+                numOfDaysInYear = 366;
+            }
+
+            if(firstWorkDayDate.getYear() == dateTime.getYear()){
+                double curretVacationDays = firstWorkDay/numOfDaysInYear*28;
+                result.put("current", (int)curretVacationDays);
+
+            } else {
+                double curretVacationDays = currentDay/numOfDaysInYear*28;
+                result.put("current", (int)curretVacationDays);
+            }
+        });
+        result.put("endOfYear", getRemainingVacationDaysLeft());
 
         int currentYear = Year.now().getValue();
         LocalDate timeFrameStart = LocalDate.parse(String.valueOf(currentYear) + "-01-01"), timeFrameEnd = LocalDate.parse(String.valueOf(currentYear) + "-12-31");
@@ -299,6 +324,17 @@ public class UserResource {
             return start.until(end, ChronoUnit.DAYS) + 1;
         }
         return null;
+    }
+
+    private int getRemainingVacationDaysLeft(){
+        // TODO: 28-Nov-16 unused vacation days
+        // TODO: 28-Nov-16  firstworkday after 1st of January
+        List<Vacation> userVacations = vacationRepository.findConfirmedByOwnerIsCurrentUser();
+        int sumOfVacationDays = 28;
+        for (Vacation vacation:userVacations) {
+            sumOfVacationDays -= getDurationInDays(vacation.getStartDate(),vacation.getEndDate());
+        }
+        return sumOfVacationDays;
     }
 
 }
