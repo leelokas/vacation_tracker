@@ -94,8 +94,8 @@ public class UserResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @RequestMapping(value = "/users",
-        method = RequestMethod.POST,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<?> createUser(@RequestBody ManagedUserVM managedUserVM, HttpServletRequest request) throws URISyntaxException {
@@ -104,24 +104,24 @@ public class UserResource {
         //Lowercase the user login before comparing with database
         if (userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).isPresent()) {
             return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert("userManagement", "userexists", "Login already in use"))
-                .body(null);
+                    .headers(HeaderUtil.createFailureAlert("userManagement", "userexists", "Login already in use"))
+                    .body(null);
         } else if (userRepository.findOneByEmail(managedUserVM.getEmail()).isPresent()) {
             return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert("userManagement", "emailexists", "Email already in use"))
-                .body(null);
+                    .headers(HeaderUtil.createFailureAlert("userManagement", "emailexists", "Email already in use"))
+                    .body(null);
         } else {
             User newUser = userService.createUser(managedUserVM);
             String baseUrl = request.getScheme() + // "http"
-            "://" +                                // "://"
-            request.getServerName() +              // "myhost"
-            ":" +                                  // ":"
-            request.getServerPort() +              // "80"
-            request.getContextPath();              // "/myContextPath" or "" if deployed in root context
+                    "://" +                                // "://"
+                    request.getServerName() +              // "myhost"
+                    ":" +                                  // ":"
+                    request.getServerPort() +              // "80"
+                    request.getContextPath();              // "/myContextPath" or "" if deployed in root context
             mailService.sendCreationEmail(newUser, baseUrl);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
-                .headers(HeaderUtil.createAlert( "userManagement.created", newUser.getLogin()))
-                .body(newUser);
+                    .headers(HeaderUtil.createAlert( "userManagement.created", newUser.getLogin()))
+                    .body(newUser);
         }
     }
 
@@ -134,8 +134,8 @@ public class UserResource {
      * or with status 500 (Internal Server Error) if the user couldn't be updated
      */
     @RequestMapping(value = "/users",
-        method = RequestMethod.PUT,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<ManagedUserVM> updateUser(@RequestBody ManagedUserVM managedUserVM) {
@@ -149,12 +149,12 @@ public class UserResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("userManagement", "userexists", "Login already in use")).body(null);
         }
         userService.updateUser(managedUserVM.getId(), managedUserVM.getLogin(), managedUserVM.getFirstName(),
-            managedUserVM.getLastName(), managedUserVM.getEmail(), managedUserVM.isActivated(),
-            managedUserVM.getLangKey(), managedUserVM.getAuthorities(), managedUserVM.getManagerId());
+                managedUserVM.getLastName(), managedUserVM.getEmail(), managedUserVM.isActivated(),
+                managedUserVM.getLangKey(), managedUserVM.getAuthorities(), managedUserVM.getManagerId());
 
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createAlert("userManagement.updated", managedUserVM.getLogin()))
-            .body(new ManagedUserVM(userService.getUserWithAuthorities(managedUserVM.getId())));
+                .headers(HeaderUtil.createAlert("userManagement.updated", managedUserVM.getLogin()))
+                .body(new ManagedUserVM(userService.getUserWithAuthorities(managedUserVM.getId())));
     }
 
     /**
@@ -165,15 +165,15 @@ public class UserResource {
      * @throws URISyntaxException if the pagination headers couldn't be generated
      */
     @RequestMapping(value = "/users",
-        method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<List<ManagedUserVM>> getAllUsers(Pageable pageable)
-        throws URISyntaxException {
+            throws URISyntaxException {
         Page<User> page = userRepository.findAllWithAuthorities(pageable);
         List<ManagedUserVM> managedUserVMs = page.getContent().stream()
-            .map(ManagedUserVM::new)
-            .collect(Collectors.toList());
+                .map(ManagedUserVM::new)
+                .collect(Collectors.toList());
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
         return new ResponseEntity<>(managedUserVMs, headers, HttpStatus.OK);
     }
@@ -185,8 +185,8 @@ public class UserResource {
      * @return the ResponseEntity with status 200 (OK) and with body the "login" user, or with status 404 (Not Found)
      */
     @RequestMapping(value = "/users/{login:" + Constants.LOGIN_REGEX + "}",
-        method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<ManagedUserVM> getUser(@PathVariable String login) {
         log.debug("REST request to get User : {}", login);
@@ -203,8 +203,8 @@ public class UserResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @RequestMapping(value = "/users/{login:" + Constants.LOGIN_REGEX + "}",
-        method = RequestMethod.DELETE,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
@@ -223,24 +223,24 @@ public class UserResource {
      * @return the ResponseEntity with status 200 (OK)
      */
     @RequestMapping(value = "/users/filter",
-        method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<List<ManagedUserVM>> getUsersByFilter(
-        @RequestParam(value = "firstName", required = false) String firstName,
-        @RequestParam(value = "lastName", required = false) String lastName,
-        @RequestParam(value = "login", required = false) String login,
-        @RequestParam(value = "manager", required = false) String manager,
-        @RequestParam(value = "role", required = false) Authority auth)
+            @RequestParam(value = "firstName", required = false) String firstName,
+            @RequestParam(value = "lastName", required = false) String lastName,
+            @RequestParam(value = "login", required = false) String login,
+            @RequestParam(value = "manager", required = false) String manager,
+            @RequestParam(value = "role", required = false) Authority auth)
 
-        throws URISyntaxException{
+            throws URISyntaxException{
         log.debug("REST request to get vacations : firstName: {}, lastName: {}, login: {}, manager: {}, authority: {}",
-            firstName, lastName, login, manager, auth);
+                firstName, lastName, login, manager, auth);
         List<User> partlyFilteredUsers = userRepository.findAll(UserSpecifications.byQuery(firstName, lastName, login, manager));
         List<ManagedUserVM> response = partlyFilteredUsers.stream()
-            .filter(user -> auth == null || user.getAuthorities().contains(auth))
-            .map(user -> new ManagedUserVM(user))
-            .collect(Collectors.toList());
+                .filter(user -> auth == null || user.getAuthorities().contains(auth))
+                .map(user -> new ManagedUserVM(user))
+                .collect(Collectors.toList());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -251,37 +251,13 @@ public class UserResource {
      * @throws URISyntaxException if the pagination headers couldn't be generated
      */
     @RequestMapping(value = "/users/remainingDays",
-        method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public Map<String,Integer> getRemainingDaysOfCurrentUser() throws URISyntaxException {
         Map<String,Integer> result = new HashMap<>();
-        userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(u -> {
-            DateTime dateTime = new DateTime();
-
-            // TODO: 28-Nov-16 When first work day field exists and is filled , uncomment
-            //            DateTime firstWorkDayDate = new DateTime(u.getFirstWorkday());
-            DateTime firstWorkDayDate = dateTime.withYear(2000);
-
-            double firstWorkDay = firstWorkDayDate.getDayOfYear();
-            boolean isLeapYear = dateTime.year().isLeap();
-            double currentDay = dateTime.getDayOfYear();
-            double numOfDaysInYear = 365;
-
-            if (isLeapYear){
-                numOfDaysInYear = 366;
-            }
-
-            if(firstWorkDayDate.getYear() == dateTime.getYear()){
-                double curretVacationDays = firstWorkDay/numOfDaysInYear*28;
-                result.put("current", (int)curretVacationDays);
-
-            } else {
-                double curretVacationDays = currentDay/numOfDaysInYear*28;
-                result.put("current", (int)curretVacationDays);
-            }
-        });
-        result.put("endOfYear", getRemainingVacationDaysLeft());
+        result.put("current", getRemainingVacationDaysLeftUntilEndOfYear());
+        result.put("endOfYear", getEmployeeVacationDaysEarnedByCurrentDate());
 
         int currentYear = Year.now().getValue();
         LocalDate timeFrameStart = LocalDate.parse(String.valueOf(currentYear) + "-01-01"), timeFrameEnd = LocalDate.parse(String.valueOf(currentYear) + "-12-31");
@@ -295,8 +271,8 @@ public class UserResource {
         List<Vacation> list = vacationRepository.findAllVacationsOfTypeWithTimeframe(timeFrameStart, timeFrameEnd, VacationType.PAID);
         for (Vacation vacation : list) {
             if (vacation.getStartDate().compareTo(timeFrameStart) < 0 && getDurationInDays(timeFrameStart, vacation.getEndDate()) >= 14
-                || vacation.getEndDate().compareTo(timeFrameEnd) > 0 && getDurationInDays(vacation.getStartDate(), timeFrameEnd) >= 14
-                || getDurationInDays(vacation.getStartDate(), vacation.getEndDate()) >= 14) {
+                    || vacation.getEndDate().compareTo(timeFrameEnd) > 0 && getDurationInDays(vacation.getStartDate(), timeFrameEnd) >= 14
+                    || getDurationInDays(vacation.getStartDate(), vacation.getEndDate()) >= 14) {
                 return 1;
             }
         }
@@ -326,15 +302,73 @@ public class UserResource {
         return null;
     }
 
-    private int getRemainingVacationDaysLeft(){
-        // TODO: 28-Nov-16 unused vacation days
-        // TODO: 28-Nov-16  firstworkday after 1st of January
+    private int getRemainingVacationDaysLeftUntilEndOfYear(){
+        DateTime dateTime = new DateTime();
         List<Vacation> userVacations = vacationRepository.findConfirmedByOwnerIsCurrentUser();
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+
         int sumOfVacationDays = 28;
-        for (Vacation vacation:userVacations) {
-            sumOfVacationDays -= getDurationInDays(vacation.getStartDate(),vacation.getEndDate());
+        double numOfDaysInYear = 365;
+        boolean isLeapYear = dateTime.year().isLeap();
+        if (isLeapYear){
+            numOfDaysInYear = 366;
+        }
+        if (isNewEmployee()){
+            DateTime firstWorkDayDate = new DateTime(user.getFirstWorkday());
+            double firstWorkDay = firstWorkDayDate.getDayOfYear();
+            sumOfVacationDays = (int)(firstWorkDay/numOfDaysInYear*28);
+            for (Vacation vacation:userVacations) {
+                sumOfVacationDays -= getDurationInDays(vacation.getStartDate(),vacation.getEndDate());
+            }
+        } else {
+            for (Vacation vacation:userVacations) {
+                sumOfVacationDays += getUnusedVacationDays();
+                sumOfVacationDays -= getDurationInDays(vacation.getStartDate(),vacation.getEndDate());
+            }
         }
         return sumOfVacationDays;
+    }
+
+    private int getUnusedVacationDays(){
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+        Integer unUsedVacationDays = user.getUnusedVacationDays();
+        if (unUsedVacationDays.equals(null)){
+            return 0;
+        } else {
+            return unUsedVacationDays;
+        }
+    }
+
+    private boolean isNewEmployee(){
+        DateTime dateTime = new DateTime();
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+        DateTime firstWorkDayDate = new DateTime(user.getFirstWorkday());
+        if (firstWorkDayDate.getYear() == dateTime.getYear()){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private int getEmployeeVacationDaysEarnedByCurrentDate(){
+        DateTime dateTime = new DateTime();
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+        double currentVacationDays = 0;
+        double numOfDaysInYear = 365;
+        boolean isLeapYear = dateTime.year().isLeap();
+        double currentDay = dateTime.getDayOfYear();
+
+        if (isLeapYear){
+            numOfDaysInYear = 366;
+        }
+        if(isNewEmployee()){
+            DateTime firstWorkDayDate = new DateTime(user.getFirstWorkday());
+            double firstWorkDay = firstWorkDayDate.getDayOfYear();
+            currentVacationDays = firstWorkDay/currentDay*28;
+        } else {
+            currentVacationDays = currentDay/numOfDaysInYear*28;
+        }
+        return (int)currentVacationDays;
     }
 
 }
