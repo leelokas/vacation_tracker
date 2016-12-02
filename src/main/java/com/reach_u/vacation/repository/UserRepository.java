@@ -2,6 +2,7 @@ package com.reach_u.vacation.repository;
 
 import com.reach_u.vacation.domain.User;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,5 +36,8 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     @Override
     void delete(User t);
+
+    @Query("select user from User user join user.authorities authorities where authorities.name = 'ROLE_ACCOUNTANT'")
+    List<User> getAllAccountants();
 
 }
