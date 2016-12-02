@@ -7,15 +7,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 import java.util.List;
+
+import static java.time.temporal.TemporalAdjusters.next;
 
 /**
  * Spring Data JPA repository for the Vacation entity.
  */
 @SuppressWarnings("unused")
 public interface VacationRepository extends JpaRepository<Vacation, Long>, JpaSpecificationExecutor {
+
+    LocalDate today = LocalDate.now();
+    LocalDate nextWeekSunday = today.with(next(DayOfWeek.SUNDAY)).with(next(DayOfWeek.SUNDAY));
 
     @Query("select vacation from Vacation vacation where vacation.owner.login = ?#{principal.username}")
     List<Vacation> findByOwnerIsCurrentUser();
@@ -45,6 +51,8 @@ public interface VacationRepository extends JpaRepository<Vacation, Long>, JpaSp
         "and vacation.type = ?3 and vacation.stage in ('SENT', 'PLANNED', 'CONFIRMED') and vacation.endDate >= ?1 and vacation.startDate <= ?2")
     List<Vacation> findAllVacationsOfTypeWithTimeframe(LocalDate start, LocalDate end, VacationType type);
 
+    @Query("select vacation from Vacation vacation where (vacation.startDate <= nextWeekSunday and vacation.stage = 'PLANNED')")
+    List<Vacation> getAllNextWeeksVacations();
 
 
 }

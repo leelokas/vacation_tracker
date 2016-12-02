@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -32,55 +31,32 @@ public class VacationService {
     private UserRepository userRepository;
 
 
-    @Scheduled(cron = "0 * * * * *")
+    // For testing use cron = 0 * * * * *
+    @Scheduled(cron = "0 0 9 * * MON")
     public void sendWeeklyEmail(){
         List<Vacation> vacations      = vacationRepository.getAllUpcomingVacations();
         List<User> accountants        = userRepository.getAllAccountants();
-        List<Object> vacationInfo     = new ArrayList<>();
-        List<String> accountantEmails = new ArrayList<>();
 
-        for (User accountant : accountants){
-            accountantEmails.add(accountant.getEmail());
-        }
-
-        addVacationInfo(vacations, vacationInfo);
-
-        if (!vacationInfo.isEmpty()) {
-            for (String email : accountantEmails){
-                mailService.sendEmail(email, "Vacations", vacationInfo.toString().replace("[", "").replace("]", ""), false, false);
-            }
-        }
-
-        for (Vacation vacation : vacations){
-            vacation.setStage(Stage.CONFIRMED);
-        }
+        createAndSendVacationInfo(vacations, accountants);
     }
 
-    @Scheduled(cron = "* 0 * * * *")
+    @Scheduled(cron = "* 1 * * * *")
     public void sendHouryEmail(){
-        List<Vacation> vacations      = vacationRepository.getAllUpcomingVacations();
+        List<Vacation> vacations      = vacationRepository.getAllNextWeeksVacations();
         List<User> accountants        = userRepository.getAllAccountants();
+
+        createAndSendVacationInfo(vacations, accountants);
+
+    }
+
+    private void createAndSendVacationInfo(List<Vacation> vacations, List<User> accountants) {
         List<Object> vacationInfo     = new ArrayList<>();
         List<String> accountantEmails = new ArrayList<>();
 
-        for (User accountant : accountants){
+        for (User accountant : accountants) {
             accountantEmails.add(accountant.getEmail());
         }
 
-        addVacationInfo(vacations, vacationInfo);
-
-        if (!vacationInfo.isEmpty()) {
-            for (String email : accountantEmails){
-                mailService.sendEmail(email, "Vacations", vacationInfo.toString().replace("[", "").replace("]", ""), false, false);
-            }
-        }
-
-        for (Vacation vacation : vacations){
-            vacation.setStage(Stage.CONFIRMED);
-        }
-    }
-
-    private void addVacationInfo(List<Vacation> vacations, List<Object> vacationInfo) {
         if (!vacations.isEmpty()) {
             for (Vacation vac : vacations){
                 vacationInfo.add(vac.getOwner().getFullName());
@@ -93,8 +69,19 @@ public class VacationService {
                 vacationInfo.add(vac.getPayment() + "\n");
             }
         }
-    }
 
+        if (!vacationInfo.isEmpty()) {
+            for (String email : accountantEmails){
+                mailService.sendEmail(email, "Vacations", vacationInfo.toString().replace("[", "").replace("]", ""), false, false);
+            }
+        }
+
+        if (!vacations.isEmpty()) {
+            for (Vacation vacation : vacations) {
+                vacation.setStage(Stage.CONFIRMED);
+            }
+        }
+    }
 
 }
 
