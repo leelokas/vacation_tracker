@@ -7,28 +7,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
-import static java.time.DayOfWeek.SUNDAY;
-import static java.time.temporal.TemporalAdjusters.next;
+import java.util.List;
 
 /**
  * Spring Data JPA repository for the Vacation entity.
  */
 @SuppressWarnings("unused")
 public interface VacationRepository extends JpaRepository<Vacation, Long>, JpaSpecificationExecutor {
-
-    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-    Calendar cal = Calendar.getInstance();
-
-    final LocalDate today = LocalDate.of(2016, 12, 8);
-    final LocalDate nextSunday = today.with(next(SUNDAY));
-
 
     @Query("select vacation from Vacation vacation where vacation.owner.login = ?#{principal.username}")
     List<Vacation> findByOwnerIsCurrentUser();
