@@ -6,6 +6,12 @@
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
         <p data-translate="vacationTrackerApp.vacation.cancel.question" translate-values="{id: '{{vm.vacation.id}}'}">Are you sure you want to cancel this Vacation?</p>
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label for="comment">Add comment</label>
+                <textarea name="comment" class="form-control" type="text" id="comment" ng-model="vm.vacation.cancelComment"></textarea>
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
