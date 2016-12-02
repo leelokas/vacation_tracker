@@ -318,12 +318,16 @@ public class UserResource {
             double firstWorkDay = firstWorkDayDate.getDayOfYear();
             sumOfVacationDays = (int)(firstWorkDay/numOfDaysInYear*28);
             for (Vacation vacation:userVacations) {
-                sumOfVacationDays -= getDurationInDays(vacation.getStartDate(),vacation.getEndDate());
+                if (!vacation.getType().equals(VacationType.SICK_LEAVE)){
+                    sumOfVacationDays -= getDurationInDays(vacation.getStartDate(),vacation.getEndDate());
+                }
             }
         } else {
             for (Vacation vacation:userVacations) {
                 sumOfVacationDays += getUnusedVacationDays();
-                sumOfVacationDays -= getDurationInDays(vacation.getStartDate(),vacation.getEndDate());
+                if (!vacation.getType().equals(VacationType.SICK_LEAVE)){
+                    sumOfVacationDays -= getDurationInDays(vacation.getStartDate(),vacation.getEndDate());
+                }
             }
         }
         return sumOfVacationDays;
