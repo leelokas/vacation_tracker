@@ -304,8 +304,8 @@ public class UserResource {
 
     private int getRemainingVacationDaysLeftUntilEndOfYear(){
         DateTime dateTime = new DateTime();
-        List<Vacation> userVacations = vacationRepository.findConfirmedByOwnerIsCurrentUser();
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+        List<Vacation> userPaidVacations = vacationRepository.findConfirmedPaidVacationsByOwnerCurrentUser();
+        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
 
         int sumOfVacationDays = 28;
         double numOfDaysInYear = 365;
@@ -314,20 +314,16 @@ public class UserResource {
             numOfDaysInYear = 366;
         }
         if (isNewEmployee()){
-            DateTime firstWorkDayDate = new DateTime(user.getFirstWorkday());
+            DateTime firstWorkDayDate = new DateTime(currentUser.getFirstWorkday());
             double firstWorkDay = firstWorkDayDate.getDayOfYear();
             sumOfVacationDays = (int)(firstWorkDay/numOfDaysInYear*28);
-            for (Vacation vacation:userVacations) {
-                if (!vacation.getType().equals(VacationType.SICK_LEAVE)){
-                    sumOfVacationDays -= getDurationInDays(vacation.getStartDate(),vacation.getEndDate());
-                }
+            for (Vacation vacation:userPaidVacations) {
+                sumOfVacationDays -= getDurationInDays(vacation.getStartDate(),vacation.getEndDate());
             }
         } else {
-            for (Vacation vacation:userVacations) {
-                sumOfVacationDays += getUnusedVacationDays();
-                if (!vacation.getType().equals(VacationType.SICK_LEAVE)){
-                    sumOfVacationDays -= getDurationInDays(vacation.getStartDate(),vacation.getEndDate());
-                }
+            sumOfVacationDays += getUnusedVacationDays();
+            for (Vacation vacation:userPaidVacations) {
+                sumOfVacationDays -= getDurationInDays(vacation.getStartDate(),vacation.getEndDate());
             }
         }
         return sumOfVacationDays;

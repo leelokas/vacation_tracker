@@ -29,6 +29,9 @@ public interface VacationRepository extends JpaRepository<Vacation, Long>, JpaSp
     @Query("select vacation from Vacation vacation where vacation.owner.login = ?#{principal.username} and vacation.stage in ('CONFIRMED', 'PLANNED')")
     List<Vacation> findConfirmedByOwnerIsCurrentUser();
 
+    @Query("select vacation from Vacation vacation where vacation.owner.login = ?#{principal.username} and vacation.stage in ('CONFIRMED', 'PLANNED') and vacation.type in ('PAID')")
+    List<Vacation> findConfirmedPaidVacationsByOwnerCurrentUser();
+
     @Query("select vacation from Vacation vacation where vacation.owner.manager.login = ?#{principal.username} and vacation.stage = 'SENT'")
     Page<Vacation> findAllSubordinateVacations(Pageable pageable);
 
