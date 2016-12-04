@@ -257,8 +257,8 @@ public class UserResource {
     @Timed
     public Map<String,Integer> getRemainingDaysOfCurrentUser() throws URISyntaxException {
         Map<String,Integer> result = new HashMap<>();
-        result.put("current", getRemainingVacationDaysLeftUntilEndOfYear());
-        result.put("endOfYear", getEmployeeVacationDaysEarnedByCurrentDate());
+        result.put("endOfYear", getEmployeeVacationDaysEarned(false));
+        result.put("current", getEmployeeVacationDaysEarned(true));
 
         int currentYear = Year.now().getValue();
         LocalDate timeFrameStart = LocalDate.parse(String.valueOf(currentYear) + "-01-01"), timeFrameEnd = LocalDate.parse(String.valueOf(currentYear) + "-12-31");
@@ -303,73 +303,39 @@ public class UserResource {
         return null;
     }
 
-    private int getRemainingVacationDaysLeftUntilEndOfYear(){
+    private int getEmployeeVacationDaysEarned(boolean byCurrentDate) {
         DateTime dateTime = new DateTime();
         List<Vacation> userPaidVacations = vacationRepository.findPlannedPaidVacationsByOwnerCurrentUser();
-        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
 
-        int sumOfVacationDays = 28;
-        double numOfDaysInYear = 365;
-        boolean isLeapYear = dateTime.year().isLeap();
-        if (isLeapYear){
-            numOfDaysInYear = 366;
-        }
-        if (isNewEmployee()){
-            DateTime firstWorkDayDate = new DateTime(currentUser.getFirstWorkday());
-            double firstWorkDay = firstWorkDayDate.getDayOfYear();
-            sumOfVacationDays = (int)(firstWorkDay/numOfDaysInYear*28);
-            for (Vacation vacation:userPaidVacations) {
-                sumOfVacationDays -= getDurationInDays(vacation.getStartDate(),vacation.getEndDate());
+        double nrOfDaysEarned,
+            numOfDaysInYear = dateTime.year().isLeap() ? 366 : 365,
+            currentDay = dateTime.getDayOfYear();
+
+        if (isNewEmployee(user)) {
+            if (user.getFirstWorkday() == null) {
+                log.warn("User doesn't have first work day defined, calculations will not give correct results!");
             }
-        } else {
-            sumOfVacationDays += getUnusedVacationDays();
-            for (Vacation vacation:userPaidVacations) {
-                sumOfVacationDays -= getDurationInDays(vacation.getStartDate(),vacation.getEndDate());
-            }
-        }
-        return sumOfVacationDays;
-    }
-
-    private int getUnusedVacationDays(){
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
-        Integer unUsedVacationDays = user.getUnusedVacationDays();
-        if (unUsedVacationDays.equals(null)){
-            return 0;
-        } else {
-            return unUsedVacationDays;
-        }
-    }
-
-    private boolean isNewEmployee(){
-        DateTime dateTime = new DateTime();
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
-        DateTime firstWorkDayDate = new DateTime(user.getFirstWorkday());
-        if (firstWorkDayDate.getYear() == dateTime.getYear()){
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private int getEmployeeVacationDaysEarnedByCurrentDate(){
-        DateTime dateTime = new DateTime();
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
-        double currentVacationDays = 0;
-        double numOfDaysInYear = 365;
-        boolean isLeapYear = dateTime.year().isLeap();
-        double currentDay = dateTime.getDayOfYear();
-
-        if (isLeapYear){
-            numOfDaysInYear = 366;
-        }
-        if(isNewEmployee()){
             DateTime firstWorkDayDate = new DateTime(user.getFirstWorkday());
             double firstWorkDay = firstWorkDayDate.getDayOfYear();
-            currentVacationDays = firstWorkDay/currentDay*28;
+            nrOfDaysEarned = ((byCurrentDate ? currentDay : numOfDaysInYear) - firstWorkDay) / numOfDaysInYear * 28;
         } else {
-            currentVacationDays = currentDay/numOfDaysInYear*28;
+            nrOfDaysEarned = byCurrentDate ? (currentDay / numOfDaysInYear * 28) : 28;
+            nrOfDaysEarned += getUnusedVacationDays(user);
         }
-        return (int)currentVacationDays;
+        for (Vacation vacation : userPaidVacations) {
+            nrOfDaysEarned -= getDurationInDays(vacation.getStartDate(), vacation.getEndDate());
+        }
+        return (int)nrOfDaysEarned;
+    }
+
+    private int getUnusedVacationDays(User user){
+        return (user.getUnusedVacationDays().equals(null)) ? 0 : user.getUnusedVacationDays();
+    }
+
+    private boolean isNewEmployee(User user){
+        DateTime firstWorkDayDate = new DateTime(user.getFirstWorkday());
+        return firstWorkDayDate.getYear() == new DateTime().getYear();
     }
 
 }
