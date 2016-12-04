@@ -4,23 +4,39 @@ describe('E2e tests', function () {
 
     var h = require('./helperFunctions.js');
 
-    it('should log in with user user', function () {
+    it ('should log in with user User', function() {
         h.login('user','user');
+
     });
+
+    /*
+    it('should log in with user user and clean up the environment', function () {
+        h.login('user','user');
+        element.all(by.css('[ui-sref="vacation"]')).first().click().then(function() {
+            console.log(element.all(by.buttonText('Cancel request')).count());
+            if(element.all(by.buttonText('Cancel request')).count() > 0) {
+                element.all(by.buttonText('Cancel request')).then(function (cancels) {
+                    cancels.click();
+                    element(by.id(submitId)).submit();
+                });
+            }
+            if(element.all(by.buttonText('Delete')).count() > 0) {
+                element.all(by.buttonText('Delete')).then(function (deletes) {
+                    deletes.click();
+                    element(by.id(submitId)).submit();
+                });
+            }
+        });
+    });*/
 
     it('should load Vacations', function () {
         h.checkTitle('[ui-sref="vacation"]', 'h2', /vacationTrackerApp.vacation.home.title/);
     });
 
-    it('should load create Vacation dialog', function () {
-            h.checkTitle('[ui-sref="vacation.new"]','h4.modal-title',/vacationTrackerApp.vacation.home.createOrEditLabel/);
-            element(by.css('button.close')).click();
-    });
-
     it('should create a vacation', function () {
         h.addNew.click().then(function () {
             h.startDate.sendKeys(h.dateString);
-            h.endDate.sendKeys(h.dateString);
+            h.endDate.sendKeys(h.endDateString);
             h.submit.click();
             });
         h.checkRequestData(h.vacationTypeColumn,/vacationTrackerApp.VacationType.PAID/);
@@ -60,10 +76,10 @@ describe('E2e tests', function () {
     it('should add end date to sick leave request', function() {
         h.clickButton(h.vacationButtonColumn,'End date');
         expect(element(by.id('field_startDate_sickLeave')).isEnabled()).toBe(false);
-        element(by.id('field_endDate_sickLeave')).sendKeys(h.dateString);
+        element(by.id('field_endDate_sickLeave')).sendKeys(h.endDateString);
         h.submit.click();
         h.vacationDateColumn.getText().then(function(text) {
-            expect(text).toMatch(h.dateString + ' - ' + h.dateString);
+            expect(text).toMatch(h.dateString + ' - ' + h.endDateString);
         });
         expect(h.vacationButtonColumn.element(by.buttonText('End date')).isPresent()).toBe(false);
         expect(h.vacationButtonColumn.element(by.buttonText('Cancel request')).isPresent()).toBe(true);
@@ -74,10 +90,29 @@ describe('E2e tests', function () {
     it('should make an extra vacation request', function() {
         h.addNew.click().then(function () {
             h.startDate.sendKeys(h.dateString);
-            h.endDate.sendKeys(h.dateString);
+            h.endDate.sendKeys(h.endDateString);
             h.submit.click();
         });
         h.clickButton(h.vacationButtonColumn,'Send to confirmation');
+    });
+
+    it('should check the vacation days left', function() {
+        expect(element(by.id('paidDaysLeft')).getText()).toEqual(26);
+    });
+
+    it('should filter my vacation requests by type', function() {
+        h.typeFilter.sendKeys('SICK_LEAVE');
+        h.filter.click();
+        expect(element.all(by.xpath('//table/tbody/tr')).count()).toEqual(1);
+    });
+
+    it('should filter overview requests by owner and type', function() {
+        element.all(by.css('[ui-sref="overview"]')).first().click().then(function() {
+            h.typeFilter.sendKeys('SICK_LEAVE');
+            h.ownerFilter.sendKeys('user');
+            h.filter.click();
+            expect(element.all(by.xpath('//table/tbody/tr')).count()).toEqual(1);
+        });
     });
 
     it( 'should log out with user user', function () {
@@ -86,6 +121,23 @@ describe('E2e tests', function () {
 
     it('should log in with manager/admin user', function() {
         h.login('admin','admin');
+    });
+
+    it('should filter users by user User', function() {
+        element(by.id('admin-menu')).click().then(function () {
+            element.all(by.css('[ui-sref="user-management"]')).first().click().then(function () {
+                h.loginFilter.sendKeys('user').then(function() {
+                    h.filter.click().then(function() {
+                        expect(element.all(by.xpath('//table/tbody/tr')).count()).toEqual(1);
+                        element(by.buttonText('Edit')).click().then(function() {
+                            element(by.css('[name="firstWorkday"]')).sendKeys(h.dateString);
+                            element(by.css('[name="unusedVacationDays"]')).sendKeys(0);
+                            h.submit.click();
+                        });
+                    });
+                });
+            });
+        });
     });
 
     it('should confirm request', function () {
@@ -171,6 +223,9 @@ describe('E2e tests', function () {
         h.login('user','user');
     });
 
+    it('should check the vacation days left after the rejection', function() {
+        expect(element(by.id('paidDaysLeft')).getText()).toEqual(27);
+    });
 
     it('should check that the request was rejected (i.e in SAVED state now) and delete the request', function() {
         element.all(by.css('[ui-sref="vacation"]')).first().click();
