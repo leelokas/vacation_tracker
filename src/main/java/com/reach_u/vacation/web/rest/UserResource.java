@@ -334,7 +334,7 @@ public class UserResource {
     }
 
     private int getUnusedVacationDays(User user){
-        return (user.getUnusedVacationDays().equals(null)) ? 0 : user.getUnusedVacationDays();
+        return (user.getUnusedVacationDays() == null) ? 0 : user.getUnusedVacationDays();
     }
 
     private boolean isNewEmployee(User user){
