@@ -5,15 +5,18 @@
         .module('vacationTrackerApp')
         .factory('User', User);
 
-    User.$inject = ['$resource'];
+    User.$inject = ['$resource', 'DateUtils'];
 
-    function User ($resource) {
+    function User ($resource, DateUtils) {
         var service = $resource('api/users/:login', {}, {
             'query': {method: 'GET', isArray: true},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {
-                    data = angular.fromJson(data);
+                    if (data) {
+                        data = angular.fromJson(data);
+                        data.firstWorkday = DateUtils.convertDateTimeFromServer(data.firstWorkday);
+                    }
                     return data;
                 }
             },
@@ -26,7 +29,10 @@
                 url: 'api/users/filter',
                 isArray: true,
                 transformResponse: function (data) {
-                    data = angular.fromJson(data);
+                    if (data) {
+                        data = angular.fromJson(data);
+                        data.firstWorkday = DateUtils.convertDateTimeFromServer(data.firstWorkday);
+                    }
                     return data;
                 }
             },

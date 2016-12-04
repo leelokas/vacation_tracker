@@ -19,7 +19,6 @@
         vm.openCalendar = openCalendar;
         vm.datePickerOpenStatus = false;
         $scope.dateOptions = {
-            minDate: new Date(),
             showWeeks: false,
             startingDay: 1
         };
