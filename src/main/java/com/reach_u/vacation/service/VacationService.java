@@ -10,10 +10,14 @@ import com.reach_u.vacation.repository.VacationRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+
+import static java.time.temporal.TemporalAdjusters.next;
 
 /**
  * Created by tanelj on 21.10.16.
@@ -31,7 +35,8 @@ public class VacationService {
     private UserRepository userRepository;
 
 
-    // For testing use cron = 0 * * * * *
+    // For testing use: cron = "0 * * * * * "     -> every minute
+    // For live use:    cron = "0 0 9 * * MON"    -> every Monday at 9 AM
     @Scheduled(cron = "0 0 9 * * MON")
     public void sendWeeklyEmail(){
         List<Vacation> vacations      = vacationRepository.getAllUpcomingVacations();
@@ -40,9 +45,14 @@ public class VacationService {
         createAndSendVacationInfo(vacations, accountants);
     }
 
-    @Scheduled(cron = "* 1 * * * *")
+    // For testing use: cron = "0 * * * * *"   -> executes every minute
+    // For live use:    cron = "15 */1 * * *"  -> executes at minute 15 past every hour
+    @Scheduled(cron = "15 */1 * * *")
     public void sendHouryEmail(){
-        List<Vacation> vacations      = vacationRepository.getAllNextWeeksVacations();
+        LocalDate today = LocalDate.now();
+        LocalDate nextWeekSunday = today.with(next(DayOfWeek.SUNDAY)).with(next(DayOfWeek.SUNDAY));
+
+        List<Vacation> vacations      = vacationRepository.getAllNextWeeksVacations(nextWeekSunday);
         List<User> accountants        = userRepository.getAllAccountants();
 
         createAndSendVacationInfo(vacations, accountants);
@@ -76,11 +86,11 @@ public class VacationService {
             }
         }
 
-        if (!vacations.isEmpty()) {
-            for (Vacation vacation : vacations) {
-                vacation.setStage(Stage.CONFIRMED);
-            }
-        }
+//        if (!vacations.isEmpty()) {
+//            for (Vacation vacation : vacations) {
+//                vacation.setStage(Stage.CONFIRMED);
+//            }
+//        }
     }
 
 }
