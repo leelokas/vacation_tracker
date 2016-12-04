@@ -4,10 +4,13 @@ import com.reach_u.vacation.config.JHipsterProperties;
 import com.reach_u.vacation.domain.User;
 
 import com.reach_u.vacation.domain.Vacation;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.CharEncoding;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -15,9 +18,15 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
-
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
+import javax.mail.util.ByteArrayDataSource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -45,6 +54,9 @@ public class MailService {
 
     @Inject
     private SpringTemplateEngine templateEngine;
+
+    @Inject
+    private XlsService xlsService;
 
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
@@ -121,6 +133,34 @@ public class MailService {
                     sendEmail(user.getManager().getEmail(), subject, content, false, true);
                 }
 //                sendEmail(user.getManager().getEmail(), subject, content, false, true);
+        }
+    }
+
+    // isMultipart has to be true in order to send with attachment
+    @Async
+    public void sendEmailWithAttachment(String to, String subject, String content, boolean isMultipart, boolean isHtml,
+                                 List<Vacation> vacations) {
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, CharEncoding.UTF_8);
+            Workbook wb = xlsService.generateXlsFileForVacations(vacations, true);
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            wb.write(output);
+            DataSource fds = new ByteArrayDataSource(output.toByteArray(), "application/vnd.ms-excel");
+
+            message.addAttachment("Vacations.xls", fds );
+            message.setTo(to);
+            message.setFrom(jHipsterProperties.getMail().getFrom());
+            message.setSubject(subject);
+            message.setText(content, isHtml);
+            javaMailSender.send(mimeMessage);
+            log.debug("Sent e-mail to User '{}'", to);
+
+            output.close();
+        }
+        catch (Exception e) {
+            log.warn("E-mail could not be sent to user '{}', exception is: {}", to, e.getMessage());
         }
 
     }

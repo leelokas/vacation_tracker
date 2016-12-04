@@ -46,6 +46,19 @@ public class XlsService {
         return wb;
     }
 
+    public Workbook generateXlsFileForVacations(List<Vacation> vacations, boolean showPaymentType){
+        vacations.stream().forEach(v -> log.debug("Found vacation for export {}", v.toString()));
+
+        Workbook wb = new HSSFWorkbook();
+        Sheet sheet = wb.createSheet();
+        generateHeaderRow(getHeaderCellStyle(wb), sheet, showPaymentType);
+        generateItemRows(getDateCellStyle(wb), sheet, showPaymentType, vacations);
+        for (int i = 0; i < header.length; ++i) {
+            sheet.autoSizeColumn(i);
+        }
+        return wb;
+    }
+
     private void generateHeaderRow(CellStyle headerRowStyle, Sheet sheet, boolean showPaymentType) {
         Row headerRow = sheet.createRow(0);
         for (int i = 0; i < header.length; ++i) {
@@ -118,5 +131,6 @@ public class XlsService {
         cell.setCellStyle(style);
         return cell;
     }
+
 }
 

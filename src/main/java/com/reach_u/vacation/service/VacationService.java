@@ -82,7 +82,7 @@ public class VacationService {
 
         if (!vacationInfo.isEmpty()) {
             for (String email : accountantEmails){
-                mailService.sendEmail(email, "Vacations", vacationInfo.toString().replace("[", "").replace("]", ""), false, false);
+                mailService.sendEmailWithAttachment(email, "Vacations", " ", true, false, vacations);
             }
         }
 
