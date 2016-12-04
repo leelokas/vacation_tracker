@@ -86,11 +86,11 @@ public class VacationService {
             }
         }
 
-//        if (!vacations.isEmpty()) {
-//            for (Vacation vacation : vacations) {
-//                vacation.setStage(Stage.CONFIRMED);
-//            }
-//        }
+        if (!vacations.isEmpty()) {
+            for (Vacation vacation : vacations) {
+                vacation.setStage(Stage.CONFIRMED);
+            }
+        }
     }
 
 }
