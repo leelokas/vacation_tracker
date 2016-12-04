@@ -305,7 +305,7 @@ public class UserResource {
 
     private int getRemainingVacationDaysLeftUntilEndOfYear(){
         DateTime dateTime = new DateTime();
-        List<Vacation> userPaidVacations = vacationRepository.findConfirmedPaidVacationsByOwnerCurrentUser();
+        List<Vacation> userPaidVacations = vacationRepository.findPlannedPaidVacationsByOwnerCurrentUser();
         User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
 
         int sumOfVacationDays = 28;
