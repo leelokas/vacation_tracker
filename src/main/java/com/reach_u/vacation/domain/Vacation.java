@@ -44,8 +44,20 @@ public class Vacation implements Serializable {
     @Column(name = "end_date")
     private LocalDate endDate;
 
+    @Size(max = 500)
+    @Column(name = "comment", length = 500)
+    private String comment;
+
     @ManyToOne
     private User owner;
+
+    @Size(max = 500)
+    @Column(name = "cancel_comment", length = 500)
+    private String cancelComment;
+
+    @Size(max = 500)
+    @Column(name = "reject_comment", length = 500)
+    private String rejectComment;
 
     public Long getId() {
         return id;
@@ -133,6 +145,37 @@ public class Vacation implements Serializable {
         this.owner = user;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public Vacation comment(String comment) {
+        this.comment = comment;
+        return this;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public  String getCancelComment() { return cancelComment; }
+
+    public Vacation cancelComment(String cancelComment) {
+        this.cancelComment = cancelComment;
+        return this;
+    }
+
+    public  void setCancelComment() { this.cancelComment = cancelComment; }
+
+    public  String getRejectComment() { return rejectComment; }
+
+    public Vacation rejectComment(String rejectComment) {
+        this.rejectComment = rejectComment;
+        return this;
+    }
+
+    public  void setRejectComment() { this.rejectComment = rejectComment; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -163,6 +206,9 @@ public class Vacation implements Serializable {
             ", startDate='" + startDate + "'" +
             ", endDate='" + endDate + "'" +
             ", owner='" + owner + "'" +
+            ", comment='" + comment + "'" +
+            ", cancelComment='" + cancelComment + "'" +
+            ", rejectComment='" + rejectComment + "'" +
             '}';
     }
 }

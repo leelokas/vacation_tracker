@@ -72,4 +72,21 @@
         </update>
     </changeSet>
 
+    <!--
+        Added comment fields to Vacation
+    -->
+    <changeSet id="20161204175420" author="leelo">
+        <addColumn tableName="vacation">
+            <column name="comment" type="VARCHAR(500)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="cancel_comment" type="VARCHAR(500)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="reject_comment" type="VARCHAR(500)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
