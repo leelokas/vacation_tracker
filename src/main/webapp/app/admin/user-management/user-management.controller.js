@@ -11,7 +11,6 @@
         var vm = this;
 
         vm.loadAll = loadAll;
-        vm.setActive = setActive;
         vm.clear = clear;
         vm.loadPage = loadPage;
         vm.transition = transition;
@@ -44,14 +43,6 @@
         Principal.identity().then(function(account) {
             vm.currentAccount = account;
         });
-
-        function setActive (user, isActivated) {
-            user.activated = isActivated;
-            User.update(user, function () {
-                vm.loadAll();
-                vm.clear();
-            });
-        }
 
         function loadAll () {
             User.query({

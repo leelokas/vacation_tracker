@@ -99,18 +99,31 @@
                 </select>
             </div>
 
+            <div class="form-group col-md-6">
+                <label data-translate="userManagement.firstWorkday">First workday</label>
+                <div class="input-group">
+                    <input id="firstWorkday" type="text" class="form-control" name="firstWorkday"
+                           uib-datepicker-popup="{{'dd/MM/yyyy'}}"
+                           ng-model="vm.user.firstWorkday"
+                           is-open="vm.datePickerOpenStatus"
+                           datepicker-options="dateOptions"
+                           show-button-bar="false"/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label data-translate="userManagement.unusedVacationDays">Unused vacation days from previous year</label>
+                <input type="text" class="form-control" name="unusedVacationDays" ng-model="vm.user.unusedVacationDays">
+            </div>
+
             <div class="form-group col-md-12">
                 <label data-translate="userManagement.profiles">Profiles</label>
                 <select class="form-control" multiple name="authority" ng-model="vm.user.authorities"
                         ng-options="authority for authority in vm.authorities">
                 </select>
-            </div>
-
-            <div class="form-group col-md-12">
-                <label for="activated">
-                    <input ng-disabled="vm.user.id === null" type="checkbox" id="activated" name="activated" ng-model="vm.user.activated">
-                    <span data-translate="userManagement.activated">Activated</span>
-                </label>
             </div>
         </div>
 

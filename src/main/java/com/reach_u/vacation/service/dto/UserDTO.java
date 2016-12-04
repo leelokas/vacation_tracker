@@ -8,6 +8,7 @@ import com.reach_u.vacation.domain.User;
 import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.*;
+import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 /**
@@ -39,18 +40,23 @@ public class UserDTO {
 
     private UserDTO manager;
 
+    private Date firstWorkday;
+
+    private Integer unusedVacationDays;
+
     public UserDTO() {
     }
 
     public UserDTO(User user) {
         this(user.getLogin(), user.getFirstName(), user.getLastName(),
             user.getEmail(), user.getActivated(), user.getLangKey(),
-            user.getAuthorities().stream().map(Authority::getName)
-                .collect(Collectors.toSet()), user.getManager());
+            user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()),
+            user.getManager(), user.getFirstWorkday(), user.getUnusedVacationDays());
     }
 
-    public UserDTO(String login, String firstName, String lastName,
-        String email, boolean activated, String langKey, Set<String> authorities, User manager) {
+    public UserDTO(String login, String firstName, String lastName, String email,
+                   boolean activated, String langKey, Set<String> authorities, User manager,
+                   Date firstWorkday, Integer unusedVacationDays) {
 
         this.login = login;
         this.firstName = firstName;
@@ -62,6 +68,8 @@ public class UserDTO {
         if (manager != null && !manager.getLogin().equals(login)) {
             this.manager = new UserDTO(manager);
         }
+        this.firstWorkday = firstWorkday;
+        this.unusedVacationDays = unusedVacationDays;
     }
 
     public String getLogin() {
@@ -96,6 +104,14 @@ public class UserDTO {
         return manager;
     }
 
+    public Date getFirstWorkday() {
+        return firstWorkday;
+    }
+
+    public Integer getUnusedVacationDays() {
+        return unusedVacationDays;
+    }
+
     @Override
     public String toString() {
         return "UserDTO{" +
@@ -107,6 +123,8 @@ public class UserDTO {
             ", langKey='" + langKey + '\'' +
             ", authorities=" + authorities +
             ", manager={" + manager + "}" +
+            ", firstWorkday=" + firstWorkday +
+            ", unusedVacationDays=" + unusedVacationDays +
             "}";
     }
 }

@@ -134,6 +134,8 @@ public class UserService {
         if (managedUserVM.getManagerId() != null) {
             userRepository.findOneById(managedUserVM.getManagerId()).ifPresent(m -> user.setManager(m));
         }
+        user.setFirstWorkday(managedUserVM.getFirstWorkday());
+        user.setUnusedVacationDays(managedUserVM.getUnusedVacationDays());
         userRepository.save(user);
         log.debug("Created Information for User: {}", user);
         return user;
@@ -151,7 +153,8 @@ public class UserService {
     }
 
     public void updateUser(Long id, String login, String firstName, String lastName, String email,
-                           boolean activated, String langKey, Set<String> authorities, Long managerId) {
+                           boolean activated, String langKey, Set<String> authorities, Long managerId,
+                           Date firstWorkday, Integer unusedVacationDays) {
 
         userRepository
             .findOneById(id)
@@ -171,6 +174,8 @@ public class UserService {
                     User manager = userRepository.findOneById(managerId).orElse(null);
                     u.setManager(manager);
                 }
+                u.setFirstWorkday(firstWorkday);
+                u.setUnusedVacationDays(unusedVacationDays);
                 log.debug("Changed Information for User: {}", u);
             });
     }

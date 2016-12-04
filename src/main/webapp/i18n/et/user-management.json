@@ -27,6 +27,8 @@
         "createdDate": "Loomise kuupäev",
         "lastModifiedBy": "Muudetud",
         "lastModifiedDate": "Muutmise kuupäev",
-        "manager": "Otsene ülemus"
+        "manager": "Otsene ülemus",
+        "firstWorkday": "Esimene tööpäev",
+        "unusedVacationDays": "Eelmise aasta kasutamata jäänud puhkepäevad"
     }
 }

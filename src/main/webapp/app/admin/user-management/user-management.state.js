@@ -85,9 +85,9 @@
                         entity: function () {
                             return {
                                 id: null, login: null, firstName: null, lastName: null, email: null,
-                                activated: true, langKey: null, createdBy: null, createdDate: null,
+                                activated: true, langKey: "en", createdBy: null, createdDate: null,
                                 lastModifiedBy: null, lastModifiedDate: null, resetDate: null,
-                                resetKey: null, authorities: null
+                                resetKey: null, authorities: ["ROLE_USER"], firstWorkday: new Date()
                             };
                         }
                     }

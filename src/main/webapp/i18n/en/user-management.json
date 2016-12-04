@@ -27,6 +27,8 @@
         "createdDate": "Created date",
         "lastModifiedBy": "Modified by",
         "lastModifiedDate": "Modified date",
-        "manager": "Manager"
+        "manager": "Manager",
+        "firstWorkday": "First workday",
+        "unusedVacationDays": "Unused vacation days from previous year"
     }
 }

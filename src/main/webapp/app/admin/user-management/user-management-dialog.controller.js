@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('UserManagementDialogController',UserManagementDialogController);
 
-    UserManagementDialogController.$inject = ['$stateParams', '$uibModalInstance', 'entity', 'User', 'JhiLanguageService', 'AlertService'];
+    UserManagementDialogController.$inject = ['$scope', '$uibModalInstance', 'entity', 'User', 'JhiLanguageService', 'AlertService'];
 
-    function UserManagementDialogController ($stateParams, $uibModalInstance, entity, User, JhiLanguageService, AlertService) {
+    function UserManagementDialogController ($scope, $uibModalInstance, entity, User, JhiLanguageService, AlertService) {
         var vm = this;
 
         vm.authorities = ['ROLE_USER', 'ROLE_MANAGER', 'ROLE_ACCOUNTANT', 'ROLE_ADMIN'];
@@ -16,7 +16,13 @@
         vm.save = save;
         vm.user = entity;
         vm.users = User.query();
-
+        vm.openCalendar = openCalendar;
+        vm.datePickerOpenStatus = false;
+        $scope.dateOptions = {
+            minDate: new Date(),
+            showWeeks: false,
+            startingDay: 1
+        };
 
         JhiLanguageService.getAll().then(function (languages) {
             vm.languages = languages;
@@ -50,6 +56,10 @@
             } else {
                 User.save(vm.user, onSaveSuccess, onSaveError);
             }
+        }
+
+        function openCalendar () {
+            vm.datePickerOpenStatus = true;
         }
     }
 })();

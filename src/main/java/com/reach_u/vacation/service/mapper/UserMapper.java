@@ -30,6 +30,8 @@ public interface UserMapper {
     @Mapping(target = "resetDate", ignore = true)
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "manager", ignore = true)
+    @Mapping(target = "firstWorkday", ignore = true)
+    @Mapping(target = "unusedVacationDays", ignore = true)
     User userDTOToUser(UserDTO userDTO);
 
     List<User> userDTOsToUsers(List<UserDTO> userDTOs);
