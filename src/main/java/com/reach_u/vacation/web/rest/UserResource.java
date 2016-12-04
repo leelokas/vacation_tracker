@@ -236,7 +236,7 @@ public class UserResource {
 
             throws URISyntaxException{
         log.debug("REST request to get vacations : firstName: {}, lastName: {}, login: {}, manager: {}, authority: {}",
-                firstName, lastName, login, manager, auth);
+            firstName, lastName, login, manager, auth);
         List<User> partlyFilteredUsers = userRepository.findAll(UserSpecifications.byQuery(firstName, lastName, login, manager));
         List<ManagedUserVM> response = partlyFilteredUsers.stream()
                 .filter(user -> auth == null || user.getAuthorities().contains(auth))
@@ -257,11 +257,11 @@ public class UserResource {
     @Timed
     public Map<String,Integer> getRemainingDaysOfCurrentUser() throws URISyntaxException {
         Map<String,Integer> result = new HashMap<>();
-        result.put("endOfYear", getEmployeeVacationDaysEarned(false));
-        result.put("current", getEmployeeVacationDaysEarned(true));
-
         int currentYear = Year.now().getValue();
         LocalDate timeFrameStart = LocalDate.parse(String.valueOf(currentYear) + "-01-01"), timeFrameEnd = LocalDate.parse(String.valueOf(currentYear) + "-12-31");
+        int plannedPaidVacationDuration = getPlannedPaidVacationDays(timeFrameStart, timeFrameEnd);
+        result.put("endOfYear", getEmployeeVacationDaysEarned(plannedPaidVacationDuration, false));
+        result.put("current", getEmployeeVacationDaysEarned(plannedPaidVacationDuration, true));
         result.put("hasTwoWeekPaidVacation", hasAnyTwoWeekPaidVacation(timeFrameStart, timeFrameEnd));
         result.put("studyLeaveRemaining", getRemainingStudyLeaveDays(timeFrameStart, timeFrameEnd));
 
@@ -281,19 +281,27 @@ public class UserResource {
     }
 
     private int getRemainingStudyLeaveDays(LocalDate timeFrameStart, LocalDate timeFrameEnd) {
-        int studyLeaveRemaining = 30;
         List<Vacation> list = vacationRepository.findAllVacationsOfTypeWithTimeframe(timeFrameStart, timeFrameEnd, VacationType.STUDY_LEAVE);
+        return 30 - getVacationDurationSum(list, timeFrameStart, timeFrameEnd);
+    }
 
+    private int getPlannedPaidVacationDays(LocalDate timeFrameStart, LocalDate timeFrameEnd) {
+        List<Vacation> list = vacationRepository.findAllVacationsOfTypeWithTimeframe(timeFrameStart, timeFrameEnd, VacationType.PAID);
+        return getVacationDurationSum(list, timeFrameStart, timeFrameEnd);
+    }
+
+    private int getVacationDurationSum(List<Vacation> list, LocalDate timeFrameStart, LocalDate timeFrameEnd) {
+        int sum = 0;
         for (Vacation vacation : list) {
             if (vacation.getStartDate().compareTo(timeFrameStart) < 0) {
-                studyLeaveRemaining -= getDurationInDays(timeFrameStart, vacation.getEndDate());
+                sum += getDurationInDays(timeFrameStart, vacation.getEndDate());
             } else if (vacation.getEndDate().compareTo(timeFrameEnd) > 0){
-                studyLeaveRemaining -= getDurationInDays(vacation.getStartDate(), timeFrameEnd);
+                sum += getDurationInDays(vacation.getStartDate(), timeFrameEnd);
             } else {
-                studyLeaveRemaining -= getDurationInDays(vacation.getStartDate(), vacation.getEndDate());
+                sum += getDurationInDays(vacation.getStartDate(), vacation.getEndDate());
             }
         }
-        return studyLeaveRemaining;
+        return sum;
     }
 
     private Long getDurationInDays(LocalDate start, LocalDate end) {
@@ -303,11 +311,9 @@ public class UserResource {
         return null;
     }
 
-    private int getEmployeeVacationDaysEarned(boolean byCurrentDate) {
+    private int getEmployeeVacationDaysEarned(int paidVacationDurationSum, boolean byCurrentDate) {
         DateTime dateTime = new DateTime();
-        List<Vacation> userPaidVacations = vacationRepository.findPlannedPaidVacationsByOwnerCurrentUser();
         User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
-
         double nrOfDaysEarned,
             numOfDaysInYear = dateTime.year().isLeap() ? 366 : 365,
             currentDay = dateTime.getDayOfYear();
@@ -323,9 +329,7 @@ public class UserResource {
             nrOfDaysEarned = byCurrentDate ? (currentDay / numOfDaysInYear * 28) : 28;
             nrOfDaysEarned += getUnusedVacationDays(user);
         }
-        for (Vacation vacation : userPaidVacations) {
-            nrOfDaysEarned -= getDurationInDays(vacation.getStartDate(), vacation.getEndDate());
-        }
+        nrOfDaysEarned -= paidVacationDurationSum;
         return (int)nrOfDaysEarned;
     }
 
