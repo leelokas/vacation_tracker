@@ -38,7 +38,7 @@ public interface VacationRepository extends JpaRepository<Vacation, Long>, JpaSp
     @Query("select vacation from Vacation vacation where vacation.owner.manager.login = ?#{principal.username} and vacation.stage = 'SENT'")
     Page<Vacation> findAllSubordinateVacations(Pageable pageable);
 
-    @Query("select vacation from Vacation vacation where ( (vacation.startDate - current_date) <= 7 and vacation.stage = 'PLANNED' )")
+    @Query("select vacation from Vacation vacation where ( (vacation.startDate - current_date) < 7 and vacation.stage = 'PLANNED' )")
     List<Vacation> getAllUpcomingVacations();
 
     @Query("select vacation from Vacation vacation where ( vacation.id in (?1) )")
@@ -48,7 +48,7 @@ public interface VacationRepository extends JpaRepository<Vacation, Long>, JpaSp
         "and vacation.type = ?3 and vacation.stage in ('SENT', 'PLANNED', 'CONFIRMED') and vacation.endDate >= ?1 and vacation.startDate <= ?2")
     List<Vacation> findAllVacationsOfTypeWithTimeframe(LocalDate start, LocalDate end, VacationType type);
 
-    @Query("select vacation from Vacation vacation where (vacation.startDate < ?1 and vacation.stage = 'PLANNED')")
+    @Query("select vacation from Vacation vacation where (vacation.startDate <= ?1 and vacation.stage = 'PLANNED')")
     List<Vacation> getAllNextWeeksVacations(LocalDate nextWeekSunday);
 
 }

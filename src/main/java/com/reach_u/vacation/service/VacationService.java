@@ -39,7 +39,10 @@ public class VacationService {
     // For live use:    cron = "0 0 9 * * MON"    -> every Monday at 9 AM
     @Scheduled(cron = "0 0 9 * * MON")
     public void sendWeeklyEmail(){
-        List<Vacation> vacations      = vacationRepository.getAllUpcomingVacations();
+        LocalDate today = LocalDate.now();
+        LocalDate nextWeekSunday = today.with(next(DayOfWeek.SUNDAY)).with(next(DayOfWeek.SUNDAY));
+
+        List<Vacation> vacations      = vacationRepository.getAllNextWeeksVacations(nextWeekSunday);
         List<User> accountants        = userRepository.getAllAccountants();
 
         createAndSendVacationInfo(vacations, accountants);
@@ -49,10 +52,7 @@ public class VacationService {
     // For live use:    cron = "15 */1 * * *"  -> executes at minute 15 past every hour
     @Scheduled(cron = "15 */1 * * *")
     public void sendHouryEmail(){
-        LocalDate today = LocalDate.now();
-        LocalDate nextWeekSunday = today.with(next(DayOfWeek.SUNDAY)).with(next(DayOfWeek.SUNDAY));
-
-        List<Vacation> vacations      = vacationRepository.getAllNextWeeksVacations(nextWeekSunday);
+        List<Vacation> vacations      = vacationRepository.getAllUpcomingVacations();
         List<User> accountants        = userRepository.getAllAccountants();
 
         createAndSendVacationInfo(vacations, accountants);
