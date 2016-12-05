@@ -4,6 +4,32 @@ describe('E2e tests', function () {
 
     var h = require('./helperFunctions.js');
 
+    it('should filter users by user User', function() {
+        h.login('admin','admin');
+        element(by.id('admin-menu')).click().then(function () {
+            element.all(by.css('[ui-sref="user-management"]')).first().click().then(function () {
+                h.loginFilter.sendKeys('user').then(function() {
+                    h.filter.click().then(function() {
+                        expect(element.all(by.xpath('//table/tbody/tr')).count()).toEqual(1);
+                        element(by.buttonText('Edit')).click().then(function() {
+                            element(by.css('[name="firstWorkday"]')).clear().then(function() {
+                                element(by.css('[name="firstWorkday"]')).sendKeys('31/12/2015');
+                            });
+                            element(by.css('[name="unusedVacationDays"]')).clear().then(function() {
+                                element(by.css('[name="unusedVacationDays"]')).sendKeys(0);
+                            });
+                            h.submit.click();
+                        });
+                    });
+                });
+            });
+        });
+    });
+
+    it('should log out with admin user', function() {
+        h.logout.click();
+    });
+
     it ('should log in with user User', function() {
         h.login('user','user');
 
@@ -97,7 +123,7 @@ describe('E2e tests', function () {
     });
 
     it('should check the vacation days left', function() {
-        expect(element(by.id('paidDaysLeft')).getText()).toEqual(26);
+        expect(element(by.id('paidDaysLeft')).getText()).toEqual('24');
     });
 
     it('should filter my vacation requests by type', function() {
@@ -121,23 +147,6 @@ describe('E2e tests', function () {
 
     it('should log in with manager/admin user', function() {
         h.login('admin','admin');
-    });
-
-    it('should filter users by user User', function() {
-        element(by.id('admin-menu')).click().then(function () {
-            element.all(by.css('[ui-sref="user-management"]')).first().click().then(function () {
-                h.loginFilter.sendKeys('user').then(function() {
-                    h.filter.click().then(function() {
-                        expect(element.all(by.xpath('//table/tbody/tr')).count()).toEqual(1);
-                        element(by.buttonText('Edit')).click().then(function() {
-                            element(by.css('[name="firstWorkday"]')).sendKeys(h.dateString);
-                            element(by.css('[name="unusedVacationDays"]')).sendKeys(0);
-                            h.submit.click();
-                        });
-                    });
-                });
-            });
-        });
     });
 
     it('should confirm request', function () {
@@ -224,7 +233,7 @@ describe('E2e tests', function () {
     });
 
     it('should check the vacation days left after the rejection', function() {
-        expect(element(by.id('paidDaysLeft')).getText()).toEqual(27);
+        expect(element(by.id('paidDaysLeft')).getText()).toEqual('26');
     });
 
     it('should check that the request was rejected (i.e in SAVED state now) and delete the request', function() {
