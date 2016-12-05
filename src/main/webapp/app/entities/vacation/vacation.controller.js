@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('VacationController', VacationController);
 
-    VacationController.$inject = ['$state', '$filter', 'Vacation', 'AlertService', 'pagingParams', 'User', 'Principal', 'paginationConstants'];
+    VacationController.$inject = ['$state', '$filter', '$translate', 'Vacation', 'AlertService', 'pagingParams', 'User', 'Principal', 'paginationConstants'];
 
-    function VacationController ($state, $filter, Vacation, AlertService, pagingParams, User, Principal, paginationConstants) {
+    function VacationController ($state, $filter, $translate, Vacation, AlertService, pagingParams, User, Principal, paginationConstants) {
         var vm = this;
 
         vm.loadPage = loadPage;
@@ -90,21 +90,61 @@
             });
         }
 
-        function send (vacation) {
-            vacation.stage = (vacation.type === "SICK_LEAVE" || !vacation.owner.manager) ? "PLANNED" : "SENT";
+        function getVacationDuration(vacation) {
+            var start = new Date(vacation.startDate) >= new Date("2016-01-01") ? new Date(vacation.startDate) : new Date("2016-01-01"),
+                end = new Date(vacation.endDate) <= new Date("2016-12-31") ? new Date(vacation.endDate) : new Date("2016-12-31");
+            return (end - start) / (1000 * 60 * 60 * 24) + 1;
+        }
 
-            Vacation.update(vacation, function (result) {
-                loadAll();
-                if (vacation.owner.manager) {
-                    AlertService.info("vacationTrackerApp.vacation.sent", {
-                        vacation: {
-                            startDate: $filter('date')(new Date(result.startDate), "dd/MM/yyyy"),
-                            endDate: $filter('date')(new Date(result.endDate), "dd/MM/yyyy")
-                        },
-                        manager: vacation.owner.manager
-                    });
+        function hasEnoughPaidVacation(vacation) {
+            return vacation.type === 'PAID' && getVacationDuration(vacation) <= vm.paidDaysLeft.endOfYear;
+        }
+
+        function send (vacation) {
+            var callback, options;
+
+            callback = function(result) {
+                if (!result) {
+                    return;
                 }
-            });
+                vacation.stage = (vacation.type === "SICK_LEAVE" || !vacation.owner.manager) ? "PLANNED" : "SENT";
+                Vacation.update(vacation, function (result) {
+                    loadAll();
+                    if (vacation.owner.manager) {
+                        AlertService.info("vacationTrackerApp.vacation.sent", {
+                            vacation: {
+                                startDate: $filter('date')(new Date(result.startDate), "dd/MM/yyyy"),
+                                endDate: $filter('date')(new Date(result.endDate), "dd/MM/yyyy")
+                            },
+                            manager: vacation.owner.manager
+                        });
+                    }
+                });
+            };
+
+            options = {
+                title: "<h4 class='modal-title'>" + $translate.instant("entity.send.title") + "</h4>",
+                message: "<p>" + $translate.instant("vacationTrackerApp.vacation.send.question") + "</p>",
+                buttons: {
+                    confirm: {
+                        label: "<span class='glyphicon glyphicon-send'></span>&nbsp;<span>" +
+                                $translate.instant("entity.action.send") + "</span>",
+                        className: "btn-success"
+                    },
+                    cancel: {
+                        label: "<span class='glyphicon glyphicon-arrow-left'></span>&nbsp;<span>" +
+                                $translate.instant("entity.action.back") + "</span>",
+                        className: "btn-default"
+                    }
+                },
+                callback: callback
+            };
+
+            if (vacation.type !== "PAID" || hasEnoughPaidVacation(vacation)) {
+                callback(true);
+            } else {
+                bootbox.confirm(options);
+            }
         }
 
         function openCalendar(date) {

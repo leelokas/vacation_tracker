@@ -108,6 +108,9 @@
         "cancel": {
             "title": "Confirm cancel operation"
         },
+        "send": {
+            "title": "Confirm send operation"
+        },
         "validation": {
             "required": "This field is required.",
             "minlength": "This field is required to be at least {{ min }} characters.",

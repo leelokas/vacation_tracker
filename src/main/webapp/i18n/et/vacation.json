@@ -32,6 +32,9 @@
             "cancel": {
                 "question": "Kas oled kindel, et tahad tühistada puhkust {{ id }}?"
             },
+            "send": {
+                "question": "Kas oled kindel? Sinu tasustatud puhkusepäevade jääk on väiksem kui antud puhkuse kestvus."
+            },
             "detail": {
                 "title": "Puhkuse taotluse detailid"
             },

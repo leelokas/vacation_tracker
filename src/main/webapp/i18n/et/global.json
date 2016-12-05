@@ -107,6 +107,9 @@
         "cancel": {
             "title": "Kinnita tühistamine"
         },
+        "send": {
+            "title": "Kinnita saatmine"
+        },
         "validation": {
             "required": "See väli on kohustuslik.",
             "minlength": "See väli peab olema vähemalt {{ min }} tähemärki pikk.",

@@ -32,6 +32,9 @@
             "cancel": {
                 "question": "Are you sure you want to cancel Vacation {{ id }}?"
             },
+            "send": {
+                "question": "Are you sure? You are trying to use more days than available."
+            },
             "detail": {
                 "title": "Vacation request details"
             },

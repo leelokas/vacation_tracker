@@ -123,6 +123,7 @@ public class CustomPersistentRememberMeServices extends
             User newUser = userService.createUser(login, UUID.randomUUID().toString(), customUserDetails.getGivenname(), customUserDetails.getLastname(), customUserDetails.getEmail(), customUserDetails.getLangKey());
             newUser.setAuthorities(customUserDetails.getAppAuthorities());
             newUser.setActivated(true);
+            userRepository.save(newUser);
             token = getPersistentToken(newUser, request);
         }
 
