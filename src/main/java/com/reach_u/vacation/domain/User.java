@@ -3,6 +3,7 @@ package com.reach_u.vacation.domain;
 import com.reach_u.vacation.config.Constants;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
@@ -49,10 +50,11 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "last_name", length = 50)
     private String lastName;
 
-    @Column(name="firstworkday", length = 20)
+    @Column(name="firstworkday")
+    @Type(type="date")
     private Date firstWorkday;
 
-    @Column(name="unusedvacationdays", length = 5)
+    @Column(name="unusedvacationdays")
     private Integer unusedVacationDays;
 
     @Email
