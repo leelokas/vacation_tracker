@@ -97,7 +97,9 @@ public class VacationResource {
             return createVacation(vacation);
         }
         Vacation result = vacationRepository.save(vacation);
-        mailService.sendVacationUpdateEmail(vacation.getOwner(),vacation);
+        if(!(vacation.getOwner() == null)){
+            mailService.sendVacationUpdateEmail(vacation.getOwner(),vacation);
+        }
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("vacation", vacation.getId().toString()))
