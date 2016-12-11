@@ -34,7 +34,7 @@
             <dt ng-if="vm.vacation.owner.login === vm.currentUser.login || vm.currentUser.authorities.indexOf('ROLE_ACCOUNTANT') > -1 || vm.currentUser.authorities.indexOf('ROLE_MANAGER') > -1">
                 <span data-translate="vacationTrackerApp.vacation.comment">Comment</span></dt>
             <dd ng-if="vm.vacation.owner.login === vm.currentUser.login || vm.currentUser.authorities.indexOf('ROLE_ACCOUNTANT') > -1 || vm.currentUser.authorities.indexOf('ROLE_MANAGER') > -1">
-                <span data-translate="{{'vacationTrackerApp.PaymentType.' + vm.vacation.payment}}">{{vm.vacation.payment}}</span>
+                <span>{{vm.vacation.comment}}</span>
             </dd>
         </dl>
     </div>
