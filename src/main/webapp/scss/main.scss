@@ -157,6 +157,9 @@ Custom alerts for notification
 ========================================================================== */
 .alerts {
     .alert {
+        &:focus {
+            outline: none;
+        }
         text-overflow: ellipsis;
         pre{
             background: none;

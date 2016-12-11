@@ -16,11 +16,11 @@
 
         getService.$inject = ['$timeout', '$sce', '$translate'];
 
-        function getService ($timeout, $sce,$translate) {
+        function getService ($timeout, $sce, $translate) {
             var toast = this.toast,
                 alertId = 0, // unique id for each alert. Starts from 0.
                 alerts = [],
-                timeout = 5000; // default timeout
+                timeout = 10000; // default timeout
 
             return {
                 factory: factory,
