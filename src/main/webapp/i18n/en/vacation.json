@@ -35,6 +35,9 @@
             "send": {
                 "question": "Are you sure? You are trying to use more days than available."
             },
+            "reject": {
+                "question": "Are you sure? You might want to add a comment explaining the reasons for reject."
+            },
             "detail": {
                 "title": "Vacation request details"
             },
@@ -51,6 +54,7 @@
             "duration": "Duration",
             "from": "From",
             "until": "Until",
+            "comment": "Comment",
             "twoWeekPaidVacationRequired": "By the Estonian law you are required to plan a vacation with at least 14 consecutive days for every year (Puhkuseseadus § 20)"
         }
     }

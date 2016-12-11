@@ -29,21 +29,14 @@ public class XlsService {
 
     private final Logger log = LoggerFactory.getLogger(XlsService.class);
 
-    private static final String[] header = {"Name", "Start Date", "End Date", "Duration", "Type", "Payment"};
+    private static final String[] header = {"Name", "Start Date", "End Date", "Duration", "Type", "Payment", "Comment"};
 
 
     public Workbook generateXlsFile(Long[] ids, boolean showPaymentType){
         List<Vacation> itemList = vacationRepository.getVacationsByIds(ids);
         itemList.stream().forEach(v -> log.debug("Found vacation for export {}", v.toString()));
 
-        Workbook wb = new HSSFWorkbook();
-        Sheet sheet = wb.createSheet();
-        generateHeaderRow(getHeaderCellStyle(wb), sheet, showPaymentType);
-        generateItemRows(getDateCellStyle(wb), sheet, showPaymentType, itemList);
-        for (int i = 0; i < header.length; ++i) {
-            sheet.autoSizeColumn(i);
-        }
-        return wb;
+        return generateXlsFileForVacations(itemList, showPaymentType);
     }
 
     public Workbook generateXlsFileForVacations(List<Vacation> vacations, boolean showPaymentType){
@@ -62,7 +55,7 @@ public class XlsService {
     private void generateHeaderRow(CellStyle headerRowStyle, Sheet sheet, boolean showPaymentType) {
         Row headerRow = sheet.createRow(0);
         for (int i = 0; i < header.length; ++i) {
-            if (header[i].equals("Payment") && !showPaymentType) {
+            if ((header[i].equals("Payment")|| header[i].equals("Comment")) && !showPaymentType) {
                 continue;
             }
             addCellWithValueAndStyle(headerRowStyle, headerRow, i, header[i]);
@@ -91,6 +84,7 @@ public class XlsService {
         row.createCell(4, CellType.STRING).setCellValue(item.getType().toString());
         if (showPaymentType) {
             row.createCell(5, CellType.STRING).setCellValue(item.getPayment().toString());
+            row.createCell(6, CellType.STRING).setCellValue(item.getComment().toString());
         }
     }
 

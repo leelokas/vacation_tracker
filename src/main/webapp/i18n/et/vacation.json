@@ -35,6 +35,9 @@
             "send": {
                 "question": "Kas oled kindel? Sinu tasustatud puhkusepäevade jääk on väiksem kui antud puhkuse kestvus."
             },
+            "reject": {
+                "question": "Kas oled kindel? Ehk soovid lisada kommentaari ja selgitada keeldumise põhjuseid?"
+            },
             "detail": {
                 "title": "Puhkuse taotluse detailid"
             },
@@ -51,6 +54,7 @@
             "duration": "Kestvus",
             "from": "Alates",
             "until": "Kuni",
+            "comment": "Kommentaar",
             "twoWeekPaidVacationRequired": "Seaduse järgi on sul kohustus võtta igal aastal palgaline puhkus, mis kestab vähemalt 14 päeva (Puhkuseseadus § 20)"
         }
     }

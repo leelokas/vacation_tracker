@@ -389,3 +389,7 @@ footer {
     .dl-horizontal.jh-entity-details > dd:last-of-type {
       border-bottom: none;
       margin-bottom: 0; } }
+
+.showMore > .toggle {
+  outline: none;
+  color: #777; }

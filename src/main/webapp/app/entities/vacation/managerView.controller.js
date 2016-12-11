@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('ManagerViewController', managerViewController);
 
-    managerViewController.$inject = ['$state', 'Vacation', 'ParseLinks', 'AlertService', 'pagingParams', 'paginationConstants'];
+    managerViewController.$inject = ['$state', '$translate', 'Vacation', 'AlertService', 'pagingParams', 'paginationConstants'];
 
-    function managerViewController ($state, Vacation, ParseLinks, AlertService, pagingParams, paginationConstants) {
+    function managerViewController ($state, $translate, Vacation, AlertService, pagingParams, paginationConstants) {
         var vm = this;
 
         vm.loadPage = loadPage;
@@ -67,13 +67,39 @@
         }
 
         function reject (vacation) {
-            vacation.stage = "SAVED";
-            Vacation.update(vacation, function (result) {
-                loadAll();
-                AlertService.info("vacationTrackerApp.vacation.rejected", {
-                    owner: result.owner
-                });
-            });
+            var options = {
+                title: "<h4 class='modal-title'>" + $translate.instant("entity.reject.title") + "</h4>",
+                message: "<p>" + $translate.instant("vacationTrackerApp.vacation.reject.question") + "</p>" +
+                    "<label for='rejectComment'>" + $translate.instant("entity.action.addComment") + "</label>" +
+                    "<textarea class='form-control' type='text' id='rejectComment' rows='1'></textarea>",
+                buttons: {
+                    confirm: {
+                        label: "<span class='glyphicon glyphicon-ban-circle'></span>&nbsp;<span>" +
+                        $translate.instant("entity.action.reject") + "</span>",
+                        className: "btn-danger"
+                    },
+                    cancel: {
+                        label: "<span class='glyphicon glyphicon-arrow-left'></span>&nbsp;<span>" +
+                        $translate.instant("entity.action.back") + "</span>",
+                        className: "btn-default"
+                    }
+                },
+                callback: function (result) {
+                    if (!result) {
+                        return;
+                    }
+                    vacation.rejectComment = $('#rejectComment').val() === "" ? null : $('#rejectComment').val();
+                    vacation.stage = "SAVED";
+                    Vacation.update(vacation, function (result) {
+                        loadAll();
+                        AlertService.info("vacationTrackerApp.vacation.rejected", {
+                            owner: result.owner
+                        });
+                    });
+                }
+            };
+
+            bootbox.confirm(options);
         }
     }
 })();

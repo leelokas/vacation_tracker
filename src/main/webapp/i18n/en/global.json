@@ -85,6 +85,9 @@
         "action": {
             "addblob": "Add blob",
             "addimage": "Add image",
+            "addComment": "Add comment",
+            "showMore": "Show more",
+            "showLess": "Show less",
             "back": "Back",
             "cancel": "Cancel",
             "cancelRequest": "Cancel request",
@@ -110,6 +113,9 @@
         },
         "send": {
             "title": "Confirm send operation"
+        },
+        "reject": {
+            "title": "Confirm reject operation"
         },
         "validation": {
             "required": "This field is required.",

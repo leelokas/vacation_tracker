@@ -91,8 +91,10 @@
         }
 
         function getVacationDuration(vacation) {
-            var start = new Date(vacation.startDate) >= new Date("2016-01-01") ? new Date(vacation.startDate) : new Date("2016-01-01"),
-                end = new Date(vacation.endDate) <= new Date("2016-12-31") ? new Date(vacation.endDate) : new Date("2016-12-31");
+            var yearStart = new Date(new Date().getFullYear() + "-01-01"),
+                yearEnd = new Date(new Date().getFullYear() + "-12-31"),
+                start = new Date(vacation.startDate) >= yearStart ? new Date(vacation.startDate) : yearStart,
+                end = new Date(vacation.endDate) <= yearEnd ? new Date(vacation.endDate) : yearEnd
             return (end - start) / (1000 * 60 * 60 * 24) + 1;
         }
 
@@ -103,7 +105,7 @@
         function send (vacation) {
             var callback, options;
 
-            callback = function(result) {
+            callback = function (result) {
                 if (!result) {
                     return;
                 }

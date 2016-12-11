@@ -84,6 +84,9 @@
         "action": {
             "addblob": "Lisa laik",
             "addimage": "Lida pilt",
+            "addComment": "Lisa kommentaar",
+            "showMore": "Näita rohkem",
+            "showLess": "Näita vähem",
             "back": "Tagasi",
             "cancel": "Tühista",
             "cancelRequest": "Tühista taotlus",
@@ -109,6 +112,9 @@
         },
         "send": {
             "title": "Kinnita saatmine"
+        },
+        "reject": {
+            "title": "Kinnita keeldumine"
         },
         "validation": {
             "required": "See väli on kohustuslik.",

@@ -14,7 +14,8 @@
             <dd>
                 <span data-translate="{{'vacationTrackerApp.VacationType.' + vm.vacation.type}}">{{vm.vacation.type}}</span>
             </dd>
-            <dt ng-if="vm.vacation.owner.login === vm.currentUser.login || vm.currentUser.authorities.indexOf('ROLE_ACCOUNTANT') > -1"><span data-translate="vacationTrackerApp.vacation.payment">Payment</span></dt>
+            <dt ng-if="vm.vacation.owner.login === vm.currentUser.login || vm.currentUser.authorities.indexOf('ROLE_ACCOUNTANT') > -1">
+                <span data-translate="vacationTrackerApp.vacation.payment">Payment</span></dt>
             <dd ng-if="vm.vacation.owner.login === vm.currentUser.login || vm.currentUser.authorities.indexOf('ROLE_ACCOUNTANT') > -1">
                 <span data-translate="{{'vacationTrackerApp.PaymentType.' + vm.vacation.payment}}">{{vm.vacation.payment}}</span>
             </dd>
@@ -30,10 +31,15 @@
             <dd>
                 {{vm.vacation.owner.login}}
             </dd>
+            <dt ng-if="vm.vacation.owner.login === vm.currentUser.login || vm.currentUser.authorities.indexOf('ROLE_ACCOUNTANT') > -1 || vm.currentUser.authorities.indexOf('ROLE_MANAGER') > -1">
+                <span data-translate="vacationTrackerApp.vacation.comment">Comment</span></dt>
+            <dd ng-if="vm.vacation.owner.login === vm.currentUser.login || vm.currentUser.authorities.indexOf('ROLE_ACCOUNTANT') > -1 || vm.currentUser.authorities.indexOf('ROLE_MANAGER') > -1">
+                <span data-translate="{{'vacationTrackerApp.PaymentType.' + vm.vacation.payment}}">{{vm.vacation.payment}}</span>
+            </dd>
         </dl>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-info" data-dismiss="modal" ng-click="vm.clear()">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
             <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;
             <span class="hidden-xs" data-translate="entity.action.back">Back</span>
         </button>
