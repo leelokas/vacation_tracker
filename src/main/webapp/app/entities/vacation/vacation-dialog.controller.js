@@ -17,7 +17,7 @@
         vm.save = save;
         vm.users = User.query();
 
-        $scope.dateOptions = {
+        vm.dateOptions = {
             minDate: new Date(),
             showWeeks: false,
             startingDay: 1
@@ -25,13 +25,13 @@
 
         var lastWeekDate = new Date();
         lastWeekDate.setDate(lastWeekDate.getDate() - 7);
-        $scope.startDateOptions = {
+        vm.startDateOptions = {
             minDate: lastWeekDate,
             showWeeks: false,
             startingDay: 1
         };
 
-        $scope.endDateOptions = {
+        vm.endDateOptions = {
             minDate: setMinEndDate(),
             showWeeks: false,
             startingDay: 1

@@ -88,7 +88,7 @@
                     if (!result) {
                         return;
                     }
-                    vacation.rejectComment = $('#rejectComment').val() === "" ? null : $('#rejectComment').val();
+                    vacation.rejectComment = angular.element('#rejectComment').val() === "" ? null : angular.element('#rejectComment').val();
                     vacation.stage = "SAVED";
                     Vacation.update(vacation, function (result) {
                         loadAll();

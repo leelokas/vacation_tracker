@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('VacationOverviewController', VacationOverviewController);
 
-    VacationOverviewController.$inject = ['$state', '$filter', 'Vacation', 'AlertService', 'pagingParams', 'paginationConstants'];
+    VacationOverviewController.$inject = ['$state', '$filter', '$window', 'Vacation', 'AlertService', 'pagingParams', 'paginationConstants'];
 
-    function VacationOverviewController ($state, $filter, Vacation, AlertService, pagingParams, paginationConstants) {
+    function VacationOverviewController ($state, $filter, $window, Vacation, AlertService, pagingParams, paginationConstants) {
         var vm = this;
 
         vm.loadPage = loadPage;
@@ -106,7 +106,7 @@
                     sort: sort()
                 }, function(confirmedData) {
                     onSuccess(plannedData.concat(confirmedData));
-                }, onError)
+                }, onError);
             }, onError);
         }
 
@@ -117,7 +117,7 @@
                     selectedVacationIds.push(vm.vacations[i].id);
                 }
             }
-            window.location = "api/file/vacationsByIds?id=" + selectedVacationIds.join("&id=");
+            $window.location = "api/file/vacationsByIds?id=" + selectedVacationIds.join("&id=");
         }
 
         function toggle() {

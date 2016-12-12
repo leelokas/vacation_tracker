@@ -25,5 +25,8 @@
     // we want to run on all OSes
     "linebreak-style": 0,
     "eol-last": 2
+  },
+  "globals": {
+    "bootbox": true
   }
 }

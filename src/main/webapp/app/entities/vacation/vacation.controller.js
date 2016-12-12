@@ -94,7 +94,7 @@
             var yearStart = new Date(new Date().getFullYear() + "-01-01"),
                 yearEnd = new Date(new Date().getFullYear() + "-12-31"),
                 start = new Date(vacation.startDate) >= yearStart ? new Date(vacation.startDate) : yearStart,
-                end = new Date(vacation.endDate) <= yearEnd ? new Date(vacation.endDate) : yearEnd
+                end = new Date(vacation.endDate) <= yearEnd ? new Date(vacation.endDate) : yearEnd;
             return (end - start) / (1000 * 60 * 60 * 24) + 1;
         }
 

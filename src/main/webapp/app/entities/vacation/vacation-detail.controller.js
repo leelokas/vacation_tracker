@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('VacationDetailController', VacationDetailController);
 
-    VacationDetailController.$inject = ['$uibModalInstance', '$translate', 'entity', 'Vacation', 'User', 'Principal', 'AlertService'];
+    VacationDetailController.$inject = ['$uibModalInstance', '$translate', '$filter', 'entity', 'Vacation', 'User', 'Principal', 'AlertService'];
 
-    function VacationDetailController ($uibModalInstance, $translate, entity, Vacation, User, Principal, AlertService) {
+    function VacationDetailController ($uibModalInstance, $translate, $filter, entity, Vacation, User, Principal, AlertService) {
         var vm = this;
 
         vm.vacation = entity;
@@ -128,7 +128,7 @@
                     if (!result) {
                         return;
                     }
-                    vm.vacation.rejectComment = $('#rejectComment').val() === "" ? null : $('#rejectComment').val();
+                    vm.vacation.rejectComment = angular.element('#rejectComment').val() === "" ? null : angular.element('#rejectComment').val();
                     vm.vacation.stage = "SAVED";
                     Vacation.update(vm.vacation, function (result) {
                         AlertService.info("vacationTrackerApp.vacation.rejected", {

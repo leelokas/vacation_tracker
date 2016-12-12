@@ -19,7 +19,7 @@
         }
 
         function confirmCancel () {
-            if(vm.vacation.type == 'SICK_LEAVE') {
+            if (vm.vacation.type === 'SICK_LEAVE') {
                 vm.vacation.endDate = null;
             }
             vm.vacation.stage = "SAVED";

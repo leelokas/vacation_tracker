@@ -106,7 +106,7 @@
                            uib-datepicker-popup="{{'dd/MM/yyyy'}}"
                            ng-model="vm.user.firstWorkday"
                            is-open="vm.datePickerOpenStatus"
-                           datepicker-options="dateOptions"
+                           datepicker-options="vm.dateOptions"
                            show-button-bar="false"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
