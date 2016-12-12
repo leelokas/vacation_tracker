@@ -20,6 +20,7 @@
             var toast = this.toast,
                 alertId = 0, // unique id for each alert. Starts from 0.
                 alerts = [],
+                alertTimeoutIds = [],
                 timeout = 10000; // default timeout
 
             return {
@@ -105,7 +106,10 @@
                         return closeAlert(this.id, alerts);
                     }
                 };
-                if(!alert.scoped) {
+                if (!alert.scoped) {
+                    if (alerts.length >= 4) {
+                        closeAlertByIndex(0, alerts, alertTimeoutIds);
+                    }
                     alerts.push(alert);
                 }
                 return alert;
@@ -117,19 +121,22 @@
                 var that = this;
                 var alert = this.factory(alertOptions);
                 if (alertOptions.timeout && alertOptions.timeout > 0) {
-                    $timeout(function () {
-                        that.closeAlert(alertOptions.alertId, extAlerts);
-                    }, alertOptions.timeout);
+                    alertTimeoutIds.push($timeout(function () {
+                        that.closeAlert(alertOptions.alertId, extAlerts, alertTimeoutIds);
+                    }, alertOptions.timeout));
                 }
                 return alert;
             }
 
-            function closeAlert(id, extAlerts) {
+            function closeAlert(id, extAlerts, extAlertTimeoutIds) {
                 var thisAlerts = extAlerts ? extAlerts : alerts;
-                return closeAlertByIndex(thisAlerts.map(function(e) { return e.id; }).indexOf(id), thisAlerts);
+                var thisAlertTimeoutIds = extAlertTimeoutIds ? extAlertTimeoutIds : alertTimeoutIds;
+                return closeAlertByIndex(thisAlerts.map(function(e) { return e.id; }).indexOf(id), thisAlerts, thisAlertTimeoutIds);
             }
 
-            function closeAlertByIndex(index, thisAlerts) {
+            function closeAlertByIndex(index, thisAlerts, thisAlertTimeoutIds) {
+                $timeout.cancel(thisAlertTimeoutIds[index]);
+                thisAlertTimeoutIds.splice(index, 1);
                 return thisAlerts.splice(index, 1);
             }
         }

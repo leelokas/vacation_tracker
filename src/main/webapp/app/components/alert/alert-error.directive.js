@@ -4,7 +4,9 @@
     var jhiAlertError = {
         template: '<div class="alerts" ng-cloak="">' +
                         '<div ng-repeat="alert in $ctrl.alerts" ng-class="[alert.position, {\'toast\': alert.toast}]">' +
-                            '<uib-alert ng-cloak="" type="{{alert.type}}" close="alert.close($ctrl.alerts)"><pre>{{ alert.msg }}</pre></uib-alert>' +
+                            '<uib-alert ng-cloak="" type="{{alert.type}}" ng-click="alert.close($ctrl.alerts)" close="alert.close($ctrl.alerts)">' +
+                                '<pre>{{ alert.msg }}</pre>' +
+                            '</uib-alert>' +
                         '</div>' +
                   '</div>',
         controller: jhiAlertErrorController
@@ -29,7 +31,7 @@
                         type: 'danger',
                         msg: key,
                         params: data,
-                        timeout: 5000,
+                        timeout: 10000,
                         toast: AlertService.isToast(),
                         scoped: true
                     },
