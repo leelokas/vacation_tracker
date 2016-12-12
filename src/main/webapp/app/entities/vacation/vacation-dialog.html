@@ -37,7 +37,7 @@
                            required
                            ng-model="vm.vacation.startDate"
                            is-open="vm.datePickerOpenStatus.startDate"
-                           datepicker-options="vm.vacation.type === 'SICK_LEAVE' ? startDateOptions : dateOptions"
+                           datepicker-options="vm.vacation.type === 'SICK_LEAVE' ? vm.startDateOptions : vm.dateOptions"
                            show-button-bar="false"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('startDate')"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -54,7 +54,7 @@
                            ng-disabled="vm.vacation.type === 'SICK_LEAVE' "
                            ng-model="vm.vacation.endDate"
                            is-open="vm.datePickerOpenStatus.endDate"
-                           datepicker-options="endDateOptions"
+                           datepicker-options="vm.endDateOptions"
                            show-button-bar="false"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endDate')"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -83,7 +83,7 @@
                            uib-datepicker-popup="{{'dd/MM/yyyy'}}"
                            ng-model="vm.vacation.endDate"
                            is-open="vm.datePickerOpenStatus.endDateSickLeave"
-                           datepicker-options="endDateOptions"
+                           datepicker-options="vm.endDateOptions"
                            show-button-bar="false"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endDateSickLeave')"><i class="glyphicon glyphicon-calendar"></i></button>
