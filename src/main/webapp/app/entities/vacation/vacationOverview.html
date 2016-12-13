@@ -89,7 +89,7 @@
             <tbody>
                 <tr ng-repeat="vacation in vm.vacations track by vacation.id">
                     <td><input type="checkbox" ng-model="vacation.checked"></td>
-                    <td ui-sref="overview.vacation-detail({id:vacation.id})">{{vacation.owner.login}}</td>
+                    <td ui-sref="overview.vacation-detail({id:vacation.id})">{{vacation.owner.firstName}} {{vacation.owner.lastName}}</td>
                     <td ui-sref="overview.vacation-detail({id:vacation.id})" data-translate="{{'vacationTrackerApp.VacationType.' + vacation.type}}">{{vacation.type}}</td>
                     <td has-authority="ROLE_ACCOUNTANT" ui-sref="overview.vacation-detail({id:vacation.id})" data-translate="{{'vacationTrackerApp.PaymentType.' + vacation.payment}}">{{vacation.payment}}</td>
                     <td ui-sref="overview.vacation-detail({id:vacation.id})">{{vacation.startDate | date:'dd/MM/yyyy'}}</td>
