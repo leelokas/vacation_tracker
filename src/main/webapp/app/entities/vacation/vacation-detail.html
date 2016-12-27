@@ -66,7 +66,7 @@
             <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;
             <span class="hidden-xs" data-translate="entity.action.delete">Delete</span>
         </button>
-        <button ng-if="vm.vacation.stage !== 'SAVED' && vm.vacation.owner.login === vm.currentUser.login" type="submit"
+        <button ng-if="vm.displayCancelButton()" type="submit"
                 ui-sref="vacation.cancel({id:vm.vacation.id})" class="btn btn-danger" ng-click="vm.clear()">
             <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;
             <span class="hidden-xs" data-translate="entity.action.cancelRequest">Cancel</span>

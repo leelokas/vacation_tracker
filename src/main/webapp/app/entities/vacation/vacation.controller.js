@@ -15,6 +15,7 @@
         vm.send = send;
         vm.openCalendar = openCalendar;
         vm.filter = filter;
+        vm.displayCancelButton = displayCancelButton;
         vm.currentUser = null;
 
         vm.predicate = pagingParams.predicate;
@@ -88,6 +89,10 @@
                 sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
                 search: vm.currentSearch
             });
+        }
+
+        function displayCancelButton (vacation) {
+            return vacation.stage !== 'SAVED' && !(new Date(vacation.endDate) < new Date() && vacation.stage === 'CONFIRMED');
         }
 
         function getVacationDuration(vacation) {

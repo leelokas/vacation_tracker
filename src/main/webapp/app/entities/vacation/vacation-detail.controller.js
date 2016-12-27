@@ -17,6 +17,7 @@
         vm.send = send;
         vm.confirm = confirm;
         vm.reject = reject;
+        vm.displayCancelButton = displayCancelButton;
 
         setCurrentUser();
         loadRemainingPaidDays();
@@ -35,6 +36,12 @@
 
         function clear () {
             $uibModalInstance.dismiss('cancel');
+        }
+
+        function displayCancelButton () {
+            return vm.vacation.stage !== 'SAVED' &&
+                vm.vacation.owner.login === vm.currentUser.login &&
+                !(new Date(vm.vacation.endDate) < new Date() && vm.vacation.stage === 'CONFIRMED');
         }
 
         function getVacationDuration() {
