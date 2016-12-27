@@ -21,7 +21,8 @@
                 "filter": "Filter"
             },
             "created": "Sinu puhkuse taotlus on salvestatud, kuid pole saadetud kinnitamiseks. \nKui taotlus ei vaja mingeid muudatusi, siis palun klõpsa 'Saada kinnitamisele'",
-            "sent": "Puhkuse taotlus kuupäevadega {{vacation.startDate}} - {{vacation.endDate}} saadeti Sinu juhile {{manager.firstName}} {{manager.lastName}} kinnitamiseks.\nNB! Kas oled teatanud projektijuhti oma puhkuse kuupäevadest?",
+            "sent": "Puhkuse taotlus kuupäevadega {{vacation.startDate}} - {{vacation.endDate}} saadeti Sinu juhile {{manager.firstName}} {{manager.lastName}} kinnitamiseks.\nNB! Kas oled teavitanud projektijuhti oma puhkuse kuupäevadest?",
+            "sendSickLeave": "Info Sinu haiguslehest algusega {{vacation.startDate}} saadeti Sinu juhile {{manager.firstName}} {{manager.lastName}}.\nNB! Kas oled teavitanud projektijuhti oma haiguslehest?",
             "confirmed": "Puhkuse taotlus kasutajal {{owner.firstName}} {{owner.lastName}} on nüüd kinnitatud ja nähtav on puhkuse ülevaadate lehel. \nNB! Kas projektijuht on teadlik sellest puhkusest?",
             "updated": "Puhkus on uuendatud ID-ga {{ param }}",
             "deleted": "Puhkus on kustutatud ID-ga {{ param }}",

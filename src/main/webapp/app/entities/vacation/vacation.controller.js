@@ -117,7 +117,14 @@
                 vacation.stage = (vacation.type === "SICK_LEAVE" || !vacation.owner.manager) ? "PLANNED" : "SENT";
                 Vacation.update(vacation, function (result) {
                     loadAll();
-                    if (vacation.owner.manager) {
+                    if (vacation.type === "SICK_LEAVE") {
+                        AlertService.info("vacationTrackerApp.vacation.sendSickLeave", {
+                            vacation: {
+                                startDate: $filter('date')(new Date(result.startDate), "dd/MM/yyyy")
+                            },
+                            manager: vacation.owner.manager
+                        });
+                    } else if (vacation.owner.manager) {
                         AlertService.info("vacationTrackerApp.vacation.sent", {
                             vacation: {
                                 startDate: $filter('date')(new Date(result.startDate), "dd/MM/yyyy"),

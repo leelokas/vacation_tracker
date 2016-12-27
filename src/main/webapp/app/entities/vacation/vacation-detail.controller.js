@@ -65,7 +65,14 @@
                 }
                 vm.vacation.stage = (vm.vacation.type === "SICK_LEAVE" || !vm.vacation.owner.manager) ? "PLANNED" : "SENT";
                 Vacation.update(vm.vacation, function (result) {
-                    if (vm.vacation.owner.manager) {
+                    if (vm.vacation.type === "SICK_LEAVE") {
+                        AlertService.info("vacationTrackerApp.vacation.sendSickLeave", {
+                            vacation: {
+                                startDate: $filter('date')(new Date(result.startDate), "dd/MM/yyyy")
+                            },
+                            manager: vm.vacation.owner.manager
+                        });
+                    } else if (vm.vacation.owner.manager) {
                         AlertService.info("vacationTrackerApp.vacation.sent", {
                             vacation: {
                                 startDate: $filter('date')(new Date(result.startDate), "dd/MM/yyyy"),

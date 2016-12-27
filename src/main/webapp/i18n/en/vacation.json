@@ -21,7 +21,8 @@
                 "filter": "Filter"
             },
             "created": "Your vacation request is saved but not sent for confirmation. \nIf your request doesn’t need any changes then please click 'Send to confirmation'",
-            "sent": "Your vacation request for dates {{vacation.startDate}} - {{vacation.endDate}} was sent for confirmation to your manager {{manager.firstName}} {{manager.lastName}}.\nNB Have you notified your project manager(s) about your vacation request dates?",
+            "sent": "Your vacation request for dates {{vacation.startDate}} - {{vacation.endDate}} was sent for confirmation to your manager {{manager.firstName}} {{manager.lastName}}.\nNB! Have you notified your project manager(s) about your vacation request dates?",
+            "sendSickLeave": "Information about your sick leave starting at {{vacation.startDate}} was sent to your manager {{manager.firstName}} {{manager.lastName}}.\nNB! Have you notified your project manager(s) about your sick leave?",
             "confirmed": "The vacation request of user {{owner.firstName}} {{owner.lastName}} is now confirmed and visible from the vacations’ overview page. \nNB Are the project managers aware of the vacation?",
             "updated": "A Vacation is updated with identifier {{ param }}",
             "deleted": "A Vacation is deleted with identifier {{ param }}",
