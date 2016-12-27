@@ -41,7 +41,7 @@
         function displayCancelButton () {
             return vm.vacation.stage !== 'SAVED' &&
                 vm.vacation.owner.login === vm.currentUser.login &&
-                !(new Date(vm.vacation.endDate) < new Date() && vm.vacation.stage === 'CONFIRMED');
+                !(vm.vacation.type !== "SICK_LEAVE" && new Date(vm.vacation.endDate) < new Date() && vm.vacation.stage === 'CONFIRMED');
         }
 
         function getVacationDuration() {

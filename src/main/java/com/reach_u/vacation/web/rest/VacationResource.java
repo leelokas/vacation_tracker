@@ -101,10 +101,15 @@ public class VacationResource {
             mailService.sendVacationUpdateEmail(vacation.getOwner(),vacation);
         }
 
+        HttpHeaders headers;
+        if (vacation.getStage() == Stage.SAVED) {
+            headers = HeaderUtil.createCustomVacationUpdateAlert("saved", vacation.getId().toString());
+        } else {
+            headers = HeaderUtil.createEntityUpdateAlert("vacation", vacation.getId().toString());
+        }
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("vacation", vacation.getId().toString()))
+            .headers(headers)
             .body(result);
-
     }
 
     /**

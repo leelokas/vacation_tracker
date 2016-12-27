@@ -92,7 +92,8 @@
         }
 
         function displayCancelButton (vacation) {
-            return vacation.stage !== 'SAVED' && !(new Date(vacation.endDate) < new Date() && vacation.stage === 'CONFIRMED');
+            return vacation.stage !== 'SAVED' &&
+                !(vacation.type !== "SICK_LEAVE" && new Date(vacation.endDate) < new Date() && vacation.stage === 'CONFIRMED');
         }
 
         function getVacationDuration(vacation) {
