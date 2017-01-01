@@ -21,7 +21,7 @@
                 alertId = 0, // unique id for each alert. Starts from 0.
                 alerts = [],
                 alertTimeoutIds = [],
-                timeout = 10000; // default timeout
+                timeout = 1000 * 10; // default timeout
 
             return {
                 factory: factory,
@@ -43,6 +43,10 @@
 
             function clear() {
                 alerts = [];
+                for (var i = 0; i < alertTimeoutIds.length; i++) {
+                    $timeout.cancel(alertTimeoutIds[i]);
+                }
+                alertTimeoutIds = [];
             }
 
             function get() {

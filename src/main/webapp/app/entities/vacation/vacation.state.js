@@ -35,7 +35,8 @@
                 search: null
             },
             resolve: {
-                pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                pagingParams: ['$stateParams', 'PaginationUtil', 'AlertService', function ($stateParams, PaginationUtil, AlertService) {
+                    AlertService.clear();
                     return {
                         page: PaginationUtil.parsePage($stateParams.page),
                         sort: $stateParams.sort,
@@ -80,7 +81,8 @@
                 search: null
             },
             resolve: {
-                pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                pagingParams: ['$stateParams', 'PaginationUtil', 'AlertService', function ($stateParams, PaginationUtil, AlertService) {
+                    AlertService.clear();
                     return {
                         page: PaginationUtil.parsePage($stateParams.page),
                         sort: $stateParams.sort,
@@ -125,7 +127,8 @@
                 search: null
             },
             resolve: {
-                pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                pagingParams: ['$stateParams', 'PaginationUtil', 'AlertService', function ($stateParams, PaginationUtil, AlertService) {
+                    AlertService.clear();
                     return {
                         page: PaginationUtil.parsePage($stateParams.page),
                         sort: $stateParams.sort,

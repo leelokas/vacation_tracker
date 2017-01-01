@@ -23,7 +23,8 @@
                 }
             },
             resolve: {
-                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', 'AlertService', function ($translate, $translatePartialLoader, AlertService) {
+                    AlertService.clear();
                     $translatePartialLoader.addPart('settings');
                     return $translate.refresh();
                 }]
