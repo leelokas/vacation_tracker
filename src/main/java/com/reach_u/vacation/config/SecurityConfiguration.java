@@ -67,9 +67,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationProvider activeDirectoryLdapAuthenticationProvider() {
-        ActiveDirectoryLdapAuthenticationProvider authenticationProvider =
-                new ActiveDirectoryLdapAuthenticationProvider(jHipsterProperties.getSecurity().getLdap().getDomain(), jHipsterProperties.getSecurity().getLdap().getUrl());
+        VTActiveDirectoryLdapAuthenticationProvider authenticationProvider =
+                new VTActiveDirectoryLdapAuthenticationProvider(jHipsterProperties.getSecurity().getLdap().getDomain(), jHipsterProperties.getSecurity().getLdap().getUrl());
 
+        authenticationProvider.setSearchFilter("(sAMAccountName={0})");
         authenticationProvider.setConvertSubErrorCodesToExceptions(true);
         authenticationProvider.setUseAuthenticationRequestCredentials(true);
         authenticationProvider.setUserDetailsContextMapper(userDetailsContextMapper);
