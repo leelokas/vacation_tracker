@@ -21,7 +21,7 @@ spring:
         serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:file:./target/h2db/db/vacationtracker;DB_CLOSE_DELAY=-1
+        url: jdbc:h2:file:/tmp/vacationtracker/h2db/db/vacationtracker;DB_CLOSE_DELAY=-1
         name:
         username: vacationTracker
         password:
@@ -37,16 +37,9 @@ spring:
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
     mail:
-        host: smtp.gmail.com
-        port: 587
-        username:
-        password:
+        host: mail.reach-u.com
+        port: 25
         protocol: smtp
-        tls: true
-        properties.mail.smtp:
-            auth: true
-            starttls.enable: true
-            ssl.trust: smtp.gmail.com
     messages:
         cache-seconds: 1
     thymeleaf:
