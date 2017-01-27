@@ -118,7 +118,6 @@ public class UserResource {
                     ":" +                                  // ":"
                     request.getServerPort() +              // "80"
                     request.getContextPath();              // "/myContextPath" or "" if deployed in root context
-            mailService.sendCreationEmail(newUser, baseUrl);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
                     .headers(HeaderUtil.createAlert( "userManagement.created", newUser.getLogin()))
                     .body(newUser);
