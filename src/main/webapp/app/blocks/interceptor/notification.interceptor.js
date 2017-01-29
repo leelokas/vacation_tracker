@@ -17,7 +17,13 @@
         function response (response) {
             var alertKey = response.headers('X-vacationTrackerApp-alert');
             if (angular.isString(alertKey)) {
-                AlertService.success(alertKey, { param : response.headers('X-vacationTrackerApp-params')});
+                /*
+                Alert didn't appear when saving new vacation
+                TODO fix it without using timeout
+                 */
+                setTimeout(function() {
+                    AlertService.success(alertKey, { param : response.headers('X-vacationTrackerApp-params')});
+                }, 100);
             }
             return response;
         }
