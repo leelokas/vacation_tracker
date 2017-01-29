@@ -47,7 +47,8 @@
                 "title": "Vacation request details"
             },
             "dialog": {
-                "sickLeaveTooltip": "When going on a sick leave, You are generally taking off undetermined amount of days. You can enter end date (e.g end your sick leave) after sending the request to confirmation"
+                "sickLeaveTooltip": "When going on a sick leave, You are generally taking off undetermined amount of days. You can enter end date (e.g end your sick leave) after sending the request to confirmation",
+                "stageTooltip": "Sent: vacation request needs confirmation by the manager\n\nPlanned: vacation is confirmed by the requester's manager\n\nConfirmed: the accountant has information about the vacation"
             },
             "stage": "Stage",
             "type": "Type",

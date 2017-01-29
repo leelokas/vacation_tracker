@@ -16,6 +16,8 @@
             </div>
             <div class="form-group col-md-6">
                 <label class="control-label" data-translate="vacationTrackerApp.vacation.stage" for="field_stage">Stage</label>
+                <i class="fa fa-question-circle-o" tooltip-placement="bottom" aria-hidden="true"
+                   uib-tooltip="{{'vacationTrackerApp.vacation.dialog.stageTooltip' | translate}}"></i>
                 <select class="form-control" name="stage" ng-model="vm.vacation.stage" id="field_stage">
                     <option value="SENT" data-translate="vacationTrackerApp.Stage.SENT">SENT</option>
                     <option value="PLANNED" data-translate="vacationTrackerApp.Stage.PLANNED">PLANNED</option>

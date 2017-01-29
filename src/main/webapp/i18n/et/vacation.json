@@ -47,7 +47,8 @@
                 "title": "Puhkuse taotluse detailid"
             },
             "dialog": {
-                "sickLeaveTooltip": "Kui lähed haiguslehele, võtad Sa tavaliselt puhkuse teadmata ajaks. Seetõttu saad Sa lisada lõppkuupäeva pärast puhkuse kinnitamist"
+                "sickLeaveTooltip": "Kui lähed haiguslehele, võtad Sa tavaliselt puhkuse teadmata ajaks. Seetõttu saad Sa lisada lõppkuupäeva pärast puhkuse kinnitamist",
+                "stageTooltip": "Saadetud: puhkuse taotlus ootab otsese ülemuse kinnitust\n\nPlaneeritud: puhkus on otsese ülemuse poolt kinnitatud\n\nKinnitatud: info puhkuse kohta on jõudnud raamatupidajani"
             },
             "stage": "Staatus",
             "type": "Tüüp",
