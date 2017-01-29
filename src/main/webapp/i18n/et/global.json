@@ -23,6 +23,7 @@
             "admin": {
                 "main": "Administratsioon",
                 "userManagement": "Kasutajate haldus",
+                "vacationManagement": "Puhkuste haldus",
                 "tracker": "Kasutaja jälgimine",
                 "metrics": "Mõõtmed",
                 "health": "Tervis",
@@ -139,7 +140,7 @@
         "idexists": "Uus {{ entityName }} ei saa omada ID-d"
     },
     "footer": {
-        "copyright": "© 2016 Reach-U",
+        "copyright": "© 2017 Reach-U",
         "forInfoContact": "Kui Sul on küsimusi, probleeme või soovitusi, siis kirjuta",
         "email": "liis@reach-u.com"
     },

@@ -467,3 +467,7 @@ footer {
     outline: none;
     color: #777;
 }
+
+.input-group-btn:last-child > .btn {
+    padding-bottom: 7px;
+}

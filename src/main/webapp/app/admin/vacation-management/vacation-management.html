@@ -1,10 +1,15 @@
 <div>
-    <div class="row title-and-button">
-        <h2 class="col-xs-8" data-translate="vacationTrackerApp.vacation.overview.title">Vacations</h2>
-        <div class="col-xs-4">
-            <button class="btn reach-u_orange" type="button" ng-click="vm.exportFile()">
-                <span class="glyphicon glyphicon-download-alt"></span> <span data-translate="vacationTrackerApp.vacation.overview.download"></span>
-            </button>
+    <div class="container-fluid">
+        <div class="row title-and-button">
+            <h2 class="col-xs-8 no-padding-left" data-translate="vacationTrackerApp.vacation.vacationManagement.title">Vacation Management</h2>
+            <div class="col-xs-4 no-padding-right">
+                <button class="btn reach-u_orange" ui-sref="vacation-management.new">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span data-translate="vacationTrackerApp.vacation.home.createLabel">
+                        Create new
+                    </span>
+                </button>
+            </div>
         </div>
     </div>
     <jhi-alert></jhi-alert>
@@ -12,7 +17,7 @@
 
     <div class="row filterForm">
         <div class="col-sm-11 no-padding">
-            <div class="col-md-4 no-padding">
+            <div class="col-lg-4 no-padding">
                 <div class="form-group col-xs-6">
                     <label data-translate="vacationTrackerApp.vacation.owner" for="field_owner">Vacation requester</label>
                     <input class="form-control" type="text" id="field_owner" ng-model="vm.filterParams.owner">
@@ -22,8 +27,8 @@
                     <input class="form-control" type="text" id="field_manager" ng-model="vm.filterParams.manager">
                 </div>
             </div>
-            <div class="col-md-8 no-padding">
-                <div class="form-group col-xs-4">
+            <div class="col-lg-4 col-md-6 no-padding">
+                <div class="form-group col-xs-6">
                     <label data-translate="vacationTrackerApp.vacation.type" for="field_type">Type</label>
                     <select class="form-control" ng-model="vm.filterParams.type" id="field_type">
                         <option value=""></option>
@@ -35,7 +40,19 @@
                         <option value="PARENTAL_LEAVE" data-translate="vacationTrackerApp.VacationType.PARENTAL_LEAVE">PARENTAL_LEAVE</option>
                     </select>
                 </div>
-                <div class="form-group col-xs-4">
+                <div class="form-group col-xs-6">
+                    <label data-translate="vacationTrackerApp.vacation.stage" for="field_stage">Stage</label>
+                    <select class="form-control" ng-model="vm.filterParams.stage" id="field_stage">
+                        <option value=""></option>
+                        <option value="SAVED" data-translate="vacationTrackerApp.Stage.SAVED">SAVED</option>
+                        <option value="SENT" data-translate="vacationTrackerApp.Stage.SENT">SENT</option>
+                        <option value="PLANNED" data-translate="vacationTrackerApp.Stage.PLANNED">PLANNED</option>
+                        <option value="CONFIRMED" data-translate="vacationTrackerApp.Stage.CONFIRMED">CONFIRMED</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 no-padding">
+                <div class="form-group col-xs-6">
                     <label data-translate="vacationTrackerApp.vacation.from" for="field_from">From</label>
                     <div class="input-group">
                         <input id="field_from" type="text" class="form-control"
@@ -49,7 +66,7 @@
                 </span>
                     </div>
                 </div>
-                <div class="form-group col-xs-4">
+                <div class="form-group col-xs-6">
                     <label data-translate="vacationTrackerApp.vacation.until" for="field_until">Until</label>
                     <div class="input-group">
                         <input id="field_until" type="text" class="form-control"
@@ -76,29 +93,37 @@
     <div class="table-responsive">
         <table class="jh-table table table-striped rows-as-links">
             <thead>
-                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                    <th><input type="checkbox" ng-model="vm.selectAll" ng-click="vm.toggle()"></th>
-                    <th jh-sort-by="owner.login"><span data-translate="vacationTrackerApp.vacation.owner">Owner</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="type"><span data-translate="vacationTrackerApp.vacation.type">Type</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th has-authority="ROLE_ACCOUNTANT" jh-sort-by="payment"><span data-translate="vacationTrackerApp.vacation.payment">Payment</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="startDate"><span data-translate="vacationTrackerApp.vacation.startDate">Start Date</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="endDate"><span data-translate="vacationTrackerApp.vacation.endDate">End Date</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="stage" class="hidden-xs"><span data-translate="vacationTrackerApp.vacation.stage">Stage</span> <span class="glyphicon glyphicon-sort"></span></th>
-                </tr>
+            <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                <th jh-sort-by="owner.login"><span data-translate="vacationTrackerApp.vacation.owner">Owner</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="type"><span data-translate="vacationTrackerApp.vacation.type">Type</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="payment"><span data-translate="vacationTrackerApp.vacation.payment">Payment</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="startDate"><span data-translate="vacationTrackerApp.vacation.startDate">Start Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="endDate"><span data-translate="vacationTrackerApp.vacation.endDate">End Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="stage" class="hidden-xs"><span data-translate="vacationTrackerApp.vacation.stage">Stage</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th></th>
+            </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="vacation in vm.vacations track by vacation.id">
-                    <td><input type="checkbox" ng-model="vacation.checked"></td>
-                    <td ui-sref="overview.vacation-detail({id:vacation.id})">{{vacation.owner.firstName}} {{vacation.owner.lastName}}</td>
-                    <td ui-sref="overview.vacation-detail({id:vacation.id})" data-translate="{{'vacationTrackerApp.VacationType.' + vacation.type}}">{{vacation.type}}</td>
-                    <td has-authority="ROLE_ACCOUNTANT" ui-sref="overview.vacation-detail({id:vacation.id})" data-translate="{{'vacationTrackerApp.PaymentType.' + vacation.payment}}">{{vacation.payment}}</td>
-                    <td ui-sref="overview.vacation-detail({id:vacation.id})">{{vacation.startDate | date:'dd/MM/yyyy'}}</td>
-                    <td ui-sref="overview.vacation-detail({id:vacation.id})">{{vacation.endDate | date:'dd/MM/yyyy'}}</td>
-                    <td ui-sref="overview.vacation-detail({id:vacation.id})" class="hidden-xs" data-translate="{{'vacationTrackerApp.Stage.' + vacation.stage}}">{{vacation.stage}}</td>
-                </tr>
+            <tr ng-repeat="vacation in vm.vacations track by vacation.id">
+                <td ui-sref="vacation-management-detail({id:vacation.id})">{{vacation.owner.firstName}} {{vacation.owner.lastName}}</td>
+                <td ui-sref="vacation-management-detail({id:vacation.id})" data-translate="{{'vacationTrackerApp.VacationType.' + vacation.type}}">{{vacation.type}}</td>
+                <td ui-sref="vacation-management-detail({id:vacation.id})" data-translate="{{'vacationTrackerApp.PaymentType.' + vacation.payment}}">{{vacation.payment}}</td>
+                <td ui-sref="vacation-management-detail({id:vacation.id})">{{vacation.startDate | date:'dd/MM/yyyy'}}</td>
+                <td ui-sref="vacation-management-detail({id:vacation.id})">{{vacation.endDate | date:'dd/MM/yyyy'}}</td>
+                <td ui-sref="vacation-management-detail({id:vacation.id})" class="hidden-xs" data-translate="{{'vacationTrackerApp.Stage.' + vacation.stage}}">{{vacation.stage}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit" ui-sref="vacation-management.edit({id:vacation.id})" class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            <span class="hidden-xs hidden-sm hidden-md" data-translate="entity.action.edit"></span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
+
     <div class="text-center">
         <div class="info" translate="queryInfo" translate-values="{page: '{{vm.page}}', itemsPerPage: '{{vm.itemsPerPage}}', totalItems:'{{vm.totalItems}}'}"></div>
         <uib-pagination class="pagination-sm" total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>

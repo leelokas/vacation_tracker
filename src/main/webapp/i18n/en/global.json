@@ -23,6 +23,7 @@
             "admin": {
                 "main": "Administration",
                 "userManagement": "User management",
+                "vacationManagement": "Vacation management",
                 "tracker": "User tracker",
                 "metrics": "Metrics",
                 "health": "Health",
@@ -140,7 +141,7 @@
         "idexists": "A new {{ entityName }} cannot already have an ID"
     },
     "footer": {
-        "copyright": "© 2016 Reach-U",
+        "copyright": "© 2017 Reach-U",
         "forInfoContact": "If you have questions, problems or feature requests then turn to",
         "email": "liis@reach-u.com"
     },

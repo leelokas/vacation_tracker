@@ -1,0 +1,103 @@
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myVacationLabel" data-translate="vacationTrackerApp.vacation.home.createOrEditLabel">Create or edit a Vacation</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label data-translate="vacationTrackerApp.vacation.owner" for="field_owner">Vacation requester</label>
+                <select class="form-control" id="field_owner" name="owner" ng-model="vm.vacation.owner" required
+                        ng-options="user as user.firstName + ' ' + user.lastName + ' (' + user.login + ')' for user in vm.users track by user.login">
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label class="control-label" data-translate="vacationTrackerApp.vacation.stage" for="field_stage">Stage</label>
+                <select class="form-control" name="stage" ng-model="vm.vacation.stage" id="field_stage">
+                    <option value="SENT" data-translate="vacationTrackerApp.Stage.SENT">SENT</option>
+                    <option value="PLANNED" data-translate="vacationTrackerApp.Stage.PLANNED">PLANNED</option>
+                    <option value="CONFIRMED" data-translate="vacationTrackerApp.Stage.CONFIRMED">CONFIRMED</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label class="control-label" data-translate="vacationTrackerApp.vacation.type" for="field_type">Type</label>
+                <span class="has-error" ng-show="editForm.type.$error.required"></span>
+                <select class="form-control" name="type" ng-model="vm.vacation.type" id="field_type" required>
+                    <option value="PAID" data-translate="vacationTrackerApp.VacationType.PAID">PAID</option>
+                    <option value="UNPAID" data-translate="vacationTrackerApp.VacationType.UNPAID">UNPAID</option>
+                    <option value="SICK_LEAVE" data-translate="vacationTrackerApp.VacationType.SICK_LEAVE">SICK_LEAVE</option>
+                    <option value="STUDY_LEAVE" data-translate="vacationTrackerApp.VacationType.STUDY_LEAVE">STUDY_LEAVE</option>
+                    <option value="PREGNANCY_LEAVE" data-translate="vacationTrackerApp.VacationType.PREGNANCY_LEAVE">PREGNANCY_LEAVE</option>
+                    <option value="PARENTAL_LEAVE" data-translate="vacationTrackerApp.VacationType.PARENTAL_LEAVE">PARENTAL_LEAVE</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label class="control-label" data-translate="vacationTrackerApp.vacation.payment" for="field_payment">Payment</label>
+                <select class="form-control" name="payment" ng-model="vm.vacation.payment" id="field_payment"
+                        ng-disabled="vm.vacation.type == 'UNPAID' || vm.vacation.type == 'SICK_LEAVE' || vm.vacation.type == 'PREGNANCY_LEAVE' || vm.vacation.type == 'PARENTAL_LEAVE'">
+                    <option value="WITH_NEXT_SALARY" data-translate="vacationTrackerApp.PaymentType.WITH_NEXT_SALARY">WITH_NEXT_SALARY</option>
+                    <option value="BEFORE_VACATION" data-translate="vacationTrackerApp.PaymentType.BEFORE_VACATION"
+                            ng-selected="vm.vacation.type === 'PAID' || vm.vacation.type === 'STUDY_LEAVE'">BEFORE_VACATION</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label class="control-label" data-translate="vacationTrackerApp.vacation.startDate" for="field_startDate">Start Date</label>
+                <div class="input-group" >
+                    <input id="field_startDate" type="text" class="form-control" name="startDate"
+                           uib-datepicker-popup="{{'dd/MM/yyyy'}}"
+                           required
+                           ng-model="vm.vacation.startDate"
+                           is-open="vm.datePickerOpenStatus.startDate"
+                           datepicker-options="vm.startDateOptions"
+                           show-button-bar="false"/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('startDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <label class="control-label" data-translate="vacationTrackerApp.vacation.endDate" for="field_endDate">End Date</label>
+                <div class="input-group">
+                    <input id="field_endDate" type="text" class="form-control" name="endDate"
+                           uib-datepicker-popup="{{'dd/MM/yyyy'}}"
+                           ng-required="vm.vacation.type !== 'SICK_LEAVE'"
+                           ng-model="vm.vacation.endDate"
+                           is-open="vm.datePickerOpenStatus.endDate"
+                           datepicker-options="vm.endDateOptions"
+                           show-button-bar="false"/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row showMore">
+            <div class="col-md-12 toggle" ng-click="showMore = !showMore">
+                <div ng-if="!showMore">
+                    <span data-translate="entity.action.showMore"></span>&nbsp;<i class="fa fa-chevron-down" aria-hidden="true"></i>
+                </div>
+                <div ng-if="showMore">
+                    <span data-translate="entity.action.showLess"></span>&nbsp;<i class="fa fa-chevron-up" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="form-group col-md-12" ng-if="showMore">
+                <br>
+                <label for="comment" data-translate="entity.action.addComment">Add comment</label>
+                <textarea name="comment" class="form-control" type="text" id="comment" ng-model="vm.vacation.comment"></textarea>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary" novalidate>
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

@@ -20,6 +20,9 @@
                 "download": "Lae puhkused alla",
                 "filter": "Filter"
             },
+            "vacationManagement": {
+                "title": "Puhkuste haldus"
+            },
             "created": "Sinu puhkuse taotlus on salvestatud, kuid pole saadetud kinnitamiseks. \nKui taotlus ei vaja mingeid muudatusi, siis palun klõpsa 'Saada kinnitamisele'",
             "sent": "Puhkuse taotlus kuupäevadega {{vacation.startDate}} - {{vacation.endDate}} saadeti Sinu juhile {{manager.firstName}} {{manager.lastName}} kinnitamiseks.\nNB! Kas oled teavitanud projektijuhti oma puhkuse kuupäevadest?",
             "sendSickLeave": "Info Sinu haiguslehest algusega {{vacation.startDate}} saadeti Sinu juhile {{manager.firstName}} {{manager.lastName}}.\nNB! Kas oled teavitanud projektijuhti oma haiguslehest?",

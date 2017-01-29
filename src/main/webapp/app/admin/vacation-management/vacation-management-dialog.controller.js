@@ -3,11 +3,11 @@
 
     angular
         .module('vacationTrackerApp')
-        .controller('VacationDialogController', VacationDialogController);
+        .controller('VacationManagementDialogController', VacationManagementDialogController);
 
-    VacationDialogController.$inject = ['$timeout', '$scope', '$uibModalInstance', 'entity', 'Vacation', 'User', 'Principal'];
+    VacationManagementDialogController.$inject = ['$timeout', '$scope', '$uibModalInstance', 'entity', 'Vacation', 'User'];
 
-    function VacationDialogController ($timeout, $scope, $uibModalInstance, entity, Vacation, User, Principal) {
+    function VacationManagementDialogController ($timeout, $scope, $uibModalInstance, entity, Vacation, User) {
         var vm = this;
 
         vm.vacation = entity;
@@ -17,20 +17,14 @@
         vm.save = save;
         vm.users = User.query();
 
-        vm.dateOptions = {
-            minDate: new Date(),
-            showWeeks: false,
-            startingDay: 1
-        };
 
-        var lastWeekDate = new Date();
-        lastWeekDate.setDate(lastWeekDate.getDate() - 7);
+        vm.datePickerOpenStatus.startDate = false;
+        vm.datePickerOpenStatus.endDate = false;
+
         vm.startDateOptions = {
-            minDate: lastWeekDate,
             showWeeks: false,
             startingDay: 1
         };
-
         vm.endDateOptions = {
             minDate: setMinEndDate(),
             showWeeks: false,
@@ -40,14 +34,6 @@
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
-
-        setOwner();
-
-        function setOwner() {
-            Principal.identity().then(function(account) {
-                vm.vacation.owner = User.get({login: account.login});
-            });
-        }
 
         function clear () {
             $uibModalInstance.dismiss('cancel');
@@ -72,16 +58,11 @@
             vm.isSaving = false;
         }
 
-        vm.datePickerOpenStatus.startDate = false;
-        vm.datePickerOpenStatus.endDate = false;
-        vm.datePickerOpenStatus.endDateSickLeave = false;
-
-
         function openCalendar (date) {
             vm.datePickerOpenStatus[date] = true;
         }
 
-        function setMinEndDate(){
+        function setMinEndDate () {
             $scope.$watch("vm.vacation.startDate", function() {
                 vm.endDateOptions.minDate = vm.vacation.startDate;
             });
