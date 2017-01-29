@@ -52,13 +52,13 @@
             }, onSuccess, onError);
         }
 
-        function onSuccess(data) {
+        function onSuccess(data, headers) {
             for (var i = data.length - 1; i >= 0; i--) {
                 if (data[i]['login'] === 'anonymoususer' || data[i]['login'] === 'system') {
                     data.splice(i, 1);
                 }
             }
-            vm.totalItems = data.length;
+            vm.totalItems = headers('X-Total-Count');
             vm.queryCount = vm.totalItems;
             vm.page = pagingParams.page;
             vm.users = data;

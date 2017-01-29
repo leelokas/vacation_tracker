@@ -58,8 +58,8 @@
             return result;
         }
 
-        function onSuccess(data) {
-            vm.totalItems = data.length;
+        function onSuccess(data, headers) {
+            vm.totalItems = headers('X-Total-Count');
             vm.vacations = data;
             vm.page = pagingParams.page;
         }
