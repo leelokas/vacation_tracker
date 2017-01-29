@@ -30,7 +30,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     Optional<User> findOneById(Long userId);
 
-    @Query(value = "select distinct user from User user left join fetch user.authorities",
+    @Query(value = "select distinct user from User user left join fetch user.authorities where user.login != 'system' and user.login!='anonymoususer'",
         countQuery = "select count(user) from User user")
     Page<User> findAllWithAuthorities(Pageable pageable);
 
