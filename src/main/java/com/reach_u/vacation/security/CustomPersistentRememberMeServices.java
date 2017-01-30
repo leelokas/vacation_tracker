@@ -111,11 +111,19 @@ public class CustomPersistentRememberMeServices extends
     protected void onLoginSuccess(HttpServletRequest request, HttpServletResponse response, Authentication successfulAuthentication) {
         String login = successfulAuthentication.getName();
 
-        Optional<User> user = userRepository.findOneByLogin(login);
-        PersistentToken token = null;
-        if (user.isPresent()) {
+        Optional<User> optionalUser = userRepository.findOneByLogin(login);
+        PersistentToken token;
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (successfulAuthentication.getPrincipal() instanceof UserDetails &&
+                (user.getFirstName() == null || user.getFirstName() == "" || user.getLastName() == null || user.getLastName() == "")) {
+                CustomUserDetails customUserDetails = (CustomUserDetails) successfulAuthentication.getPrincipal();
+                user.setFirstName(customUserDetails.getGivenname());
+                user.setLastName(customUserDetails.getLastname());
+                userRepository.save(user);
+            }
             log.debug("Logging in with existing user {}", login);
-            token = getPersistentToken(user.get(), request);
+            token = getPersistentToken(user, request);
         } else {
             log.debug("Creating new user {}", login);
             CustomUserDetails customUserDetails = (CustomUserDetails) successfulAuthentication.getPrincipal();
