@@ -15,7 +15,8 @@
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.save = save;
-        vm.users = User.query();
+        //TODO Siia vb mingi parem lahendus leida, kui size:100 panna
+        vm.users = User.query({size:100});
 
 
         vm.datePickerOpenStatus.startDate = false;
