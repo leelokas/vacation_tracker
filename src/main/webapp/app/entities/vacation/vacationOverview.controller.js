@@ -48,9 +48,16 @@
             return result;
         }
         function onSuccess(data, headers) {
-            vm.totalItems = headers('X-Total-Count');
+            if (headers && headers('X-Total-Count')) {
+                vm.totalItems = headers('X-Total-Count');
+                vm.page = pagingParams.page;
+                vm.itemsPerPage = paginationConstants.itemsPerPage;
+            } else {
+                vm.totalItems = data.length;
+                vm.page = 1;
+                vm.itemsPerPage = data.length;
+            }
             vm.vacations = data;
-            vm.page = pagingParams.page;
         }
         function onError(error) {
             AlertService.error(error.data.message);
@@ -81,7 +88,17 @@
             vm.datePickerOpenStatus[date] = true;
         }
 
+        function filtersEmpty() {
+            return !(vm.filterParams.type || vm.filterParams.from || vm.filterParams.until ||
+                vm.filterParams.owner && vm.filterParams.owner !== '' ||
+                vm.filterParams.manager && vm.filterParams.manager !== '');
+        }
+
         function filter() {
+            if (filtersEmpty()) {
+                loadAll();
+                return;
+            }
             var dateFormat = 'yyyy-MM-dd';
             Vacation.getFilteredVacations({
                 stage: "PLANNED",
