@@ -113,7 +113,7 @@ public class MailService {
     public void sendVacationUpdateEmail(User user, Vacation vacation) {
 
         log.debug("Sending vacation update  e-mail to '{}'", user.getEmail());
-        String content = user.getFirstName() + " " + user.getLastName() + " vacation stage is updated to " + vacation.getStage() ;
+        String content = user.getFirstName() + " " + user.getLastName() + " vacation stage is updated to " + vacation.getStage() + "\n https://vacation.reach-u.com/";
         String subject = user.getFirstName() + " " + user.getLastName() + " vacation stage updated";
         switch (vacation.getStage()){
             case SENT:  case PLANNED:
