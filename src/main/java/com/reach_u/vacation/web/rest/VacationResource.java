@@ -170,12 +170,16 @@ public class VacationResource {
         @RequestParam(value = "from",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date from,
         @RequestParam(value = "until", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date until,
         @RequestParam(value = "owner", required = false) String login,
-        @RequestParam(value = "manager", required = false) String manager)
+        @RequestParam(value = "manager", required = false) String manager,
+        Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get vacations : vacationStage: {}, paymentType: {}, vacationType: {}, from: {}, until: {}, login: {}, manager: {}",
             vacationStage, paymentType, vacationType, from, until, login, manager);
-        List<Vacation> list = vacationRepository.findAll(VacationSpecifications.byQuery(vacationType, paymentType, vacationStage, from, until, login, manager));
-        return new ResponseEntity<>(list, HttpStatus.OK);
+        Page<Vacation> page = vacationRepository.findAll(
+            VacationSpecifications.byQuery(vacationType, paymentType, vacationStage, from, until, login, manager), pageable
+        );
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/vacations/filter");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**

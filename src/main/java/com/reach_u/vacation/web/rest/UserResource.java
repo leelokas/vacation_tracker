@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -231,7 +232,8 @@ public class UserResource {
             @RequestParam(value = "lastName", required = false) String lastName,
             @RequestParam(value = "login", required = false) String login,
             @RequestParam(value = "manager", required = false) String manager,
-            @RequestParam(value = "role", required = false) Authority auth)
+            @RequestParam(value = "role", required = false) Authority auth,
+            Pageable pageable)
 
             throws URISyntaxException{
         log.debug("REST request to get vacations : firstName: {}, lastName: {}, login: {}, manager: {}, authority: {}",
@@ -241,7 +243,9 @@ public class UserResource {
                 .filter(user -> auth == null || user.getAuthorities().contains(auth))
                 .map(user -> new ManagedUserVM(user))
                 .collect(Collectors.toList());
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        Page<User> page = new PageImpl(response, pageable, response.size());
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/users/filter");
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 
     /**
