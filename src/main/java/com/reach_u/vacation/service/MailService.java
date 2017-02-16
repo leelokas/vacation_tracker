@@ -111,6 +111,7 @@ public class MailService {
 
     @Async
     public void sendVacationUpdateEmail(User user, Vacation vacation) {
+
         log.debug("Sending vacation update  e-mail to '{}'", user.getEmail());
         String content = user.getFirstName() + " " + user.getLastName() + " vacation stage is updated to " + vacation.getStage() ;
         String subject = user.getFirstName() + " " + user.getLastName() + " vacation stage updated";

@@ -83,7 +83,9 @@ public class XlsService {
 
         row.createCell(4, CellType.STRING).setCellValue(item.getType().toString());
         if (showPaymentType) {
-            row.createCell(5, CellType.STRING).setCellValue(item.getPayment().toString());
+            if(item.getPayment() != null){
+                row.createCell(5, CellType.STRING).setCellValue(item.getPayment().toString());
+            }
             row.createCell(6, CellType.STRING).setCellValue(item.getComment());
         }
     }

@@ -35,9 +35,9 @@ public class VacationService {
     private UserRepository userRepository;
 
 
-    // For testing use: cron = "0 * * * * * "     -> every minute
-    // For live use:    cron = "0 0 9 * * MON"    -> every Monday at 9 AM
-    @Scheduled(cron = "0 0 9 * * MON")
+    // For testing use: cron = "0 * * * * * "   -> every minute
+    // For live use:    cron = "0 0 9 * 1 ?"    -> every Monday at 9 AM
+    @Scheduled(cron = "0 0 9 * 1 ?")
     public void sendWeeklyEmail(){
         LocalDate today = LocalDate.now();
         LocalDate nextWeekSunday = today.with(next(DayOfWeek.SUNDAY)).with(next(DayOfWeek.SUNDAY));
@@ -48,9 +48,9 @@ public class VacationService {
         createAndSendVacationInfo(vacations, accountants);
     }
 
-    // For testing use: cron = "0 * * * * *"   -> executes every minute
-    // For live use:    cron = "* 15 */1 * * *"  -> executes at minute 15 past every hour
-    @Scheduled(cron = "0 * * * * *")
+    // For testing use: cron = "0 * * * * *"     -> executes every minute
+    // For live use:    cron = "0 15 */1 * * ?"  -> executes at minute 15 past every hour
+    @Scheduled(cron = "0 15 */1 * * ?")
     public void sendHourlyEmail(){
         List<Vacation> vacations      = vacationRepository.getAllUpcomingVacations();
         List<User> accountants        = userRepository.getAllAccountants();
