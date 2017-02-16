@@ -50,8 +50,8 @@ public class VacationService {
 
     // For testing use: cron = "0 * * * * *"   -> executes every minute
     // For live use:    cron = "* 15 */1 * * *"  -> executes at minute 15 past every hour
-    @Scheduled(cron = "* 15 */1 * * *")
-    public void sendHouryEmail(){
+    @Scheduled(cron = "0 * * * * *")
+    public void sendHourlyEmail(){
         List<Vacation> vacations      = vacationRepository.getAllUpcomingVacations();
         List<User> accountants        = userRepository.getAllAccountants();
 
@@ -89,6 +89,7 @@ public class VacationService {
         if (!vacations.isEmpty()) {
             for (Vacation vacation : vacations) {
                 vacation.setStage(Stage.CONFIRMED);
+                mailService.sendVacationUpdateEmail(vacation.getOwner(), vacation);
             }
         }
     }
