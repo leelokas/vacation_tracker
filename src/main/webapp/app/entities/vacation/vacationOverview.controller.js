@@ -19,7 +19,6 @@
 
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
-        vm.itemsPerPage = paginationConstants.itemsPerPage;
 
         vm.selectAll = false;
         vm.dateOptions = {
@@ -37,6 +36,11 @@
             from: null,
             until: null
         };
+        vm.pageParams = {
+            page: 1,
+            itemsPerPage: paginationConstants.itemsPerPage,
+            totalItems: 0
+        };
 
         loadAll();
 
@@ -47,18 +51,18 @@
             }
             return result;
         }
+
         function onSuccess(data, headers) {
             if (headers && headers('X-Total-Count')) {
-                vm.totalItems = headers('X-Total-Count');
-                vm.page = pagingParams.page;
-                vm.itemsPerPage = paginationConstants.itemsPerPage;
+                vm.pageParams.totalItems = headers('X-Total-Count');
+                vm.pageParams.page = pagingParams.page;
             } else {
-                vm.totalItems = data.length;
-                vm.page = 1;
-                vm.itemsPerPage = data.length;
+                vm.pageParams.totalItems = data.length;
+                vm.pageParams.page = 1;
             }
             vm.vacations = data;
         }
+
         function onError(error) {
             AlertService.error(error.data.message);
         }
@@ -66,22 +70,28 @@
         function loadAll() {
             Vacation.getOverviewVacations({
                 page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
+                size: vm.pageParams.itemsPerPage,
                 sort: sort()
             }, onSuccess, onError);
         }
 
-        function loadPage(page) {
-            vm.page = page;
+        function loadPage () {
+            pagingParams.page = vm.pageParams.page;
             vm.transition();
         }
 
-        function transition() {
-            $state.transitionTo($state.$current, {
-                page: vm.page,
-                sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
-                search: vm.currentSearch
-            });
+        function transition () {
+            var dateFormat = 'yyyy-MM-dd';
+            Vacation.getOverviewFilteredVacations({
+                type: vm.filterParams.type,
+                owner: vm.filterParams.owner === '' ? null : vm.filterParams.owner,
+                manager: vm.filterParams.manager === '' ? null : vm.filterParams.manager,
+                from: $filter('date')(vm.filterParams.from, dateFormat),
+                until: $filter('date')(vm.filterParams.until, dateFormat),
+                page: vm.pageParams.page - 1,
+                size: vm.pageParams.itemsPerPage,
+                sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')
+            }, onSuccess, onError);
         }
 
         function openCalendar(date) {
@@ -100,8 +110,7 @@
                 return;
             }
             var dateFormat = 'yyyy-MM-dd';
-            Vacation.getFilteredVacations({
-                stage: "PLANNED",
+            Vacation.getOverviewFilteredVacations({
                 type: vm.filterParams.type,
                 owner: vm.filterParams.owner === '' ? null : vm.filterParams.owner,
                 manager: vm.filterParams.manager === '' ? null : vm.filterParams.manager,
@@ -110,21 +119,7 @@
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
                 sort: sort()
-            }, function(plannedData) {
-                Vacation.getFilteredVacations({
-                    stage: "CONFIRMED",
-                    type: vm.filterParams.type,
-                    owner: vm.filterParams.owner === '' ? null : vm.filterParams.owner,
-                    manager: vm.filterParams.manager === '' ? null : vm.filterParams.manager,
-                    from: $filter('date')(vm.filterParams.from, dateFormat),
-                    until: $filter('date')(vm.filterParams.until, dateFormat),
-                    page: pagingParams.page - 1,
-                    size: vm.itemsPerPage,
-                    sort: sort()
-                }, function(confirmedData) {
-                    onSuccess(plannedData.concat(confirmedData));
-                }, onError);
-            }, onError);
+            }, onSuccess, onError);
         }
 
         function exportFile() {

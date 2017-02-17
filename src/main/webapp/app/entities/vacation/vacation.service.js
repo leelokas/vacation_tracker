@@ -61,6 +61,14 @@
                     return getMethodCallback(data);
                 }
             },
+            'getOverviewFilteredVacations': {
+                method: 'GET',
+                url: 'api/vacations/overview/filter',
+                isArray: true,
+                transformResponse: function (data) {
+                    return getMethodCallback(data);
+                }
+            },
             'update': {
                 method: 'PUT',
                 transformRequest: function (data) {

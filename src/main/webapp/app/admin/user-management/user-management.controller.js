@@ -11,7 +11,6 @@
         var vm = this;
 
         vm.loadAll = loadAll;
-        vm.clear = clear;
         vm.loadPage = loadPage;
         vm.transition = transition;
         vm.filter = filter;
@@ -61,15 +60,6 @@
 
         function onError(error) {
             AlertService.error(error.data.message);
-        }
-
-        function clear () {
-            vm.user = {
-                id: null, login: null, firstName: null, lastName: null, email: null,
-                activated: null, langKey: null, createdBy: null, createdDate: null,
-                lastModifiedBy: null, lastModifiedDate: null, resetDate: null,
-                resetKey: null, authorities: null
-            };
         }
 
         function sort () {

@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -179,6 +180,42 @@ public class VacationResource {
             VacationSpecifications.byQuery(vacationType, paymentType, vacationStage, from, until, login, manager), pageable
         );
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/vacations/filter");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET /vacations/overview/filter : get overview vacations with requested filter
+     *
+     * @param vacationType the vacation type
+     * @param paymentType the vacation payment type
+     * @param from the vacation minimum start date
+     * @param until the vacation maximum end date
+     * @return the ResponseEntity with status 200 (OK) and with body the vacation, or with status 404 (Not Found)
+     */
+    @RequestMapping(value = "/vacations/overview/filter",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<Vacation>> getOverviewVacationsByFilter(
+        @RequestParam(value = "type", required = false) VacationType vacationType,
+        @RequestParam(value = "payment", required = false) PaymentType paymentType,
+        @RequestParam(value = "from",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date from,
+        @RequestParam(value = "until", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date until,
+        @RequestParam(value = "owner", required = false) String login,
+        @RequestParam(value = "manager", required = false) String manager,
+        Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get overview vacations : paymentType: {}, vacationType: {}, from: {}, until: {}, login: {}, manager: {}",
+            paymentType, vacationType, from, until, login, manager);
+
+        List<Stage> stages = new ArrayList();
+        stages.add(Stage.PLANNED);
+        stages.add(Stage.CONFIRMED);
+
+        Page<Vacation> page = vacationRepository.findAll(
+            VacationSpecifications.byQuery(vacationType, paymentType, stages, from, until, login, manager), pageable
+        );
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/vacations/overview/filter");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

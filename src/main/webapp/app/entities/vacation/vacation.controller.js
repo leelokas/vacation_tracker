@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('VacationController', VacationController);
 
-    VacationController.$inject = ['$state', '$filter', '$translate', 'Vacation', 'AlertService', 'pagingParams', 'User', 'Principal', 'paginationConstants'];
+    VacationController.$inject = ['$filter', '$translate', 'Vacation', 'AlertService', 'pagingParams', 'User', 'Principal', 'paginationConstants'];
 
-    function VacationController ($state, $filter, $translate, Vacation, AlertService, pagingParams, User, Principal, paginationConstants) {
+    function VacationController ($filter, $translate, Vacation, AlertService, pagingParams, User, Principal, paginationConstants) {
         var vm = this;
 
         vm.loadPage = loadPage;
@@ -20,10 +20,8 @@
 
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
-        vm.itemsPerPage = paginationConstants.itemsPerPage;
 
         setCurrentUser();
-
 
         function setCurrentUser() {
             Principal.identity().then(function(account) {
@@ -47,6 +45,11 @@
             stage: null,
             payment: null
         };
+        vm.pageParams = {
+            page: 1,
+            itemsPerPage: paginationConstants.itemsPerPage,
+            totalItems: 0
+        };
 
         loadAll();
 
@@ -60,13 +63,11 @@
 
         function onSuccess(data, headers) {
             if (headers && headers('X-Total-Count')) {
-                vm.totalItems = headers('X-Total-Count');
-                vm.page = pagingParams.page;
-                vm.itemsPerPage = paginationConstants.itemsPerPage;
+                vm.pageParams.totalItems = headers('X-Total-Count');
+                vm.pageParams.page = pagingParams.page;
             } else {
-                vm.totalItems = data.length;
-                vm.page = 1;
-                vm.itemsPerPage = data.length;
+                vm.pageParams.totalItems = data.length;
+                vm.pageParams.page = 1;
             }
             vm.vacations = data;
         }
@@ -78,24 +79,32 @@
         function loadAll () {
             Vacation.getOwnVacations({
                 page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
+                size: vm.pageParams.itemsPerPage,
                 sort: sort()
             }, onSuccess, onError);
 
             loadRemainingPaidDays();
         }
 
-        function loadPage (page) {
-            vm.page = page;
+        function loadPage () {
+            pagingParams.page = vm.pageParams.page;
             vm.transition();
         }
 
         function transition () {
-            $state.transitionTo($state.$current, {
-                page: vm.page,
-                sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
-                search: vm.currentSearch
-            });
+            var dateFormat = 'yyyy-MM-dd';
+
+            Vacation.getFilteredVacations({
+                type: vm.filterParams.type,
+                owner: vm.currentUser.login,
+                stage: vm.filterParams.stage,
+                payment: vm.filterParams.payment,
+                from: $filter('date')(vm.filterParams.from, dateFormat),
+                until: $filter('date')(vm.filterParams.until, dateFormat),
+                page: vm.pageParams.page-1,
+                size: vm.pageParams.itemsPerPage,
+                sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')
+            }, onSuccess, onError);
         }
 
         function displayCancelButton (vacation) {
@@ -192,7 +201,7 @@
                 from: $filter('date')(vm.filterParams.from, dateFormat),
                 until: $filter('date')(vm.filterParams.until, dateFormat),
                 page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
+                size: vm.pageParams.itemsPerPage,
                 sort: sort()
             }, onSuccess, onError);
         }

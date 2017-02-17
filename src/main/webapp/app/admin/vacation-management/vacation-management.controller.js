@@ -35,7 +35,7 @@
             until: null
         };
         vm.pageParams = {
-            page: vm.page || 1,
+            page: 1,
             itemsPerPage: paginationConstants.itemsPerPage,
             totalItems: 0
         };
@@ -54,11 +54,9 @@
             if (headers && headers('X-Total-Count')) {
                 vm.pageParams.totalItems = headers('X-Total-Count');
                 vm.pageParams.page = pagingParams.page;
-                vm.pageParams.itemsPerPage = paginationConstants.itemsPerPage;
             } else {
                 vm.pageParams.totalItems = data.length;
                 vm.pageParams.page = 1;
-                vm.pageParams.itemsPerPage = data.length;
             }
             vm.vacations = data;
         }
