@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('VacationManagementController', VacationManagementController);
 
-    VacationManagementController.$inject = ['$state', '$filter', 'Vacation', 'AlertService', 'pagingParams', 'paginationConstants'];
+    VacationManagementController.$inject = ['$filter', 'Vacation', 'AlertService', 'pagingParams', 'paginationConstants'];
 
-    function VacationManagementController ($state, $filter, Vacation, AlertService, pagingParams, paginationConstants) {
+    function VacationManagementController ($filter, Vacation, AlertService, pagingParams, paginationConstants) {
         var vm = this;
 
         vm.loadPage = loadPage;
@@ -17,7 +17,6 @@
 
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
-        vm.itemsPerPage = paginationConstants.itemsPerPage;
 
         vm.dateOptions = {
             showWeeks: false,
@@ -35,6 +34,11 @@
             from: null,
             until: null
         };
+        vm.pageParams = {
+            page: vm.page || 1,
+            itemsPerPage: paginationConstants.itemsPerPage,
+            totalItems: 0
+        };
 
         loadAll();
 
@@ -48,13 +52,13 @@
 
         function onSuccess(data, headers) {
             if (headers && headers('X-Total-Count')) {
-                vm.totalItems = headers('X-Total-Count');
-                vm.page = pagingParams.page;
-                vm.itemsPerPage = paginationConstants.itemsPerPage;
+                vm.pageParams.totalItems = headers('X-Total-Count');
+                vm.pageParams.page = pagingParams.page;
+                vm.pageParams.itemsPerPage = paginationConstants.itemsPerPage;
             } else {
-                vm.totalItems = data.length;
-                vm.page = 1;
-                vm.itemsPerPage = data.length;
+                vm.pageParams.totalItems = data.length;
+                vm.pageParams.page = 1;
+                vm.pageParams.itemsPerPage = data.length;
             }
             vm.vacations = data;
         }
@@ -64,24 +68,32 @@
         }
 
         function loadAll () {
-            Vacation.query({
+            Vacation.getFilteredVacations({
                 page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
+                size: vm.pageParams.itemsPerPage,
                 sort: sort()
             }, onSuccess, onError);
         }
 
-        function loadPage (page) {
-            vm.page = page;
+        function loadPage () {
+            pagingParams.page = vm.pageParams.page;
             vm.transition();
         }
 
         function transition () {
-            $state.transitionTo($state.$current, {
-                page: vm.page,
-                sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
-                search: vm.currentSearch
-            });
+            var dateFormat = 'yyyy-MM-dd';
+
+            Vacation.getFilteredVacations({
+                type: vm.filterParams.type,
+                owner: vm.filterParams.owner === '' ? null : vm.filterParams.owner,
+                manager: vm.filterParams.manager === '' ? null : vm.filterParams.manager,
+                stage: vm.filterParams.stage,
+                from: $filter('date')(vm.filterParams.from, dateFormat),
+                until: $filter('date')(vm.filterParams.until, dateFormat),
+                page: vm.pageParams.page-1,
+                size: vm.pageParams.itemsPerPage,
+                sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')
+            }, onSuccess, onError);
         }
 
         function openCalendar(date) {
@@ -109,7 +121,7 @@
                 from: $filter('date')(vm.filterParams.from, dateFormat),
                 until: $filter('date')(vm.filterParams.until, dateFormat),
                 page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
+                size: vm.pageParams.itemsPerPage,
                 sort: sort()
             }, onSuccess, onError);
         }
