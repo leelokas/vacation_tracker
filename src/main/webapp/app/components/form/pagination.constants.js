@@ -4,6 +4,6 @@
     angular
         .module('vacationTrackerApp')
         .constant('paginationConstants', {
-            'itemsPerPage': 10
+            'itemsPerPage': 30
         });
 })();
