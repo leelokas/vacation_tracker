@@ -4,6 +4,9 @@ import com.reach_u.vacation.config.JHipsterProperties;
 import com.reach_u.vacation.domain.User;
 
 import com.reach_u.vacation.domain.Vacation;
+import com.reach_u.vacation.domain.enumeration.Stage;
+import com.reach_u.vacation.domain.enumeration.VacationType;
+import com.reach_u.vacation.repository.UserRepository;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -21,6 +24,8 @@ import javax.activation.DataSource;
 import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
 import javax.mail.util.ByteArrayDataSource;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,6 +42,8 @@ public class MailService {
 
     private static final String USER = "user";
     private static final String BASE_URL = "baseUrl";
+    private static final String EMAIL_FOOTER = "<br/><br/><a href=\"https://vacation.reach-u.com/\">https://vacation.reach-u.com/</a>";
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd. MMM yyyy");
 
     @Inject
     private JHipsterProperties jHipsterProperties;
@@ -52,6 +59,9 @@ public class MailService {
 
     @Inject
     private XlsService xlsService;
+
+    @Inject
+    private UserRepository userRepository;
 
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
@@ -110,36 +120,196 @@ public class MailService {
     }
 
     @Async
-    public void sendVacationUpdateEmail(User user, Vacation vacation) {
+    public void sendVacationCreateEmail(Vacation vacation) {
 
-        log.debug("Sending vacation update  e-mail to '{}'", user.getEmail());
-        String content = user.getFirstName() + " " + user.getLastName() + " vacation stage is updated to " + vacation.getStage() + "\n https://vacation.reach-u.com/";
-        String subject = user.getFirstName() + " " + user.getLastName() + " vacation stage updated";
-        switch (vacation.getStage()){
-            case SENT:  case PLANNED:
-                sendEmail(user.getEmail(), subject, content, false, true);
-                if (user.getManager() != null) {
-                    sendEmail(user.getManager().getEmail(), subject, content, false, true);
-                }
-                break;
-            // TODO: 1.11.2016 when accountant exists, add accountant
-            case CONFIRMED:
-                sendEmail(user.getEmail(), subject, content, false, true);
-                if (user.getManager() != null) {
-                    sendEmail(user.getManager().getEmail(), subject, content, false, true);
-                }
-//                sendEmail(user.getManager().getEmail(), subject, content, false, true);
+        User owner = vacation.getOwner();
+        User manager = owner.getManager();
+
+        String subject = "Vacation request created for " + owner.getFirstName() + " " + owner.getLastName();
+        String content = "A new vacation request was created for "
+            + owner.getFirstName() + " " + owner.getLastName() + " (" + owner.getLogin() + ")<br/>"
+            + "<br/><b>Vacation stage:</b> " + vacation.getStage()
+            + "<br/><b>Type:</b> " + vacation.getType()
+            + "<br/><b>From:</b> " + vacation.getStartDate().format(FORMATTER)
+            + "<br/><b>Until:</b> " + (vacation.getEndDate() == null ? "-" : vacation.getEndDate().format(FORMATTER)) + EMAIL_FOOTER;
+
+        if (vacation.getStage() != Stage.SAVED) {
+            log.debug("Sending vacation creation e-mail to owner '{}'", owner.getEmail());
+            sendEmail(owner.getEmail(), subject, content, false, true);
+        }
+        if (manager != null && (vacation.getStage() == Stage.SENT || vacation.getStage() == Stage.PLANNED)) {
+            log.debug("Sending vacation creation e-mail to manager '{}'", manager.getEmail());
+            sendEmail(manager.getEmail(), subject, content, false, true);
         }
     }
 
-    // isMultipart has to be true in order to send with attachment
     @Async
-    public void sendEmailWithAttachment(String to, String subject, String content, boolean isMultipart, boolean isHtml,
-                                 List<Vacation> vacations) {
+    public void sendVacationDeleteEmail(Vacation vacation) {
 
+        /** Email is not needed when deleting 'Saved' vacations. */
+        if (vacation.getStage() == Stage.SAVED) {
+            return;
+        }
+
+        /** Following should only happen if admin changed vacation owner. */
+        User owner = vacation.getOwner();
+        User manager = owner.getManager();
+
+        String subject = "Vacation request for " + owner.getFirstName() + " " + owner.getLastName() + " deleted!";
+        String content = "A vacation request for " + owner.getFirstName() + " " + owner.getLastName()
+            + " (" + owner.getLogin() + ")" + "was either deleted or the admin changed the request owner.<br/>"
+            + "<br/><b>From:</b> " + vacation.getStartDate().format(FORMATTER)
+            + "<br/><b>Until:</b> " + (vacation.getEndDate() == null ? "-" : vacation.getEndDate().format(FORMATTER));
+
+        log.debug("Sending vacation deletion e-mail to previous owner '{}'", owner.getEmail());
+        sendEmail(owner.getEmail(), subject, content + EMAIL_FOOTER, false, true);
+
+        if (manager != null && (vacation.getStage() == Stage.PLANNED || vacation.getStage() == Stage.CONFIRMED)) {
+            log.debug("Sending vacation deletion e-mail to previous manager '{}'", manager.getEmail());
+            sendEmail(manager.getEmail(), subject, content + EMAIL_FOOTER, false, true);
+        }
+
+        if (vacation.getStage() == Stage.CONFIRMED) {
+            content += "<br/><b>Type:</b> " + vacation.getType()
+                + "<br/><b>Payment type:</b> " + vacation.getPayment();
+
+            List<User> accountants = userRepository.getAllAccountants();
+
+            for (User accountant : accountants) {
+                log.debug("Sending vacation deletion e-mail to accountant '{}'", accountant.getEmail());
+                sendEmail(accountant.getEmail(), subject, content + EMAIL_FOOTER, false, true);
+            }
+        }
+    }
+
+    @Async
+    public void sendVacationUpdateEmail(Vacation oldVacation, Vacation newVacation) {
+
+        if (!oldVacation.getOwner().getLogin().equals(newVacation.getOwner().getLogin())) {
+            sendVacationCreateEmail(newVacation);
+            sendVacationDeleteEmail(oldVacation);
+            return;
+        }
+
+        User owner = newVacation.getOwner();
+        User manager = owner.getManager();
+
+        String subject = owner.getFirstName() + " " + owner.getLastName() + " vacation stage updated";
+        String content = "A vacation request for " + owner.getFirstName() + " " + owner.getLastName()
+            + " (" + owner.getLogin() + ")" + "was updated.<br/>";
+
+        boolean stageChanged = oldVacation.getStage() != newVacation.getStage();
+        boolean dateChanged = oldVacation.getStartDate() != newVacation.getStartDate()
+            || oldVacation.getEndDate() != newVacation.getEndDate();
+        boolean typeChanged = oldVacation.getType() != newVacation.getType();
+        boolean paymentChanged = oldVacation.getPayment() != newVacation.getPayment();
+
+        if (stageChanged) {
+            content += "<br/>Request stage was changed from <b>" + oldVacation.getStage()
+                + "</b> to <b>" + newVacation.getStage() + "</b><br/>";
+        }
+        if (dateChanged) {
+            content += "<br/><b>Previous duration:</b> " + oldVacation.getStartDate().format(FORMATTER)
+                + " to " + (oldVacation.getEndDate() == null ? "-" : oldVacation.getEndDate().format(FORMATTER))
+                + "<br/><b>New duration:</b> " + newVacation.getStartDate().format(FORMATTER)
+                + " to " + (newVacation.getEndDate() == null ? "-" : newVacation.getEndDate().format(FORMATTER));
+        }
+
+        if (!stageChanged) {
+            /** Email is not needed when user is editing 'Saved' vacations. */
+            if (newVacation.getStage() == Stage.SAVED) {
+                return;
+            }
+
+            /** Following should only happen when admin makes changes. */
+
+            if (manager != null && dateChanged && newVacation.getStage() != Stage.SENT) {
+                log.debug("Sending vacation update e-mail to manager '{}'", manager.getEmail());
+                sendEmail(manager.getEmail(), subject, content + EMAIL_FOOTER, false, true);
+            }
+
+            if (typeChanged) {
+                content += "<br/><b>Previous type:</b> " + oldVacation.getType()
+                    + "<br/><b>New type:</b> " + newVacation.getType();
+            }
+            if (paymentChanged) {
+                content += "<br/><b>Previous payment type:</b> " + oldVacation.getPayment()
+                    + "<br/><b>New payment type:</b> " + newVacation.getPayment();
+            }
+            log.debug("Sending vacation update e-mail to owner '{}'", owner.getEmail());
+            sendEmail(owner.getEmail(), subject, content + EMAIL_FOOTER, false, true);
+
+            /** Adding end date to sick leave. */
+            if (newVacation.getType() == VacationType.SICK_LEAVE && dateChanged) {
+                List<User> accountants = userRepository.getAllAccountants();
+
+                for (User accountant : accountants) {
+                    log.debug("Sending vacation update e-mail to accountant '{}'", accountant.getEmail());
+                    sendEmailWithAttachment(accountant.getEmail(), "Vacations", " ", false, Arrays.asList(newVacation));
+                }
+            }
+            return;
+        }
+
+        /** Stage has changed. */
+
+        /**  If admin set stage to 'Confirmed' then email to manager is not needed. Same if request was rejected by manager. */
+        if (manager != null && !(newVacation.getStage() == Stage.CONFIRMED
+            || (oldVacation.getStage() == Stage.SENT && newVacation.getStage() == Stage.SAVED))) {
+            log.debug("Sending vacation update e-mail to manager '{}'", manager.getEmail());
+            sendEmail(manager.getEmail(), subject, content + EMAIL_FOOTER, false, true);
+        }
+
+        if (typeChanged) {
+            content += "<br/><b>Previous type:</b> " + oldVacation.getType()
+                + "<br/><b>New type:</b> " + newVacation.getType();
+        }
+        if (paymentChanged) {
+            content += "<br/><b>Previous payment type:</b> " + oldVacation.getPayment()
+                + "<br/><b>New payment type:</b> " + newVacation.getPayment();
+        }
+        if (oldVacation.getStage() == Stage.CONFIRMED && newVacation.getStage() != Stage.PLANNED) {
+            List<User> accountants = userRepository.getAllAccountants();
+
+            for (User accountant : accountants) {
+                log.debug("Sending vacation update e-mail to accountant '{}'", accountant.getEmail());
+                sendEmail(accountant.getEmail(), subject, content + EMAIL_FOOTER, false, true);
+            }
+        }
+
+        log.debug("Sending vacation update e-mail to owner '{}'", owner.getEmail());
+        sendEmail(owner.getEmail(), subject, content + EMAIL_FOOTER, false, true);
+    }
+
+    @Async
+    public void sendVacationConfirmEmail(Vacation vacation) {
+
+        User owner = vacation.getOwner();
+        User manager = owner.getManager();
+
+        String subject = owner.getFirstName() + " " + owner.getLastName() + " vacation confirmed";
+        String content = "A vacation request for " + owner.getFirstName() + " " + owner.getLastName()
+            + " (" + owner.getLogin() + ")" + "was confirmed and information was sent to the accountant.<br/>"
+            + "<br/><b>Type:</b> " + vacation.getType()
+            + "<br/><b>From:</b> " + vacation.getStartDate().format(FORMATTER)
+            + "<br/><b>Until:</b> " + (vacation.getEndDate() == null ? "-" : vacation.getEndDate().format(FORMATTER)) + EMAIL_FOOTER;
+
+        log.debug("Sending vacation creation e-mail to owner '{}'", owner.getEmail());
+        sendEmail(owner.getEmail(), subject, content, false, true);
+
+        if (manager != null && (vacation.getStage() == Stage.SENT || vacation.getStage() == Stage.PLANNED)) {
+            log.debug("Sending vacation creation e-mail to manager '{}'", manager.getEmail());
+            sendEmail(manager.getEmail(), subject, content, false, true);
+        }
+    }
+
+    @Async
+    public void sendEmailWithAttachment(String to, String subject, String content, boolean isHtml, List<Vacation> vacations) {
+
+        log.debug("Sending vacation confirmation e-mail to accountant '{}'", to);
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
-            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, CharEncoding.UTF_8);
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, CharEncoding.UTF_8);
             Workbook wb = xlsService.generateXlsFileForVacations(vacations, true);
             ByteArrayOutputStream output = new ByteArrayOutputStream();
             wb.write(output);

@@ -74,6 +74,11 @@ public class VacationResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("vacation", "idexists", "A new vacation cannot already have an ID")).body(null);
         }
         Vacation result = vacationRepository.save(vacation);
+
+        if (vacation.getOwner() != null) {
+            mailService.sendVacationCreateEmail(vacation);
+        }
+
         return ResponseEntity.created(new URI("/api/vacations/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("vacation", result.getId().toString()))
             .body(result);
@@ -97,9 +102,11 @@ public class VacationResource {
         if (vacation.getId() == null) {
             return createVacation(vacation);
         }
+        Vacation savedVacation = vacationRepository.findOne(vacation.getId());
         Vacation result = vacationRepository.save(vacation);
-        if(!(vacation.getOwner() == null)){
-            mailService.sendVacationUpdateEmail(vacation.getOwner(),vacation);
+
+        if (vacation.getOwner() != null) {
+            mailService.sendVacationUpdateEmail(savedVacation, vacation);
         }
 
         HttpHeaders headers;
@@ -231,6 +238,12 @@ public class VacationResource {
     @Timed
     public ResponseEntity<Void> deleteVacation(@PathVariable Long id) {
         log.debug("REST request to delete Vacation : {}", id);
+
+        Vacation vacation = vacationRepository.findOne(id);
+        if (vacation != null && vacation.getOwner() != null) {
+            mailService.sendVacationDeleteEmail(vacation);
+        }
+
         vacationRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("vacation", id.toString())).build();
     }

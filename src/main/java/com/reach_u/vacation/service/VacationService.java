@@ -12,8 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -45,7 +43,7 @@ public class VacationService {
         List<Vacation> vacations      = vacationRepository.getAllNextWeeksVacations(nextWeekSunday);
         List<User> accountants        = userRepository.getAllAccountants();
 
-        createAndSendVacationInfo(vacations, accountants);
+        confirmAndSendVacationInfo(vacations, accountants);
     }
 
     // For testing use: cron = "0 * * * * *"     -> executes every minute
@@ -55,41 +53,18 @@ public class VacationService {
         List<Vacation> vacations      = vacationRepository.getAllUpcomingVacations();
         List<User> accountants        = userRepository.getAllAccountants();
 
-        createAndSendVacationInfo(vacations, accountants);
+        confirmAndSendVacationInfo(vacations, accountants);
 
     }
 
-    private void createAndSendVacationInfo(List<Vacation> vacations, List<User> accountants) {
-        List<Object> vacationInfo     = new ArrayList<>();
-        List<String> accountantEmails = new ArrayList<>();
-
-        for (User accountant : accountants) {
-            accountantEmails.add(accountant.getEmail());
-        }
-
+    private void confirmAndSendVacationInfo(List<Vacation> vacations, List<User> accountants) {
         if (!vacations.isEmpty()) {
-            for (Vacation vac : vacations){
-                vacationInfo.add(vac.getOwner().getFullName());
-                vacationInfo.add(vac.getStartDate());
-                vacationInfo.add(vac.getEndDate());
-                if (vac.getEndDate() != null) {
-                    vacationInfo.add(vac.getStartDate().until(vac.getEndDate(), ChronoUnit.DAYS) + 1);
-                }
-                vacationInfo.add(vac.getType());
-                vacationInfo.add(vac.getPayment() + "\n");
+            for (User accountant : accountants) {
+                mailService.sendEmailWithAttachment(accountant.getEmail(), "Vacations", " ", false, vacations);
             }
-        }
-
-        if (!vacationInfo.isEmpty()) {
-            for (String email : accountantEmails){
-                mailService.sendEmailWithAttachment(email, "Vacations", " ", true, false, vacations);
-            }
-        }
-
-        if (!vacations.isEmpty()) {
             for (Vacation vacation : vacations) {
                 vacation.setStage(Stage.CONFIRMED);
-                mailService.sendVacationUpdateEmail(vacation.getOwner(), vacation);
+                mailService.sendVacationConfirmEmail(vacation);
             }
         }
     }
