@@ -157,7 +157,7 @@ public class MailService {
 
         String subject = "Vacation request for " + owner.getFirstName() + " " + owner.getLastName() + " deleted!";
         String content = "A vacation request for " + owner.getFirstName() + " " + owner.getLastName()
-            + " (" + owner.getLogin() + ")" + "was either deleted or the admin changed the request owner.<br/>"
+            + " (" + owner.getLogin() + ") " + "was either deleted or the admin changed the request owner.<br/>"
             + "<br/><b>From:</b> " + vacation.getStartDate().format(FORMATTER)
             + "<br/><b>Until:</b> " + (vacation.getEndDate() == null ? "-" : vacation.getEndDate().format(FORMATTER));
 
@@ -197,11 +197,11 @@ public class MailService {
         String subject = owner.getFirstName() + " " + owner.getLastName()
             + (newVacation.getType() == VacationType.SICK_LEAVE ? " sick leave" : " vacation") + " updated";
         String content = "A vacation request for " + owner.getFirstName() + " " + owner.getLastName()
-            + " (" + owner.getLogin() + ")" + "was updated.<br/>";
+            + " (" + owner.getLogin() + ") " + "was updated.<br/>";
 
         boolean stageChanged = oldVacation.getStage() != newVacation.getStage();
-        boolean dateChanged = oldVacation.getStartDate() != newVacation.getStartDate()
-            || oldVacation.getEndDate() != newVacation.getEndDate();
+        boolean dateChanged = !oldVacation.getStartDate().isEqual(newVacation.getStartDate())
+            || !oldVacation.getEndDate().isEqual(newVacation.getEndDate());
         boolean typeChanged = oldVacation.getType() != newVacation.getType();
         boolean paymentChanged = oldVacation.getPayment() != newVacation.getPayment();
 
@@ -293,7 +293,7 @@ public class MailService {
 
         String subject = owner.getFirstName() + " " + owner.getLastName() + " vacation confirmed";
         String content = "A vacation request for " + owner.getFirstName() + " " + owner.getLastName()
-            + " (" + owner.getLogin() + ")" + "was confirmed and information was sent to the accountant.<br/>"
+            + " (" + owner.getLogin() + ") " + "was confirmed and information was sent to the accountant.<br/>"
             + "<br/><b>Type:</b> " + vacation.getType()
             + "<br/><b>From:</b> " + vacation.getStartDate().format(FORMATTER)
             + "<br/><b>Until:</b> " + (vacation.getEndDate() == null ? "-" : vacation.getEndDate().format(FORMATTER)) + EMAIL_FOOTER;
