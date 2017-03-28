@@ -201,7 +201,7 @@ public class MailService {
 
         boolean stageChanged = oldVacation.getStage() != newVacation.getStage();
         boolean dateChanged = !oldVacation.getStartDate().isEqual(newVacation.getStartDate())
-            || !oldVacation.getEndDate().isEqual(newVacation.getEndDate());
+            || !(oldVacation.getEndDate() != null && newVacation.getEndDate() != null && oldVacation.getEndDate().isEqual(newVacation.getEndDate()));
         boolean typeChanged = oldVacation.getType() != newVacation.getType();
         boolean paymentChanged = oldVacation.getPayment() != newVacation.getPayment();
 
