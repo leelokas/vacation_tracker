@@ -194,7 +194,8 @@ public class MailService {
         User owner = newVacation.getOwner();
         User manager = owner.getManager();
 
-        String subject = owner.getFirstName() + " " + owner.getLastName() + " vacation stage updated";
+        String subject = owner.getFirstName() + " " + owner.getLastName()
+            + (newVacation.getType() == VacationType.SICK_LEAVE ? " sick leave" : " vacation") + " updated";
         String content = "A vacation request for " + owner.getFirstName() + " " + owner.getLastName()
             + " (" + owner.getLogin() + ")" + "was updated.<br/>";
 
@@ -207,6 +208,9 @@ public class MailService {
         if (stageChanged) {
             content += "<br/>Request stage was changed from <b>" + oldVacation.getStage()
                 + "</b> to <b>" + newVacation.getStage() + "</b><br/>";
+        }
+        if (!typeChanged && newVacation.getType() == VacationType.SICK_LEAVE) {
+            content += "<br/><b>Type:</b> Sick leave";
         }
         if (dateChanged) {
             content += "<br/><b>Previous duration:</b> " + oldVacation.getStartDate().format(FORMATTER)
