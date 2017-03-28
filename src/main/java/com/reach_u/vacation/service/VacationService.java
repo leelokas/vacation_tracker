@@ -48,7 +48,7 @@ public class VacationService {
 
     // For testing use: cron = "0 * * * * *"     -> executes every minute
     // For live use:    cron = "0 15 */1 * * ?"  -> executes at minute 15 past every hour
-    @Scheduled(cron = "0 0/5 * 1/1 * ? *")
+    @Scheduled(cron = "0 0/5 * 1/1 * ?")
     public void sendHourlyEmail(){
         List<Vacation> vacations      = vacationRepository.getAllUpcomingVacations();
         List<User> accountants        = userRepository.getAllAccountants();
