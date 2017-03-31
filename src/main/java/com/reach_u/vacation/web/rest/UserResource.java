@@ -13,6 +13,7 @@ import com.reach_u.vacation.security.AuthoritiesConstants;
 import com.reach_u.vacation.security.SecurityUtils;
 import com.reach_u.vacation.service.MailService;
 import com.reach_u.vacation.service.UserService;
+import com.reach_u.vacation.utils.HolidayUtils;
 import com.reach_u.vacation.web.rest.vm.ManagedUserVM;
 import com.reach_u.vacation.web.rest.util.HeaderUtil;
 import com.reach_u.vacation.web.rest.util.PaginationUtil;
@@ -309,7 +310,7 @@ public class UserResource {
 
     private Long getDurationInDays(LocalDate start, LocalDate end) {
         if (end != null) {
-            return start.until(end, ChronoUnit.DAYS) + 1;
+            return start.until(end, ChronoUnit.DAYS) + 1 - HolidayUtils.getHolidays(start, end).size();
         }
         return null;
     }

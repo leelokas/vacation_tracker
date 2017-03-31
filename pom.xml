@@ -392,7 +392,11 @@
             <artifactId>spring-security-ldap</artifactId>
             <version>4.2.0.RELEASE</version>
         </dependency>
-
+        <dependency>
+            <groupId>de.jollyday</groupId>
+            <artifactId>jollyday</artifactId>
+            <version>0.5.2</version>
+        </dependency>
     </dependencies>
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>
