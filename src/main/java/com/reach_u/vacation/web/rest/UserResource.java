@@ -338,7 +338,7 @@ public class UserResource {
             }
             DateTime firstWorkDayDate = new DateTime(user.getFirstWorkday());
             double firstWorkDay = firstWorkDayDate.getDayOfYear();
-            nrOfDaysEarned = ((byCurrentDate ? (currentDay - unPaidVacationDurationSum) : (numOfDaysInYear - unPaidVacationDurationSum)) - firstWorkDay) / numOfDaysInYear * 28;
+            nrOfDaysEarned = ((byCurrentDate ? (currentDay - unPaidVacationDurationSum) : (numOfDaysInYear - unPaidVacationDurationSum)) - (firstWorkDay - 1)) / numOfDaysInYear * 28;
         } else {
             nrOfDaysEarned = byCurrentDate ? ((currentDay - unPaidVacationDurationSum) / numOfDaysInYear * 28) : 28;
             nrOfDaysEarned += getUnusedVacationDays(user);
