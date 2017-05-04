@@ -10,7 +10,10 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Properties;
 import java.util.Set;
 
@@ -41,4 +44,9 @@ public class HolidayUtils {
         return holidayManager.getHolidays(startDate, endDate);
     }
 
+    public static Set<Holiday> getHolidays(Date startDate, Date endDate) {
+        LocalDate start = LocalDate.from(Instant.ofEpochMilli(startDate.getTime()).atZone(ZoneId.systemDefault()));
+        LocalDate end = LocalDate.from(Instant.ofEpochMilli(endDate.getTime()).atZone(ZoneId.systemDefault()));
+        return holidayManager.getHolidays(start, end);
+    }
 }
