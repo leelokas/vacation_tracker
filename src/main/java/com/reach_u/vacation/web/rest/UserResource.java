@@ -285,15 +285,6 @@ public class UserResource {
         return 0;
     }
 
-    private int getUnpaidVacationDays(LocalDate timeFrameStart, LocalDate timeFrameEnd) {
-        List<Vacation> unpaidVacationCount = vacationRepository.findAllVacationsOfTypeWithTimeframe(timeFrameStart, timeFrameEnd, VacationType.UNPAID);
-        int unpaidVacationDayCount = 0;
-        for (Vacation vacation : unpaidVacationCount) {
-            unpaidVacationDayCount += vacation.getStartDate().until(vacation.getEndDate(), ChronoUnit.DAYS);
-        }
-        return unpaidVacationDayCount;
-    }
-
     private int getRemainingStudyLeaveDays(LocalDate timeFrameStart, LocalDate timeFrameEnd) {
         List<Vacation> list = vacationRepository.findAllVacationsOfTypeWithTimeframe(timeFrameStart, timeFrameEnd, VacationType.STUDY_LEAVE);
         return 30 - getVacationDurationSum(list, timeFrameStart, timeFrameEnd);
@@ -305,7 +296,9 @@ public class UserResource {
     }
 
     private int getVacationDurationSum(List<Vacation> list, LocalDate timeFrameStart, LocalDate timeFrameEnd) {
-        int sum = 0;
+        int sum = 0,
+            sickLeaveDays = 0;
+
         for (Vacation vacation : list) {
             if (vacation.getStartDate().compareTo(timeFrameStart) < 0) {
                 sum += getDurationInDays(timeFrameStart, vacation.getEndDate());
@@ -314,8 +307,19 @@ public class UserResource {
             } else {
                 sum += getDurationInDays(vacation.getStartDate(), vacation.getEndDate());
             }
+            sickLeaveDays += getSickLeaveDays(sickLeaveDays, vacation);
         }
-        return sum;
+        return sum - sickLeaveDays;
+    }
+
+    private int getSickLeaveDays(int sickLeaveDays, Vacation vacation) {
+        List<Vacation> sickLeaves = vacationRepository.findAllVacationsOfTypeWithTimeframe(vacation.getStartDate(),
+            vacation.getEndDate(),
+            VacationType.SICK_LEAVE);
+        for (Vacation sickLeave : sickLeaves) {
+            sickLeaveDays += getDurationInDays(sickLeave.getStartDate(), sickLeave.getEndDate());
+        }
+        return sickLeaveDays;
     }
 
     private Long getDurationInDays(LocalDate start, LocalDate end) {
