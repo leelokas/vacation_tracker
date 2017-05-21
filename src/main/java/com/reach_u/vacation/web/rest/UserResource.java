@@ -239,14 +239,14 @@ public class UserResource {
         throws URISyntaxException {
         log.debug("REST request to get vacations : firstName: {}, lastName: {}, login: {}, manager: {}, authority: {}",
             firstName, lastName, login, manager, auth);
-        List<User> partlyFilteredUsers = userRepository.findAll(UserSpecifications.byQuery(firstName, lastName, login, manager));
-        List<ManagedUserVM> response = partlyFilteredUsers.stream()
-            .filter(user -> auth == null || user.getAuthorities().contains(auth))
-            .map(user -> new ManagedUserVM(user))
+        Page<User> page = userRepository.findAll(
+            UserSpecifications.byQuery(firstName, lastName, login, manager, auth), pageable
+        );
+        List<ManagedUserVM> managedUserVMs = page.getContent().stream()
+            .map(ManagedUserVM::new)
             .collect(Collectors.toList());
-        Page<User> page = new PageImpl(response, pageable, response.size());
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/users/filter");
-        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+        return new ResponseEntity<>(managedUserVMs, headers, HttpStatus.OK);
     }
 
     /**

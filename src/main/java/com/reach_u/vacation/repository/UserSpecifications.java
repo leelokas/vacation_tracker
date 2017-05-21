@@ -1,5 +1,6 @@
 package com.reach_u.vacation.repository;
 
+import com.reach_u.vacation.domain.Authority;
 import com.reach_u.vacation.domain.User;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public class UserSpecifications {
 
-    public static Specification<User> byQuery(String firstName, String lastName, String login, String manager){
+    public static Specification<User> byQuery(String firstName, String lastName, String login, String manager, Authority auth){
 
         return new Specification<User>() {
             @Override
@@ -31,6 +32,12 @@ public class UserSpecifications {
                 if (manager != null) {
                     expressions.add(criteriaBuilder.equal(root.get("manager").get("login"), manager));
                 }
+                if (auth != null) {
+                    expressions.add(criteriaBuilder.isMember(auth, root.get("authorities")));
+                }
+
+                expressions.add(criteriaBuilder.notEqual(root.get("login"), "system"));
+                expressions.add(criteriaBuilder.notEqual(root.get("login"), "anonymoususer"));
 
                 return criteriaBuilder.and(expressions.toArray(new Predicate[0]));
             }
