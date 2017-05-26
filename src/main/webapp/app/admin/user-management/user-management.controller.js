@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('UserManagementController', UserManagementController);
 
-    UserManagementController.$inject = ['Principal', 'User', 'AlertService', '$state', 'pagingParams', 'paginationConstants', 'JhiLanguageService'];
+    UserManagementController.$inject = ['Principal', 'User', 'AlertService', 'pagingParams', 'paginationConstants', 'JhiLanguageService'];
 
-    function UserManagementController(Principal, User, AlertService, $state, pagingParams, paginationConstants, JhiLanguageService) {
+    function UserManagementController(Principal, User, AlertService, pagingParams, paginationConstants, JhiLanguageService) {
         var vm = this;
 
         vm.loadAll = loadAll;
@@ -17,7 +17,7 @@
 
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
-        vm.itemsPerPage = paginationConstants.itemsPerPage;
+        vm.managers = User.getFilteredUsers({role: 'ROLE_MANAGER'});
 
         vm.authorities = ['ROLE_USER', 'ROLE_MANAGER', 'ROLE_ACCOUNTANT', 'ROLE_ADMIN'];
         vm.users = [];
@@ -33,6 +33,11 @@
             role: null,
             manager: null
         };
+        vm.pageParams = {
+            page: 1,
+            itemsPerPage: paginationConstants.itemsPerPage,
+            totalItems: 0
+        };
 
         vm.loadAll();
 
@@ -44,17 +49,23 @@
         });
 
         function loadAll () {
-            User.query({
+            User.getFilteredUsers({
                 page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
+                size: vm.pageParams.itemsPerPage,
                 sort: sort()
             }, onSuccess, onError);
         }
 
         function onSuccess(data, headers) {
-            vm.totalItems = headers('X-Total-Count');
-            vm.queryCount = vm.totalItems;
-            vm.page = pagingParams.page;
+            if (headers && headers('X-Total-Count')) {
+                vm.pageParams.totalItems = headers('X-Total-Count');
+                vm.pageParams.page = pagingParams.page;
+                vm.pageParams.itemsPerPage = paginationConstants.itemsPerPage;
+            } else {
+                vm.pageParams.totalItems = data.length;
+                vm.pageParams.page = 1;
+                vm.pageParams.itemsPerPage = data.length;
+            }
             vm.users = data;
         }
 
@@ -70,17 +81,22 @@
             return result;
         }
 
-        function loadPage (page) {
-            vm.page = page;
+        function loadPage () {
+            pagingParams.page = vm.pageParams.page;
             vm.transition();
         }
 
         function transition () {
-            $state.transitionTo($state.$current, {
-                page: vm.page,
-                sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
-                search: vm.currentSearch
-            });
+            User.getFilteredUsers({
+                login: vm.filterParams.login === '' ? null : vm.filterParams.login,
+                firstName: vm.filterParams.firstName === '' ? null : vm.filterParams.firstName,
+                lastName: vm.filterParams.lastName === '' ? null : vm.filterParams.lastName,
+                manager: vm.filterParams.manager === '' ? null : vm.filterParams.manager,
+                role: vm.filterParams.role,
+                page: vm.pageParams.page-1,
+                size: vm.pageParams.itemsPerPage,
+                sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')
+            }, onSuccess, onError);
         }
 
         function filter() {
@@ -95,7 +111,7 @@
                 manager: vm.filterParams.manager === '' ? null : vm.filterParams.manager,
                 role: vm.filterParams.role,
                 page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
+                size: vm.pageParams.itemsPerPage,
                 sort: sort()
             }, onSuccess, onError);
         }

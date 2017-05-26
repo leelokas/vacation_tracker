@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('VacationManagementController', VacationManagementController);
 
-    VacationManagementController.$inject = ['$filter', 'Vacation', 'AlertService', 'pagingParams', 'paginationConstants'];
+    VacationManagementController.$inject = ['$filter', 'Vacation', 'User', 'AlertService', 'pagingParams', 'paginationConstants'];
 
-    function VacationManagementController ($filter, Vacation, AlertService, pagingParams, paginationConstants) {
+    function VacationManagementController ($filter, Vacation, User, AlertService, pagingParams, paginationConstants) {
         var vm = this;
 
         vm.loadPage = loadPage;
@@ -17,6 +17,7 @@
 
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
+        vm.managers = User.getFilteredUsers({role: 'ROLE_MANAGER'});
 
         vm.dateOptions = {
             showWeeks: false,

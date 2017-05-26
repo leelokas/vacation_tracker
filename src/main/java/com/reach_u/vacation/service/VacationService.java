@@ -34,8 +34,8 @@ public class VacationService {
 
 
     // For testing use: cron = "0 * * * * * "   -> every minute
-    // For live use:    cron = "0 0 9 * 1 ?"    -> every Monday at 9 AM
-    @Scheduled(cron = "0 0 9 * 1 ?")
+    // For live use:    cron = "0 0 9 * * MON"    -> every Monday at 9 AM
+    @Scheduled(cron = "0 0 9 * * MON")
     public void sendWeeklyEmail(){
         LocalDate today = LocalDate.now();
         LocalDate nextWeekSunday = today.with(next(DayOfWeek.SUNDAY)).with(next(DayOfWeek.SUNDAY));

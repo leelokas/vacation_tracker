@@ -22,7 +22,7 @@
             showWeeks: false,
             startingDay: 1
         };
-        vm.managers = filterOutManagers();
+        vm.managers = User.getFilteredUsers({role: 'ROLE_MANAGER'});
 
         JhiLanguageService.getAll().then(function (languages) {
             vm.languages = languages;
@@ -60,10 +60,6 @@
 
         function openCalendar () {
             vm.datePickerOpenStatus = true;
-        }
-
-        function filterOutManagers () {
-        return User.getFilteredUsers({role: 'ROLE_MANAGER'});
         }
     }
 })();
