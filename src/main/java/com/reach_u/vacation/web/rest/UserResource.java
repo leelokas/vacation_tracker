@@ -262,9 +262,11 @@ public class UserResource {
     public Map<String, Integer> getRemainingDaysOfCurrentUser() throws URISyntaxException {
         Map<String, Integer> result = new HashMap<>();
         int currentYear = Year.now().getValue();
-        LocalDate timeFrameStart = LocalDate.parse(String.valueOf(currentYear) + "-01-01"), timeFrameEnd = LocalDate.parse(String.valueOf(currentYear) + "-12-31");
+        LocalDate timeFrameStart = LocalDate.parse(String.valueOf(currentYear) + "-01-01"),
+                  timeFrameEnd = LocalDate.now();
         int plannedPaidVacationDuration = getPlannedPaidVacationDays(timeFrameStart, timeFrameEnd, VacationType.PAID);
         int plannedUnPaidVacationDuration = getPlannedPaidVacationDays(timeFrameStart, timeFrameEnd, VacationType.UNPAID);
+
         result.put("endOfYear", getEmployeeVacationDaysEarned(plannedPaidVacationDuration, plannedUnPaidVacationDuration, false));
         result.put("current", getEmployeeVacationDaysEarned(plannedPaidVacationDuration, plannedUnPaidVacationDuration, true));
         result.put("hasTwoWeekPaidVacation", hasAnyTwoWeekPaidVacation(timeFrameStart, timeFrameEnd));
@@ -335,14 +337,17 @@ public class UserResource {
         double nrOfDaysEarned,
             numOfDaysInYear = (dateTime.year().isLeap() ? 366 : 365),
             currentDay = dateTime.getDayOfYear();
-
         if (isNewEmployee(user)) {
             if (user.getFirstWorkday() == null) {
                 log.warn("User doesn't have first work day defined, calculations will not give correct results!");
             }
             DateTime firstWorkDayDate = new DateTime(user.getFirstWorkday());
             double firstWorkDay = firstWorkDayDate.getDayOfYear();
-            nrOfDaysEarned = ((byCurrentDate ? (currentDay - unPaidVacationDurationSum) : (numOfDaysInYear - unPaidVacationDurationSum)) - (firstWorkDay - 1)) / numOfDaysInYear * 28;
+            if (byCurrentDate) {
+                nrOfDaysEarned = ((currentDay - unPaidVacationDurationSum) - (firstWorkDay - 1)) / numOfDaysInYear * 28;
+            } else {
+                nrOfDaysEarned = ((numOfDaysInYear - unPaidVacationDurationSum) - (firstWorkDay - 1)) / numOfDaysInYear * 28;
+            }
         } else {
             nrOfDaysEarned = byCurrentDate ? ((currentDay - unPaidVacationDurationSum) / numOfDaysInYear * 28) : 28;
             nrOfDaysEarned += getUnusedVacationDays(user);
