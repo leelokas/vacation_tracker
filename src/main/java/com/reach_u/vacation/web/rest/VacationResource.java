@@ -37,6 +37,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -111,7 +112,11 @@ public class VacationResource {
 
         HttpHeaders headers;
         if (vacation.getStage() == Stage.SAVED) {
-            headers = HeaderUtil.createCustomVacationUpdateAlert("saved", vacation.getId().toString());
+            if (Objects.equals(SecurityUtils.getCurrentUserLogin(), vacation.getOwner().getLogin())) {
+                headers = HeaderUtil.createCustomVacationUpdateAlert("saved", vacation.getId().toString());
+            } else {
+                headers = HeaderUtil.createCustomVacationUpdateAlert("updated", vacation.getId().toString());
+            }
         } else {
             headers = HeaderUtil.createEntityUpdateAlert("vacation", vacation.getId().toString());
         }
