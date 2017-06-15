@@ -62,6 +62,11 @@
                 vm.pageParams.page = 1;
             }
             vm.vacations = data;
+            if (vm.selectAll) {
+                for (var i = 0, len = vm.vacations.length; i < len; i++) {
+                    vm.vacations[i].checked = true;
+                }
+            }
         }
 
         function onError(error) {
@@ -118,17 +123,40 @@
                 from: $filter('date')(vm.filterParams.from, dateFormat),
                 until: $filter('date')(vm.filterParams.until, dateFormat),
                 page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
+                size: vm.pageParams.itemsPerPage,
                 sort: sort()
             }, onSuccess, onError);
         }
 
         function exportFile() {
-            var i, selectedVacationIds = [];
-            for (i = 0; i < vm.vacations.length; i++) {
-                if (vm.vacations[i].checked) {
-                    selectedVacationIds.push(vm.vacations[i].id);
+            console.log('exportFile');
+            if (vm.selectAll) {
+                var dateFormat = 'yyyy-MM-dd';
+                Vacation.getOverviewFilteredVacations({
+                    type: vm.filterParams.type,
+                    owner: vm.filterParams.owner === '' ? null : vm.filterParams.owner,
+                    manager: vm.filterParams.manager === '' ? null : vm.filterParams.manager,
+                    from: $filter('date')(vm.filterParams.from, dateFormat),
+                    until: $filter('date')(vm.filterParams.until, dateFormat),
+                    page: 0,
+                    size: 10000,
+                    sort: sort()
+                }, exportResults, onError);
+            } else {
+                var i, selectedVacationIds = [];
+                for (i = 0; i < vm.vacations.length; i++) {
+                    if (vm.vacations[i].checked) {
+                        selectedVacationIds.push(vm.vacations[i].id);
+                    }
                 }
+                $window.location = "api/file/vacationsByIds?id=" + selectedVacationIds.join("&id=");
+            }
+        }
+
+        function exportResults(data, headers) {
+            var i, selectedVacationIds = [];
+            for (i = 0; i < data.length; i++) {
+                selectedVacationIds.push(data[i].id);
             }
             $window.location = "api/file/vacationsByIds?id=" + selectedVacationIds.join("&id=");
         }
