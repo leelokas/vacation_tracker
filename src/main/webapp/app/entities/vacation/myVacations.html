@@ -15,7 +15,7 @@
     <jhi-alert></jhi-alert>
     <br/>
 
-    <div class="row filterForm">
+    <form class="row filterForm">
         <div class="col-sm-11 no-padding">
             <div class="col-md-5 no-padding">
                 <div class="form-group col-xs-6">
@@ -81,12 +81,12 @@
             </div>
         </div>
         <div class="col-sm-1 no-padding filterBtn">
-            <button class="btn btn-default" type="button" ng-click="vm.filter()">
+            <button class="btn btn-default" type="submit" ng-click="vm.filter()">
                 <span class="fa fa-filter fa-lg"></span>&nbsp;
                 <span class="visible-xs visible-lg" data-translate="global.filter">Filter</span>
             </button>
         </div>
-    </div>
+    </form>
 
     <div class="row">
         <div class="col-sm-3 paidDays">
