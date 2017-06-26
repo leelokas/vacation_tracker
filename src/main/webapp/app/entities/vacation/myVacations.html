@@ -15,7 +15,7 @@
     <jhi-alert></jhi-alert>
     <br/>
 
-    <form class="row filterForm">
+    <form class="row filterForm" ng-submit="vm.filter()">
         <div class="col-sm-11 no-padding">
             <div class="col-md-5 no-padding">
                 <div class="form-group col-xs-6">
@@ -50,7 +50,7 @@
             <div class="col-md-7 no-padding">
                 <div class="form-group col-xs-4">
                     <label data-translate="vacationTrackerApp.vacation.type" for="field_type">Type</label>
-                    <select class="form-control" ng-model="vm.filterParams.type" id="field_type">
+                    <select class="form-control" ng-model="vm.filterParams.type" id="field_type" submit-on-enter>
                         <option value=""></option>
                         <option value="PAID" data-translate="vacationTrackerApp.VacationType.PAID">PAID</option>
                         <option value="UNPAID" data-translate="vacationTrackerApp.VacationType.UNPAID">UNPAID</option>
@@ -62,7 +62,7 @@
                 </div>
                 <div class="form-group col-xs-4">
                     <label data-translate="vacationTrackerApp.vacation.stage" for="field_stage">Stage</label>
-                    <select class="form-control" ng-model="vm.filterParams.stage" id="field_stage">
+                    <select class="form-control" ng-model="vm.filterParams.stage" id="field_stage" submit-on-enter>
                         <option value=""></option>
                         <option value="SAVED" data-translate="vacationTrackerApp.Stage.SAVED">SAVED</option>
                         <option value="SENT" data-translate="vacationTrackerApp.Stage.SENT">SENT</option>
@@ -72,7 +72,7 @@
                 </div>
                 <div class="form-group col-xs-4">
                     <label data-translate="vacationTrackerApp.vacation.payment" for="field_payment">Stage</label>
-                    <select class="form-control" ng-model="vm.filterParams.payment" id="field_payment">
+                    <select class="form-control" ng-model="vm.filterParams.payment" id="field_payment" submit-on-enter>
                         <option value=""></option>
                         <option value="BEFORE_VACATION" data-translate="vacationTrackerApp.PaymentType.BEFORE_VACATION">BEFORE_VACATION</option>
                         <option value="WITH_NEXT_SALARY" data-translate="vacationTrackerApp.PaymentType.WITH_NEXT_SALARY">WITH_NEXT_SALARY</option>
@@ -81,7 +81,7 @@
             </div>
         </div>
         <div class="col-sm-1 no-padding filterBtn">
-            <button class="btn btn-default" type="submit" ng-click="vm.filter()">
+            <button class="btn btn-default" type="submit">
                 <span class="fa fa-filter fa-lg"></span>&nbsp;
                 <span class="visible-xs visible-lg" data-translate="global.filter">Filter</span>
             </button>

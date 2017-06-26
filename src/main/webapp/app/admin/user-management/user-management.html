@@ -10,7 +10,7 @@
     <jhi-alert></jhi-alert>
     <br/>
 
-	<form class="row filterForm">
+	<form class="row filterForm" ng-submit="vm.filter()">
         <div class="col-sm-11 no-padding">
             <div class="col-md-7 no-padding">
                 <div class="form-group col-xs-4">
@@ -30,21 +30,21 @@
                 <div class="form-group col-xs-6">
                     <label data-translate="userManagement.profiles" for="field_profiles">Roles</label>
                     <select id="field_profiles" class="form-control" name="authority" ng-model="vm.filterParams.role"
-                            ng-options="authority for authority in vm.authorities">
+                            ng-options="authority for authority in vm.authorities" submit-on-enter>
                         <option value=""></option>
                     </select>
                 </div>
                 <div class="form-group col-xs-6">
                     <label data-translate="userManagement.manager" for="field_manager">Manager</label>
                     <select id="field_manager" class="form-control" name="manager" ng-model="vm.filterParams.manager"
-                            ng-options="user as user.login for user in vm.managers track by user.login">
+                            ng-options="user as user.login for user in vm.managers track by user.login" submit-on-enter>
                         <option value=""></option>
                     </select>
                 </div>
             </div>
         </div>
         <div class="col-sm-1 no-padding filterBtn">
-            <button class="btn btn-default" type="submit" ng-click="vm.filter()">
+            <button class="btn btn-default" type="submit">
                 <span class="fa fa-filter fa-lg"></span>&nbsp;
                 <span class="visible-xs visible-lg" data-translate="global.filter">Filter</span>
             </button>
