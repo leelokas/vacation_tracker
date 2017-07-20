@@ -263,14 +263,17 @@ public class UserResource {
         Map<String, Integer> result = new HashMap<>();
         int currentYear = Year.now().getValue();
         LocalDate timeFrameStart = LocalDate.parse(String.valueOf(currentYear) + "-01-01"),
-                  timeFrameEnd = LocalDate.now();
-        int plannedPaidVacationDuration = getPlannedPaidVacationDays(timeFrameStart, timeFrameEnd, VacationType.PAID);
-        int plannedUnPaidVacationDuration = getPlannedPaidVacationDays(timeFrameStart, timeFrameEnd, VacationType.UNPAID);
+                  timeFrameEndOfYear = LocalDate.parse(String.valueOf(currentYear) + "-12-31"),
+                  timeFrameToday = LocalDate.now();
+        int paidVacationDaysByCurDay = getPlannedPaidVacationDays(timeFrameStart, timeFrameToday, VacationType.PAID);
+        int unpaidVacationDaysByCurDay = getPlannedPaidVacationDays(timeFrameStart, timeFrameToday, VacationType.UNPAID);
+        int paidVacationDaysByEndOfYear = getPlannedPaidVacationDays(timeFrameStart, timeFrameEndOfYear, VacationType.PAID);
+        int unpaidVacationDaysByEndOfYear = getPlannedPaidVacationDays(timeFrameStart, timeFrameEndOfYear, VacationType.UNPAID);
 
-        result.put("endOfYear", getEmployeeVacationDaysEarned(plannedPaidVacationDuration, plannedUnPaidVacationDuration, false));
-        result.put("current", getEmployeeVacationDaysEarned(plannedPaidVacationDuration, plannedUnPaidVacationDuration, true));
-        result.put("hasTwoWeekPaidVacation", hasAnyTwoWeekPaidVacation(timeFrameStart, timeFrameEnd));
-        result.put("studyLeaveRemaining", getRemainingStudyLeaveDays(timeFrameStart, timeFrameEnd));
+        result.put("endOfYear", getEmployeeVacationDaysEarned(paidVacationDaysByEndOfYear, unpaidVacationDaysByEndOfYear, false));
+        result.put("current", getEmployeeVacationDaysEarned(paidVacationDaysByCurDay, unpaidVacationDaysByCurDay, true));
+        result.put("hasTwoWeekPaidVacation", hasAnyTwoWeekPaidVacation(timeFrameStart, timeFrameToday));
+        result.put("studyLeaveRemaining", getRemainingStudyLeaveDays(timeFrameStart, timeFrameToday));
 
         return result;
     }
