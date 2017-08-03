@@ -25,7 +25,7 @@
                 <div class="form-group col-xs-6">
                     <label data-translate="vacationTrackerApp.vacation.manager" for="field_manager">Manager</label>
                     <select id="field_manager" class="form-control" name="manager" ng-model="vm.filterParams.manager"
-                            ng-options="user as user.login for user in vm.managers track by user.login" submit-on-enter>
+                            ng-options="user.login as user.firstName + ' ' + user.lastName for user in vm.managers" submit-on-enter>
                         <option value=""></option>
                     </select>
                 </div>
