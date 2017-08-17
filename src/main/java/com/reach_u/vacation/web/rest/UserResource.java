@@ -263,13 +263,16 @@ public class UserResource {
         int currentYear = Year.now().getValue();
         LocalDate
             yearStart = LocalDate.parse(String.valueOf(currentYear) + "-01-01"),
-            yearEnd = LocalDate.parse(String.valueOf(currentYear) + "-12-31");
+            yearEnd = LocalDate.parse(String.valueOf(currentYear) + "-12-31"),
+            currentDate = LocalDate.now();
 
-        int plannedPaidVacationDuration = getPlannedVacationDuration(yearStart, yearEnd, VacationType.PAID),
-            plannedUnPaidVacationDuration = getPlannedVacationDuration(yearStart, yearEnd, VacationType.UNPAID);
+        int paidVacationDuration = getPlannedVacationDuration(yearStart, yearEnd, VacationType.PAID),
+            unPaidVacationDuration = getPlannedVacationDuration(yearStart, yearEnd, VacationType.UNPAID),
+            paidVacationDurationCurrent = getPlannedVacationDuration(yearStart, currentDate, VacationType.PAID),
+            unPaidVacationDurationCurrent = getPlannedVacationDuration(yearStart, currentDate, VacationType.UNPAID);
 
-        result.put("endOfYear", getEmployeeVacationDaysEarned(plannedPaidVacationDuration, plannedUnPaidVacationDuration, false));
-        result.put("current", getEmployeeVacationDaysEarned(plannedPaidVacationDuration, plannedUnPaidVacationDuration, true));
+        result.put("endOfYear", getEmployeeVacationDaysEarned(paidVacationDuration, unPaidVacationDuration, false));
+        result.put("current", getEmployeeVacationDaysEarned(paidVacationDurationCurrent, unPaidVacationDurationCurrent, true));
         result.put("hasTwoWeekPaidVacation", hasAnyTwoWeekPaidVacation(yearStart, yearEnd));
         result.put("studyLeaveRemaining", 30 - getPlannedVacationDuration(yearStart, yearEnd, VacationType.STUDY_LEAVE));
 
