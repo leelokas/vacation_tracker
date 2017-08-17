@@ -22,7 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -262,18 +261,17 @@ public class UserResource {
     public Map<String, Integer> getRemainingDaysOfCurrentUser() throws URISyntaxException {
         Map<String, Integer> result = new HashMap<>();
         int currentYear = Year.now().getValue();
-        LocalDate timeFrameStart = LocalDate.parse(String.valueOf(currentYear) + "-01-01"),
-                  timeFrameEndOfYear = LocalDate.parse(String.valueOf(currentYear) + "-12-31"),
-                  timeFrameToday = LocalDate.now();
-        int paidVacationDaysByCurDay = getPlannedPaidVacationDays(timeFrameStart, timeFrameToday, VacationType.PAID);
-        int unpaidVacationDaysByCurDay = getPlannedPaidVacationDays(timeFrameStart, timeFrameToday, VacationType.UNPAID);
-        int paidVacationDaysByEndOfYear = getPlannedPaidVacationDays(timeFrameStart, timeFrameEndOfYear, VacationType.PAID);
-        int unpaidVacationDaysByEndOfYear = getPlannedPaidVacationDays(timeFrameStart, timeFrameEndOfYear, VacationType.UNPAID);
+        LocalDate
+            yearStart = LocalDate.parse(String.valueOf(currentYear) + "-01-01"),
+            yearEnd = LocalDate.parse(String.valueOf(currentYear) + "-12-31");
 
-        result.put("endOfYear", getEmployeeVacationDaysEarned(paidVacationDaysByEndOfYear, unpaidVacationDaysByEndOfYear, false));
-        result.put("current", getEmployeeVacationDaysEarned(paidVacationDaysByCurDay, unpaidVacationDaysByCurDay, true));
-        result.put("hasTwoWeekPaidVacation", hasAnyTwoWeekPaidVacation(timeFrameStart, timeFrameToday));
-        result.put("studyLeaveRemaining", getRemainingStudyLeaveDays(timeFrameStart, timeFrameToday));
+        int plannedPaidVacationDuration = getPlannedVacationDuration(yearStart, yearEnd, VacationType.PAID),
+            plannedUnPaidVacationDuration = getPlannedVacationDuration(yearStart, yearEnd, VacationType.UNPAID);
+
+        result.put("endOfYear", getEmployeeVacationDaysEarned(plannedPaidVacationDuration, plannedUnPaidVacationDuration, false));
+        result.put("current", getEmployeeVacationDaysEarned(plannedPaidVacationDuration, plannedUnPaidVacationDuration, true));
+        result.put("hasTwoWeekPaidVacation", hasAnyTwoWeekPaidVacation(yearStart, yearEnd));
+        result.put("studyLeaveRemaining", 30 - getPlannedVacationDuration(yearStart, yearEnd, VacationType.STUDY_LEAVE));
 
         return result;
     }
@@ -290,21 +288,18 @@ public class UserResource {
         return 0;
     }
 
-    private int getRemainingStudyLeaveDays(LocalDate timeFrameStart, LocalDate timeFrameEnd) {
-        List<Vacation> list = vacationRepository.findAllVacationsOfTypeWithTimeframe(timeFrameStart, timeFrameEnd, VacationType.STUDY_LEAVE);
-        return 30 - getVacationDurationSum(list, timeFrameStart, timeFrameEnd);
+    private int getPlannedVacationDuration(LocalDate timeFrameStart, LocalDate timeFrameEnd, VacationType vacationType) {
+        List<Vacation>
+            vacationList = vacationRepository.findAllVacationsOfTypeWithTimeframe(timeFrameStart, timeFrameEnd, vacationType),
+            sickLeaveList = vacationRepository.findAllVacationsOfTypeWithTimeframe(timeFrameStart, timeFrameEnd, VacationType.SICK_LEAVE);
+        return getVacationDurationSum(vacationList, sickLeaveList, timeFrameStart, timeFrameEnd);
     }
 
-    private int getPlannedPaidVacationDays(LocalDate timeFrameStart, LocalDate timeFrameEnd, VacationType vacationType) {
-        List<Vacation> list = vacationRepository.findAllVacationsOfTypeWithTimeframe(timeFrameStart, timeFrameEnd, vacationType);
-        return getVacationDurationSum(list, timeFrameStart, timeFrameEnd);
-    }
-
-    private int getVacationDurationSum(List<Vacation> list, LocalDate timeFrameStart, LocalDate timeFrameEnd) {
+    private int getVacationDurationSum(List<Vacation> vacationList, List<Vacation> sickLeaveList, LocalDate timeFrameStart, LocalDate timeFrameEnd) {
         int sum = 0,
-            sickLeaveDays = 0;
+            overlappingSickLeaveDays = 0;
 
-        for (Vacation vacation : list) {
+        for (Vacation vacation : vacationList) {
             if (vacation.getStartDate().compareTo(timeFrameStart) < 0) {
                 sum += getDurationInDays(timeFrameStart, vacation.getEndDate());
             } else if (vacation.getEndDate().compareTo(timeFrameEnd) > 0) {
@@ -312,17 +307,28 @@ public class UserResource {
             } else {
                 sum += getDurationInDays(vacation.getStartDate(), vacation.getEndDate());
             }
-            sickLeaveDays += getSickLeaveDays(sickLeaveDays, vacation);
+            overlappingSickLeaveDays += getOverlapDays(sickLeaveList, vacation);
         }
-        return sum - sickLeaveDays;
+        return sum - overlappingSickLeaveDays;
     }
 
-    private int getSickLeaveDays(int sickLeaveDays, Vacation vacation) {
-        List<Vacation> sickLeaves = vacationRepository.findAllVacationsOfTypeWithTimeframe(vacation.getStartDate(),
-            vacation.getEndDate(),
-            VacationType.SICK_LEAVE);
-        for (Vacation sickLeave : sickLeaves) {
-            sickLeaveDays += getDurationInDays(sickLeave.getStartDate(), sickLeave.getEndDate());
+    private int getOverlapDays(List<Vacation> sickLeaveList, Vacation vacation) {
+        int sickLeaveDays = 0;
+        LocalDate overlapStart, overlapEnd;
+        for (Vacation sickLeave : sickLeaveList) {
+            if (sickLeave.getStartDate().isBefore(vacation.getEndDate()) && vacation.getStartDate().isBefore(sickLeave.getEndDate())) {
+                if (sickLeave.getStartDate().isBefore(vacation.getStartDate())) {
+                    overlapStart = vacation.getStartDate();
+                } else {
+                    overlapStart = sickLeave.getStartDate();
+                }
+                if (sickLeave.getEndDate().isBefore(vacation.getEndDate())) {
+                    overlapEnd = sickLeave.getStartDate();
+                } else {
+                    overlapEnd = vacation.getEndDate();
+                }
+                sickLeaveDays += getDurationInDays(overlapStart, overlapEnd);
+            }
         }
         return sickLeaveDays;
     }
@@ -335,24 +341,30 @@ public class UserResource {
     }
 
     private int getEmployeeVacationDaysEarned(int paidVacationDurationSum, int unPaidVacationDurationSum, boolean byCurrentDate) {
-        DateTime dateTime = new DateTime();
         User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
-        double nrOfDaysEarned,
-            numOfDaysInYear = (dateTime.year().isLeap() ? 366 : 365),
-            currentDay = dateTime.getDayOfYear();
+        double
+            nrOfDaysEarned,
+            numOfDaysInYear = (Year.now().isLeap() ? 366 : 365),
+            currentDay = new DateTime().getDayOfYear();
+
         if (isNewEmployee(user)) {
             if (user.getFirstWorkday() == null) {
                 log.warn("User doesn't have first work day defined, calculations will not give correct results!");
             }
             DateTime firstWorkDayDate = new DateTime(user.getFirstWorkday());
             double firstWorkDay = firstWorkDayDate.getDayOfYear();
+
             if (byCurrentDate) {
                 nrOfDaysEarned = ((currentDay - unPaidVacationDurationSum) - (firstWorkDay - 1)) / numOfDaysInYear * 28;
             } else {
                 nrOfDaysEarned = ((numOfDaysInYear - unPaidVacationDurationSum) - (firstWorkDay - 1)) / numOfDaysInYear * 28;
             }
         } else {
-            nrOfDaysEarned = byCurrentDate ? ((currentDay - unPaidVacationDurationSum) / numOfDaysInYear * 28) : 28;
+            if (byCurrentDate) {
+                nrOfDaysEarned = (currentDay - unPaidVacationDurationSum) / numOfDaysInYear * 28;
+            } else {
+                nrOfDaysEarned = (numOfDaysInYear - unPaidVacationDurationSum) / numOfDaysInYear * 28;
+            }
             nrOfDaysEarned += getUnusedVacationDays(user);
         }
         nrOfDaysEarned -= paidVacationDurationSum;

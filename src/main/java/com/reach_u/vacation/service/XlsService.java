@@ -2,6 +2,7 @@ package com.reach_u.vacation.service;
 
 import com.reach_u.vacation.domain.Vacation;
 import com.reach_u.vacation.repository.VacationRepository;
+import com.reach_u.vacation.utils.HolidayUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
@@ -109,7 +110,7 @@ public class XlsService {
 
     private Long getDurationInDays(LocalDate start, LocalDate end) {
         if (end != null) {
-            return start.until(end, ChronoUnit.DAYS) + 1;
+            return start.until(end, ChronoUnit.DAYS) + 1 - HolidayUtils.getHolidays(start, end).size();
         }
         return null;
     }
