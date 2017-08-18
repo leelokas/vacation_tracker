@@ -29,7 +29,7 @@
             </dd>
             <dt><span data-translate="vacationTrackerApp.vacation.owner">Owner</span></dt>
             <dd>
-                {{vm.vacation.owner.login}}
+                {{vm.vacation.owner.firstName}} {{vm.vacation.owner.lastName}} ({{vm.vacation.owner.login}})
             </dd>
             <dt ng-if="vm.vacation.owner.login === vm.currentUser.login || vm.currentUser.authorities.indexOf('ROLE_ACCOUNTANT') > -1 || vm.currentUser.authorities.indexOf('ROLE_MANAGER') > -1">
                 <span data-translate="vacationTrackerApp.vacation.comment">Comment</span></dt>

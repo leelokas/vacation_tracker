@@ -17,66 +17,106 @@ import java.util.List;
 public class VacationSpecifications {
 
     public static Specification<Vacation> byQuery(VacationType type, PaymentType paymentType, Stage stage,
-                                                  Date startDate, Date endDate, String login, String manager) {
+                                                  Date startDate, Date endDate, String owner, String manager) {
         return new Specification<Vacation>() {
             @Override
             public Predicate toPredicate(Root<Vacation> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                List<Predicate> expressions = new ArrayList<>();
+                List<Predicate> andExpressions = new ArrayList<>();
+                List<Predicate> orExpressions = new ArrayList<>();
                 if (type != null) {
-                    expressions.add(criteriaBuilder.equal(root.get("type"), type));
+                    andExpressions.add(criteriaBuilder.equal(root.get("type"), type));
                 }
                 if (paymentType != null) {
-                    expressions.add(criteriaBuilder.equal(root.get("payment"), paymentType));
+                    andExpressions.add(criteriaBuilder.equal(root.get("payment"), paymentType));
                 }
                 if (stage != null) {
-                    expressions.add(criteriaBuilder.equal(root.get("stage"), stage));
+                    andExpressions.add(criteriaBuilder.equal(root.get("stage"), stage));
                 }
                 if (startDate != null) {
-                    expressions.add(criteriaBuilder.greaterThanOrEqualTo(root.get("startDate"), startDate));
+                    andExpressions.add(criteriaBuilder.greaterThanOrEqualTo(root.get("startDate"), startDate));
                 }
                 if (endDate != null) {
-                    expressions.add(criteriaBuilder.lessThanOrEqualTo(root.get("endDate"), endDate));
+                    andExpressions.add(criteriaBuilder.lessThanOrEqualTo(root.get("endDate"), endDate));
                 }
-                if (login != null) {
-                    expressions.add(criteriaBuilder.equal(root.get("owner").get("login"), login));
+                if (owner != null) {
+                    String ownerLower = owner.toLowerCase();
+
+                    if (ownerLower.split("\\s+").length > 1) {
+                        andExpressions.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("owner").get("firstName")), ownerLower.split("\\s+")[0]));
+                        andExpressions.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("owner").get("lastName")), ownerLower.split("\\s+")[1]));
+                    } else {
+                        orExpressions.add(criteriaBuilder.notEqual(
+                                criteriaBuilder.locate(criteriaBuilder.lower(root.get("owner").get("login")), ownerLower, 0), 0)
+                        );
+                        orExpressions.add(criteriaBuilder.notEqual(
+                                criteriaBuilder.locate(criteriaBuilder.lower(root.get("owner").get("firstName")), ownerLower, 0), 0)
+                        );
+                        orExpressions.add(criteriaBuilder.notEqual(
+                                criteriaBuilder.locate(criteriaBuilder.lower(root.get("owner").get("lastName")), ownerLower, 0), 0)
+                        );
+                    }
                 }
                 if (manager != null) {
-                    expressions.add(criteriaBuilder.equal(root.get("owner").get("manager").get("login"), manager));
+                    andExpressions.add(criteriaBuilder.equal(root.get("owner").get("manager").get("login"), manager));
                 }
 
-                return criteriaBuilder.and(expressions.toArray(new Predicate[0]));
+                if (orExpressions.size() > 0) {
+                    andExpressions.add(criteriaBuilder.or(orExpressions.toArray(new Predicate[0])));
+                }
+
+                return criteriaBuilder.and(andExpressions.toArray(new Predicate[0]));
             }
         };
     }
     public static Specification<Vacation> byQuery(VacationType type, PaymentType paymentType, List<Stage> stages,
-                                                  Date startDate, Date endDate, String login, String manager) {
+                                                  Date startDate, Date endDate, String owner, String manager) {
         return new Specification<Vacation>() {
             @Override
             public Predicate toPredicate(Root<Vacation> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                List<Predicate> expressions = new ArrayList<>();
+                List<Predicate> andExpressions = new ArrayList<>();
+                List<Predicate> orExpressions = new ArrayList<>();
                 if (type != null) {
-                    expressions.add(criteriaBuilder.equal(root.get("type"), type));
+                    andExpressions.add(criteriaBuilder.equal(root.get("type"), type));
                 }
                 if (paymentType != null) {
-                    expressions.add(criteriaBuilder.equal(root.get("payment"), paymentType));
+                    andExpressions.add(criteriaBuilder.equal(root.get("payment"), paymentType));
                 }
                 if (stages != null) {
-                    expressions.add(root.get("stage").in(stages));
+                    andExpressions.add(root.get("stage").in(stages));
                 }
                 if (startDate != null) {
-                    expressions.add(criteriaBuilder.greaterThanOrEqualTo(root.get("startDate"), startDate));
+                    andExpressions.add(criteriaBuilder.greaterThanOrEqualTo(root.get("startDate"), startDate));
                 }
                 if (endDate != null) {
-                    expressions.add(criteriaBuilder.lessThanOrEqualTo(root.get("endDate"), endDate));
+                    andExpressions.add(criteriaBuilder.lessThanOrEqualTo(root.get("endDate"), endDate));
                 }
-                if (login != null) {
-                    expressions.add(criteriaBuilder.equal(root.get("owner").get("login"), login));
+                if (owner != null) {
+                    String ownerLower = owner.toLowerCase();
+
+                    if (ownerLower.split("\\s+").length > 1) {
+                        andExpressions.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("owner").get("firstName")), ownerLower.split("\\s+")[0]));
+                        andExpressions.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("owner").get("lastName")), ownerLower.split("\\s+")[1]));
+                    } else {
+                        orExpressions.add(criteriaBuilder.notEqual(
+                                criteriaBuilder.locate(criteriaBuilder.lower(root.get("owner").get("login")), ownerLower, 0), 0)
+                        );
+                        orExpressions.add(criteriaBuilder.notEqual(
+                                criteriaBuilder.locate(criteriaBuilder.lower(root.get("owner").get("firstName")), ownerLower, 0), 0)
+                        );
+                        orExpressions.add(criteriaBuilder.notEqual(
+                                criteriaBuilder.locate(criteriaBuilder.lower(root.get("owner").get("lastName")), ownerLower, 0), 0)
+                        );
+                    }
                 }
                 if (manager != null) {
-                    expressions.add(criteriaBuilder.equal(root.get("owner").get("manager").get("login"), manager));
+                    andExpressions.add(criteriaBuilder.equal(root.get("owner").get("manager").get("login"), manager));
                 }
 
-                return criteriaBuilder.and(expressions.toArray(new Predicate[0]));
+                if (orExpressions.size() > 0) {
+                    andExpressions.add(criteriaBuilder.or(orExpressions.toArray(new Predicate[0])));
+                }
+
+                return criteriaBuilder.and(andExpressions.toArray(new Predicate[0]));
             }
         };
     }

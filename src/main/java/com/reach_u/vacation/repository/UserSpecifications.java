@@ -21,13 +21,13 @@ public class UserSpecifications {
                 List<Predicate> expressions = new ArrayList<>();
 
                 if (firstName != null) {
-                    expressions.add(criteriaBuilder.equal(root.get("firstName"), firstName));
+                    expressions.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("firstName")), firstName.toLowerCase()));
                 }
                 if (lastName != null) {
-                    expressions.add(criteriaBuilder.equal(root.get("lastName"), lastName));
+                    expressions.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("lastName")), lastName.toLowerCase()));
                 }
                 if (login != null) {
-                    expressions.add(criteriaBuilder.equal(root.get("login"), login));
+                    expressions.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("login")), login.toLowerCase()));
                 }
                 if (manager != null) {
                     expressions.add(criteriaBuilder.equal(root.get("manager").get("login"), manager));

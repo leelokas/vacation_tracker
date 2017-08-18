@@ -182,14 +182,14 @@ public class VacationResource {
         @RequestParam(value = "payment", required = false) PaymentType paymentType,
         @RequestParam(value = "from",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date from,
         @RequestParam(value = "until", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date until,
-        @RequestParam(value = "owner", required = false) String login,
+        @RequestParam(value = "owner", required = false) String owner,
         @RequestParam(value = "manager", required = false) String manager,
         Pageable pageable)
         throws URISyntaxException {
-        log.debug("REST request to get vacations : vacationStage: {}, paymentType: {}, vacationType: {}, from: {}, until: {}, login: {}, manager: {}",
-            vacationStage, paymentType, vacationType, from, until, login, manager);
+        log.debug("REST request to get vacations : vacationStage: {}, paymentType: {}, vacationType: {}, from: {}, until: {}, owner: {}, manager: {}",
+            vacationStage, paymentType, vacationType, from, until, owner, manager);
         Page<Vacation> page = vacationRepository.findAll(
-            VacationSpecifications.byQuery(vacationType, paymentType, vacationStage, from, until, login, manager), pageable
+            VacationSpecifications.byQuery(vacationType, paymentType, vacationStage, from, until, owner, manager), pageable
         );
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/vacations/filter");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
@@ -213,19 +213,19 @@ public class VacationResource {
         @RequestParam(value = "payment", required = false) PaymentType paymentType,
         @RequestParam(value = "from",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date from,
         @RequestParam(value = "until", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date until,
-        @RequestParam(value = "owner", required = false) String login,
+        @RequestParam(value = "owner", required = false) String owner,
         @RequestParam(value = "manager", required = false) String manager,
         Pageable pageable)
         throws URISyntaxException {
-        log.debug("REST request to get overview vacations : paymentType: {}, vacationType: {}, from: {}, until: {}, login: {}, manager: {}",
-            paymentType, vacationType, from, until, login, manager);
+        log.debug("REST request to get overview vacations : paymentType: {}, vacationType: {}, from: {}, until: {}, owner: {}, manager: {}",
+            paymentType, vacationType, from, until, owner, manager);
 
         List<Stage> stages = new ArrayList();
         stages.add(Stage.PLANNED);
         stages.add(Stage.CONFIRMED);
 
         Page<Vacation> page = vacationRepository.findAll(
-            VacationSpecifications.byQuery(vacationType, paymentType, stages, from, until, login, manager), pageable
+            VacationSpecifications.byQuery(vacationType, paymentType, stages, from, until, owner, manager), pageable
         );
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/vacations/overview/filter");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

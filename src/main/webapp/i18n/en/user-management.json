@@ -29,6 +29,8 @@
         "lastModifiedDate": "Modified date",
         "manager": "Manager",
         "firstWorkday": "First workday",
-        "unusedVacationDays": "Unused vacation days from previous year"
+        "unusedVacationDays": "Unused vacation days from previous year",
+        "unusedVacationShort": "Unused from last year",
+        "days": "days"
     }
 }

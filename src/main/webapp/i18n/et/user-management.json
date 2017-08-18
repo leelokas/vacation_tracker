@@ -29,6 +29,8 @@
         "lastModifiedDate": "Muutmise kuupäev",
         "manager": "Otsene ülemus",
         "firstWorkday": "Esimene tööpäev",
-        "unusedVacationDays": "Eelmise aasta kasutamata jäänud puhkepäevad"
+        "unusedVacationDays": "Eelmise aasta kasutamata jäänud puhkepäevad",
+        "unusedVacationShort": "Eelmise aasta jääk",
+        "days": "päeva"
     }
 }
