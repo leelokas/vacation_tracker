@@ -326,7 +326,7 @@ public class UserResource {
                     overlapStart = sickLeave.getStartDate();
                 }
                 if (sickLeave.getEndDate().isBefore(vacation.getEndDate())) {
-                    overlapEnd = sickLeave.getStartDate();
+                    overlapEnd = sickLeave.getEndDate();
                 } else {
                     overlapEnd = vacation.getEndDate();
                 }
