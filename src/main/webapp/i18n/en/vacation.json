@@ -21,7 +21,8 @@
                 "filter": "Filter"
             },
             "vacationManagement": {
-                "title": "Vacations Management"
+                "title": "Vacations Management",
+                "stageWarning": "<b>Attention!</b> If the accountants do not yet have information about these changes then set stage to 'Planned' instead of 'Confirmed'."
             },
             "created": "Your vacation request is saved but not sent for confirmation. \nIf your request doesn’t need any changes then please click 'Send to confirmation'",
             "sent": "Your vacation request for dates {{vacation.startDate}} - {{vacation.endDate}} was sent for confirmation to your manager {{manager.firstName}} {{manager.lastName}}.\nNB! Have you notified your project manager(s) about your vacation request dates?",
