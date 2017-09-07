@@ -93,7 +93,8 @@
             }
         });
 
-        $scope.$watch("vm.vacation.type", function () {
+        $scope.$watch("vm.vacation.type", function (newVal, oldVal) {
+            if (newVal === oldVal) return;
             if (vm.vacation.type === 'PAID' || vm.vacation.type === 'STUDY_LEAVE'){
                 vm.vacation.payment = "BEFORE_VACATION";
             } else if (vm.vacation.type == 'SICK_LEAVE') {
