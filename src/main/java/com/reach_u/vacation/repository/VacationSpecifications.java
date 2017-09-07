@@ -33,26 +33,26 @@ public class VacationSpecifications {
                     andExpressions.add(criteriaBuilder.equal(root.get("stage"), stage));
                 }
                 if (startDate != null) {
-                    andExpressions.add(criteriaBuilder.greaterThanOrEqualTo(root.get("startDate"), startDate));
+                    andExpressions.add(criteriaBuilder.greaterThanOrEqualTo(root.get("endDate"), startDate));
                 }
                 if (endDate != null) {
-                    andExpressions.add(criteriaBuilder.lessThanOrEqualTo(root.get("endDate"), endDate));
+                    andExpressions.add(criteriaBuilder.lessThanOrEqualTo(root.get("startDate"), endDate));
                 }
                 if (owner != null) {
-                    String ownerLower = owner.toLowerCase();
+                    String lowercaseOwner = owner.toLowerCase();
 
-                    if (ownerLower.split("\\s+").length > 1) {
-                        andExpressions.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("owner").get("firstName")), ownerLower.split("\\s+")[0]));
-                        andExpressions.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("owner").get("lastName")), ownerLower.split("\\s+")[1]));
+                    if (lowercaseOwner.split("\\s+").length > 1) {
+                        andExpressions.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("owner").get("firstName")), lowercaseOwner.split("\\s+")[0]));
+                        andExpressions.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("owner").get("lastName")), lowercaseOwner.split("\\s+")[1]));
                     } else {
                         orExpressions.add(criteriaBuilder.notEqual(
-                                criteriaBuilder.locate(criteriaBuilder.lower(root.get("owner").get("login")), ownerLower, 0), 0)
+                                criteriaBuilder.locate(criteriaBuilder.lower(root.get("owner").get("login")), lowercaseOwner, 0), 0)
                         );
                         orExpressions.add(criteriaBuilder.notEqual(
-                                criteriaBuilder.locate(criteriaBuilder.lower(root.get("owner").get("firstName")), ownerLower, 0), 0)
+                                criteriaBuilder.locate(criteriaBuilder.lower(root.get("owner").get("firstName")), lowercaseOwner, 0), 0)
                         );
                         orExpressions.add(criteriaBuilder.notEqual(
-                                criteriaBuilder.locate(criteriaBuilder.lower(root.get("owner").get("lastName")), ownerLower, 0), 0)
+                                criteriaBuilder.locate(criteriaBuilder.lower(root.get("owner").get("lastName")), lowercaseOwner, 0), 0)
                         );
                     }
                 }
@@ -85,26 +85,26 @@ public class VacationSpecifications {
                     andExpressions.add(root.get("stage").in(stages));
                 }
                 if (startDate != null) {
-                    andExpressions.add(criteriaBuilder.greaterThanOrEqualTo(root.get("startDate"), startDate));
+                    andExpressions.add(criteriaBuilder.greaterThanOrEqualTo(root.get("endDate"), startDate));
                 }
                 if (endDate != null) {
-                    andExpressions.add(criteriaBuilder.lessThanOrEqualTo(root.get("endDate"), endDate));
+                    andExpressions.add(criteriaBuilder.lessThanOrEqualTo(root.get("startDate"), endDate));
                 }
                 if (owner != null) {
-                    String ownerLower = owner.toLowerCase();
+                    String lowercaseOwner = owner.toLowerCase();
 
-                    if (ownerLower.split("\\s+").length > 1) {
-                        andExpressions.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("owner").get("firstName")), ownerLower.split("\\s+")[0]));
-                        andExpressions.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("owner").get("lastName")), ownerLower.split("\\s+")[1]));
+                    if (lowercaseOwner.split("\\s+").length > 1) {
+                        andExpressions.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("owner").get("firstName")), lowercaseOwner.split("\\s+")[0]));
+                        andExpressions.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("owner").get("lastName")), lowercaseOwner.split("\\s+")[1]));
                     } else {
                         orExpressions.add(criteriaBuilder.notEqual(
-                                criteriaBuilder.locate(criteriaBuilder.lower(root.get("owner").get("login")), ownerLower, 0), 0)
+                                criteriaBuilder.locate(criteriaBuilder.lower(root.get("owner").get("login")), lowercaseOwner, 0), 0)
                         );
                         orExpressions.add(criteriaBuilder.notEqual(
-                                criteriaBuilder.locate(criteriaBuilder.lower(root.get("owner").get("firstName")), ownerLower, 0), 0)
+                                criteriaBuilder.locate(criteriaBuilder.lower(root.get("owner").get("firstName")), lowercaseOwner, 0), 0)
                         );
                         orExpressions.add(criteriaBuilder.notEqual(
-                                criteriaBuilder.locate(criteriaBuilder.lower(root.get("owner").get("lastName")), ownerLower, 0), 0)
+                                criteriaBuilder.locate(criteriaBuilder.lower(root.get("owner").get("lastName")), lowercaseOwner, 0), 0)
                         );
                     }
                 }
