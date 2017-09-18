@@ -3,13 +3,17 @@
 <configuration scan="true">
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-<!-- The FILE and ASYNC appenders are here as examples for a production configuration -->
-<!--
+<!-- Start -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>90</maxHistory>
+            <!--
+                Will roll over new log file weekly: year-month-weekOfTheMonth
+                For more info: https://logback.qos.ch/manual/appenders.html#SizeAndTimeBasedRollingPolicy
+                y
+             -->
+            <fileNamePattern>logs/log.%d{yyyy-MM-W}-week.log</fileNamePattern>
         </rollingPolicy>
+
         <encoder>
             <charset>utf-8</charset>
             <Pattern>%d %-5level [%thread] %logger{0}: %msg%n</Pattern>
@@ -20,7 +24,8 @@
         <queueSize>512</queueSize>
         <appender-ref ref="FILE"/>
     </appender>
--->
+<!-- End -->
+
 
     <logger name="com.reach_u.vacation" level="#logback.loglevel#"/>
 
@@ -55,7 +60,7 @@
     </contextListener>
 
     <root level="#logback.loglevel#">
-        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
     </root>
 
 </configuration>
