@@ -6,8 +6,7 @@
     <!-- Start -->
     <if condition='property("spring.profiles.active").contains("prod-logs")'>
         <then>
-            <!-- <property name="SYSTEM_HOME" value="/var/lib/jenkins/logs"/> -->
-            <property name="SYSTEM_HOME" value="C:/Users/tanelj.REGIO/Desktop/LOGID" /> <!-- for live/production -->
+            <property name="SYSTEM_HOME" value="/var/lib/jenkins/logs"/><!-- for live/production -->
         </then>
         <else>
             <property name="SYSTEM_HOME" value="logs" />
