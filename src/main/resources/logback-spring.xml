@@ -4,13 +4,19 @@
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
     <!-- Start -->
+    <if condition='property("spring.profiles.active").contains("prod-logs")'>
+        <then>
+            <!-- <property name="SYSTEM_HOME" value="/var/lib/jenkins/logs"/> -->
+            <property name="SYSTEM_HOME" value="C:/Users/tanelj.REGIO/Desktop/LOGID" /> <!-- for live/production -->
+        </then>
+        <else>
+            <property name="SYSTEM_HOME" value="logs" />
+        </else>
+    </if>
+
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!--
-                Will roll over new log file weekly: year-month-weekOfTheMonth
-                For more info: https://logback.qos.ch/manual/appenders.html#SizeAndTimeBasedRollingPolicy
-             -->
-            <fileNamePattern>logs/log.%d{yyyy-MM-W}-week.log</fileNamePattern>
+            <fileNamePattern>${SYSTEM_HOME}/log.%d{yyyy-MM-W}-week.log</fileNamePattern>
         </rollingPolicy>
 
         <encoder>
@@ -26,8 +32,8 @@
     <!-- End -->
 
 
-    <logger name="com.reach_u.vacation" level="#logback.loglevel#"/>
 
+    <logger name="com.reach_u.vacation" level="#logback.loglevel#"/>
     <logger name="javax.activation" level="WARN"/>
     <logger name="javax.mail" level="WARN"/>
     <logger name="javax.xml.bind" level="WARN"/>

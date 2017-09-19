@@ -397,6 +397,12 @@
             <artifactId>jollyday</artifactId>
             <version>0.5.2</version>
         </dependency>
+        <!-- logback -->
+        <dependency>
+            <groupId>org.codehaus.janino</groupId>
+            <artifactId>janino</artifactId>
+            <version>3.0.6</version>
+        </dependency>
     </dependencies>
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>
@@ -770,6 +776,9 @@
                 <!-- default Spring profiles -->
                 <spring.profiles.active>dev,swagger${profile.no-liquibase}</spring.profiles.active>
             </properties>
+        </profile>
+        <profile>
+            <id>log-prod</id>
         </profile>
         <profile>
             <id>prod</id>
