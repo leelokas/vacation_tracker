@@ -16,6 +16,7 @@
         vm.openCalendar = openCalendar;
         vm.save = save;
         vm.users = User.query();
+        vm.vacation.selectedVacationLength = 0;
 
         vm.dateOptions = {
             minDate: new Date(),
@@ -101,6 +102,18 @@
                 vm.vacation.payment = "WITH_NEXT_SALARY";
             } else {
                 vm.vacation.payment = null;
+            }
+        });
+
+        /*
+            #124
+            When user has entered end date in dialog window then this will be triggered.
+            Checks if startDate is also entered and checks if endDate is not empty string (see vm.vacation.startDate watcher)
+         */
+        $scope.$watch("vm.vacation.endDate", function () {
+            if (vm.vacation.startDate !== null && vm.vacation.endDate !== "" ){
+                var dateDifference = vm.vacation.endDate - vm.vacation.startDate;
+                vm.vacation.selectedVacationLength = Math.ceil(dateDifference / (1000 * 3600 * 24)); // milliseconds * seconds * hours
             }
         });
 
