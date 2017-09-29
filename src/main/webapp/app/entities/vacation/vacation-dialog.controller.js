@@ -16,7 +16,7 @@
         vm.openCalendar = openCalendar;
         vm.save = save;
         vm.users = User.query();
-        vm.vacation.selectedVacationLength = 0;
+        vm.vacation.selectedVacationLength = 1;
 
         vm.dateOptions = {
             minDate: new Date(),
@@ -90,7 +90,7 @@
         }
         $scope.$watch("vm.vacation.startDate", function () {
             if (vm.vacation.startDate > vm.vacation.endDate){
-                vm.vacation.endDate = "";
+                vm.vacation.endDate = null;
             }
         });
 
@@ -105,15 +105,10 @@
             }
         });
 
-        /*
-            #124
-            When user has entered end date in dialog window then this will be triggered.
-            Checks if startDate is also entered and checks if endDate is not empty string (see vm.vacation.startDate watcher)
-         */
-        $scope.$watch("vm.vacation.endDate", function () {
-            if (vm.vacation.startDate !== null && vm.vacation.endDate !== "" ){
+        $scope.$watchCollection('[vm.vacation.startDate, vm.vacation.endDate]' , function () {
+            if (vm.vacation.startDate != null && vm.vacation.endDate != null) {
                 var dateDifference = vm.vacation.endDate - vm.vacation.startDate;
-                vm.vacation.selectedVacationLength = Math.ceil(dateDifference / (1000 * 3600 * 24)); // milliseconds * seconds * hours
+                vm.vacation.selectedVacationLength = Math.floor(dateDifference / (1000 * 3600 * 24)) + 1; // milliseconds * seconds * hours
             }
         });
 
