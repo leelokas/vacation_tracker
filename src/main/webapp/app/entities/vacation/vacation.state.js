@@ -51,6 +51,7 @@
                     $translatePartialLoader.addPart('vacationType');
                     $translatePartialLoader.addPart('paymentType');
                     $translatePartialLoader.addPart('global');
+                    $translatePartialLoader.addPart('holidays');
                     return $translate.refresh();
                 }]
             }

@@ -1,14 +1,16 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('vacationTrackerApp')
         .controller('VacationController', VacationController);
 
-    VacationController.$inject = ['$filter', '$translate', 'Vacation', 'AlertService', 'pagingParams', 'User', 'Principal', 'paginationConstants'];
+    VacationController.$inject = ['$filter', '$translate', 'Vacation', 'Holiday', 'AlertService', 'pagingParams', 'User', 'Principal', 'paginationConstants'];
 
-    function VacationController ($filter, $translate, Vacation, AlertService, pagingParams, User, Principal, paginationConstants) {
+    function VacationController($filter, $translate, Vacation, Holiday, AlertService, pagingParams, User, Principal, paginationConstants) {
         var vm = this;
+
+        var holidays = {};
 
         vm.loadPage = loadPage;
         vm.transition = transition;
@@ -24,15 +26,56 @@
         setCurrentUser();
 
         function setCurrentUser() {
-            Principal.identity().then(function(account) {
+            Principal.identity().then(function (account) {
                 vm.currentUser = User.get({login: account.login});
             });
+        }
+
+        var paintHolidaysbyMonthTimer = {};
+
+        function paintHolidaysbyMonth(month, year) {
+            var holidaysMonthly, i, $date;
+            holidaysMonthly = holidays[month + "" + year];
+            if (!!holidaysMonthly) {
+                for (i = 0; i < holidaysMonthly.length; i++) {
+                    $date = $(".uib-datepicker-popup .dp-date_" + holidaysMonthly[i].date);
+                    $date.addClass("national-holiday");
+                    $date.attr("title", $filter('translate')('vacationTrackerApp.holiday.' + holidaysMonthly[i].propertiesKey));
+                }
+            }
         }
 
         vm.paidDaysLeft = {};
         vm.dateOptions = {
             showWeeks: false,
-            startingDay: 1
+            startingDay: 1,
+            customClass: function (item) {
+                var from, until;
+                clearTimeout(paintHolidaysbyMonthTimer[item.date.getMonth()]);
+                paintHolidaysbyMonthTimer[item.date.getMonth()] = setTimeout(function () {
+                    from = new Date(item.date.getFullYear(), item.date.getMonth(), 1);
+                    until = new Date(new Date(item.date.getFullYear(), item.date.getMonth() + 1, 1).getTime() - 1000);
+                    if (!holidays[item.date.getMonth() + "" + item.date.getFullYear()]) {
+                        Holiday.getHolidays({
+                            from: from.getFullYear() + "-" + (until.getMonth() + 1) + "-1",
+                            until: until.getFullYear() + "-" + (until.getMonth() + 1) + "-" + until.getDate()
+                        }).$promise.then(function (results) {
+                            var data, date;
+                            data = JSON.parse(JSON.stringify(results));
+                            holidays[item.date.getMonth() + "" + item.date.getFullYear()] = [];
+                            if (data.length > 0) {
+                                date = new Date(Date.parse(data[data.length - 1].date));
+                                holidays[date.getMonth() + "" + date.getFullYear()] = data;
+                                paintHolidaysbyMonth(date.getMonth(), date.getFullYear());
+                            }
+                        });
+                    } else {
+                        paintHolidaysbyMonth(item.date.getMonth(), item.date.getFullYear());
+                    }
+                }, 100);
+
+                return "dp-date_" + new Date(item.date).toISOString().slice(0, 10);
+            }
         };
         vm.datePickerOpenStatus = {
             from: false,
@@ -76,7 +119,7 @@
             AlertService.error(error.data.message);
         }
 
-        function loadAll () {
+        function loadAll() {
             Vacation.getOwnVacations({
                 page: pagingParams.page - 1,
                 size: vm.pageParams.itemsPerPage,
@@ -86,12 +129,12 @@
             loadRemainingPaidDays();
         }
 
-        function loadPage () {
+        function loadPage() {
             pagingParams.page = vm.pageParams.page;
             vm.transition();
         }
 
-        function transition () {
+        function transition() {
             var dateFormat = 'yyyy-MM-dd';
 
             Vacation.getFilteredVacations({
@@ -101,13 +144,13 @@
                 payment: vm.filterParams.payment,
                 from: $filter('date')(vm.filterParams.from, dateFormat),
                 until: $filter('date')(vm.filterParams.until, dateFormat),
-                page: vm.pageParams.page-1,
+                page: vm.pageParams.page - 1,
                 size: vm.pageParams.itemsPerPage,
                 sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')
             }, onSuccess, onError);
         }
 
-        function displayCancelButton (vacation) {
+        function displayCancelButton(vacation) {
             return vacation.stage !== 'SAVED' &&
                 !(vacation.type !== "SICK_LEAVE" && new Date(vacation.endDate) < new Date() && vacation.stage === 'CONFIRMED');
         }
@@ -124,7 +167,7 @@
             return vacation.type === 'PAID' && getVacationDuration(vacation) <= vm.paidDaysLeft.endOfYear;
         }
 
-        function send (vacation) {
+        function send(vacation) {
             var callback, options;
 
             callback = function (result) {
@@ -159,12 +202,12 @@
                 buttons: {
                     confirm: {
                         label: "<span class='glyphicon glyphicon-send'></span>&nbsp;<span>" +
-                                $translate.instant("entity.action.send") + "</span>",
+                        $translate.instant("entity.action.send") + "</span>",
                         className: "btn-success"
                     },
                     cancel: {
                         label: "<span class='glyphicon glyphicon-arrow-left'></span>&nbsp;<span>" +
-                                $translate.instant("entity.action.back") + "</span>",
+                        $translate.instant("entity.action.back") + "</span>",
                         className: "btn-default"
                     }
                 },
@@ -206,8 +249,8 @@
             }, onSuccess, onError);
         }
 
-        function loadRemainingPaidDays () {
-            User.getRemainingPaidDays({}, function(data) {
+        function loadRemainingPaidDays() {
+            User.getRemainingPaidDays({}, function (data) {
                 vm.paidDaysLeft = data;
                 if (!data.hasTwoWeekPaidVacation) {
                     AlertService.warning("vacationTrackerApp.vacation.twoWeekPaidVacationRequired");
@@ -215,4 +258,5 @@
             }, onError);
         }
     }
+
 })();

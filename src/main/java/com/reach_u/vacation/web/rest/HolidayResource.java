@@ -22,9 +22,13 @@ public class HolidayResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     public Set<Holiday> getHolidays(
-        @RequestParam(value = "startDate", required = true) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-        @RequestParam(value = "endDate", required = true) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
-        return HolidayUtils.getHolidays(startDate, endDate);
-    }
+        @RequestParam(value = "from", required = true) @DateTimeFormat(pattern = "yyyy-MM-dd") Date from,
+        @RequestParam(value = "until", required = true) @DateTimeFormat(pattern = "yyyy-MM-dd") Date until) {
 
+        if (from == null || until == null) {
+            throw new IllegalArgumentException("The 'from' and 'to' parameters must not be null or empty");
+        }
+
+        return HolidayUtils.getHolidays(from, until);
+    }
 }

@@ -1,0 +1,20 @@
+{
+    "vacationTrackerApp": {
+        "holiday": {
+            "NEW_YEAR": "New Year",
+            "INDEPENDENCE": "Independence Day",
+            "LABOUR_DAY": "Labour day",
+            "VICTORY": "Victory Day",
+            "MIDSUMMER": "Midsummer Day",
+            "REST_INDEP": "Day of Restoration of Independence",
+            "CHRISTMAS_EVE": "Christmas Eve",
+            "CHRISTMAS": "Christmas",
+            "BOXING_DAY": "Boxing Day",
+            "christian": {
+                "EASTER": "Easter",
+                "PENTECOST": "Pentecost",
+                "GOOD_FRIDAY": "Good Friday"
+            }
+        }
+    }
+}

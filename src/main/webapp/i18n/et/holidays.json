@@ -1,0 +1,20 @@
+{
+    "vacationTrackerApp": {
+        "holiday": {
+            "NEW_YEAR": "Uusaasta",
+            "INDEPENDENCE": "Iseseisvuspäev",
+            "LABOUR_DAY": "Kevadpüha",
+            "VICTORY": "Võidupüha",
+            "MIDSUMMER": "Jaanipäev",
+            "REST_INDEP": "Taasiseseisvumispäev",
+            "CHRISTMAS_EVE": "Jõululaupäev",
+            "CHRISTMAS": "Esimene jõulupüha",
+            "BOXING_DAY": "Teine jõulupüha",
+            "christian": {
+                "EASTER": "Ülestõusmispühad",
+                "PENTECOST": "Nelipühade 1. püha",
+                "GOOD_FRIDAY": "Suur reede"
+            }
+        }
+    }
+}
