@@ -6,7 +6,10 @@
     </div>
     <div class="modal-body">
         <dl class="dl-horizontal jh-entity-details">
-            <dt><span data-translate="vacationTrackerApp.vacation.stage">Stage</span></dt>
+            <dt><span data-translate="vacationTrackerApp.vacation.stage">Stage</span>
+                <i class="fa fa-question-circle-o" tooltip-placement="bottom" aria-hidden="true"
+                   uib-tooltip="{{'vacationTrackerApp.vacation.dialog.stageTooltip' | translate}}"></i>
+            </dt>
             <dd>
                 <span data-translate="{{'vacationTrackerApp.Stage.' + vm.vacation.stage}}">{{vm.vacation.stage}}</span>
             </dd>
