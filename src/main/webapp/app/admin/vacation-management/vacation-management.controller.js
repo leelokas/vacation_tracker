@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('VacationManagementController', VacationManagementController);
 
-    VacationManagementController.$inject = ['$filter', 'Vacation', 'User', 'AlertService', 'pagingParams', 'paginationConstants'];
+    VacationManagementController.$inject = ['$filter', 'Vacation', 'User', 'HolidayUtils', 'AlertService', 'pagingParams', 'paginationConstants'];
 
-    function VacationManagementController ($filter, Vacation, User, AlertService, pagingParams, paginationConstants) {
+    function VacationManagementController ($filter, Vacation, User, HolidayUtils, AlertService, pagingParams, paginationConstants) {
         var vm = this;
 
         vm.loadPage = loadPage;
@@ -21,7 +21,8 @@
 
         vm.dateOptions = {
             showWeeks: false,
-            startingDay: 1
+            startingDay: 1,
+            customClass: HolidayUtils.getHolidayDates
         };
         vm.datePickerOpenStatus = {
             from: false,

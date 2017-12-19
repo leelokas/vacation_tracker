@@ -5,11 +5,10 @@
         .module('vacationTrackerApp')
         .controller('VacationManagementDialogController', VacationManagementDialogController);
 
-    VacationManagementDialogController.$inject = ['$timeout', '$scope', '$uibModalInstance', 'entity', 'Vacation', 'User'];
+    VacationManagementDialogController.$inject = ['$timeout', '$filter', '$scope', '$uibModalInstance', 'entity', 'Vacation', 'HolidayUtils', 'User'];
 
-    function VacationManagementDialogController ($timeout, $scope, $uibModalInstance, entity, Vacation, User) {
+    function VacationManagementDialogController ($timeout, $filter, $scope, $uibModalInstance, entity, Vacation, HolidayUtils, User) {
         var vm = this;
-
         vm.vacation = entity;
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
@@ -24,12 +23,14 @@
 
         vm.startDateOptions = {
             showWeeks: false,
-            startingDay: 1
+            startingDay: 1,
+            customClass: HolidayUtils.getHolidayDates
         };
         vm.endDateOptions = {
             minDate: setMinEndDate(),
             showWeeks: false,
-            startingDay: 1
+            startingDay: 1,
+            customClass: HolidayUtils.getHolidayDates
         };
 
         $timeout(function (){
@@ -79,7 +80,7 @@
             if (newVal === oldVal) return;
             if (vm.vacation.type === 'PAID' || vm.vacation.type === 'STUDY_LEAVE'){
                 vm.vacation.payment = "BEFORE_VACATION";
-            } else if (vm.vacation.type == 'SICK_LEAVE') {
+            } else if (vm.vacation.type === 'SICK_LEAVE') {
                 vm.vacation.payment = "WITH_NEXT_SALARY";
             } else {
                 vm.vacation.payment = null;
