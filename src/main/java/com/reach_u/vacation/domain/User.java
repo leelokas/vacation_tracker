@@ -94,6 +94,11 @@ public class User extends AbstractAuditingEntity implements Serializable {
         inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
     private Set<Authority> authorities = new HashSet<>();
 
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy="userId")
+    private Set<Balance> yearlyBalances = new HashSet<>();
+
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
     private Set<PersistentToken> persistentTokens = new HashSet<>();
@@ -259,11 +264,21 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.firstWorkday = firstWorkday;
     }
 
+    @Deprecated
     public Integer getUnusedVacationDays() {
         return unusedVacationDays;
     }
 
+    @Deprecated
     public void setUnusedVacationDays(Integer unusedVacationDays) {
         this.unusedVacationDays = unusedVacationDays;
+    }
+
+    public Set<Balance> getYearlyBalances() {
+        return yearlyBalances;
+    }
+
+    public void setYearlyBalances(Set<Balance> yearlyBalances) {
+        this.yearlyBalances = yearlyBalances;
     }
 }

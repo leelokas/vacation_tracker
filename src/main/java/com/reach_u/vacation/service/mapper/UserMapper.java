@@ -32,6 +32,7 @@ public interface UserMapper {
     @Mapping(target = "manager", ignore = true)
     @Mapping(target = "firstWorkday", ignore = true)
     @Mapping(target = "unusedVacationDays", ignore = true)
+    @Mapping(target = "yearlyBalances", ignore = true)
     User userDTOToUser(UserDTO userDTO);
 
     List<User> userDTOsToUsers(List<UserDTO> userDTOs);

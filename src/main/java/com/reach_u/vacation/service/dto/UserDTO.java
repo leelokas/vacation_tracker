@@ -3,6 +3,7 @@ package com.reach_u.vacation.service.dto;
 import com.reach_u.vacation.config.Constants;
 
 import com.reach_u.vacation.domain.Authority;
+import com.reach_u.vacation.domain.Balance;
 import com.reach_u.vacation.domain.User;
 
 import org.hibernate.validator.constraints.Email;
@@ -38,6 +39,8 @@ public class UserDTO {
 
     private Set<String> authorities;
 
+    private Set<Balance> yearlyBalances;
+
     private UserDTO manager;
 
     private Date firstWorkday;
@@ -51,12 +54,12 @@ public class UserDTO {
         this(user.getLogin(), user.getFirstName(), user.getLastName(),
             user.getEmail(), user.getActivated(), user.getLangKey(),
             user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()),
-            user.getManager(), user.getFirstWorkday(), user.getUnusedVacationDays());
+            user.getManager(), user.getFirstWorkday(), user.getYearlyBalances());
     }
 
     public UserDTO(String login, String firstName, String lastName, String email,
                    boolean activated, String langKey, Set<String> authorities, User manager,
-                   Date firstWorkday, Integer unusedVacationDays) {
+                   Date firstWorkday, Set<Balance> yearlyBalances) {
 
         this.login = login;
         this.firstName = firstName;
@@ -65,6 +68,7 @@ public class UserDTO {
         this.activated = activated;
         this.langKey = langKey;
         this.authorities = authorities;
+        this.yearlyBalances = yearlyBalances;
         if (manager != null && !manager.getLogin().equals(login)) {
             this.manager = new UserDTO(manager);
         }
@@ -100,6 +104,10 @@ public class UserDTO {
         return authorities;
     }
 
+    public Set<Balance> getYearlyBalances() {
+        return yearlyBalances;
+    }
+
     public UserDTO getManager() {
         return manager;
     }
@@ -108,6 +116,7 @@ public class UserDTO {
         return firstWorkday;
     }
 
+    @Deprecated
     public Integer getUnusedVacationDays() {
         return unusedVacationDays;
     }
@@ -122,9 +131,9 @@ public class UserDTO {
             ", activated=" + activated +
             ", langKey='" + langKey + '\'' +
             ", authorities=" + authorities +
+            ", yearlyBalances=" + yearlyBalances +
             ", manager={" + manager + "}" +
             ", firstWorkday=" + firstWorkday +
-            ", unusedVacationDays=" + unusedVacationDays +
             "}";
     }
 }

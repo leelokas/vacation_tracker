@@ -4,7 +4,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-
+    <property name="autoIncrement" value="true" dbms="mysql,h2,postgresql,oracle"/>
     <!--
         Added manager field to User.
     -->
@@ -89,37 +89,33 @@
         </addColumn>
     </changeSet>
 
-    <!--
-        Create a separate table for unused vacation days and add a user_id constraint
-    -->
-
-    <changeSet id="20171215150300" author="leelo">
+    <changeSet id="20171229213000" author="leelo">
+        <!--
+            Create a separate table for unused vacation days
+        -->
         <createTable tableName="yearly_balance">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
             <column name="user_id" type="bigint"/>
             <column name="year" type="INT"/>
             <column name="balance" type="INT"/>
         </createTable>
-
+        <!--
+            Add a user_id constraint
+        -->
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="yearly_balance"
                                  constraintName="fk_yearly_balance_user_id"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
-    </changeSet>
-
-
-    <!--
-        Add unique constraint on yearly_balance.user_id & yearly_balance.year column combination
-    -->
-    <changeSet id="20171229133000" author="leelo">
+        <!--
+            Add unique constraint on yearly_balance.user_id & yearly_balance.year column combination
+        -->
         <sql>ALTER TABLE YEARLY_BALANCE ADD CONSTRAINT unique_balance UNIQUE (USER_ID, YEAR)</sql>
-    </changeSet>
-
-    <!--
-        Move user's (now deprecated) unusedVacationDays to yearly_balance table
-    -->
-
-    <changeSet id="20171229134000" author="leelo">
+        <!--
+            Move user's (now deprecated) unusedVacationDays to yearly_balance table
+        -->
         <sql>INSERT INTO YEARLY_BALANCE (USER_ID, YEAR, BALANCE) SELECT ID, 2016, UNUSEDVACATIONDAYS FROM JHI_USER WHERE UNUSEDVACATIONDAYS IS NOT NULL</sql>
     </changeSet>
 
