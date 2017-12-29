@@ -89,4 +89,39 @@
         </addColumn>
     </changeSet>
 
+    <!--
+        Create a separate table for unused vacation days and add a user_id constraint
+    -->
+
+    <changeSet id="20171215150300" author="leelo">
+        <createTable tableName="yearly_balance">
+            <column name="user_id" type="bigint"/>
+            <column name="year" type="INT"/>
+            <column name="balance" type="INT"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="yearly_balance"
+                                 constraintName="fk_yearly_balance_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+    </changeSet>
+
+
+    <!--
+        Add unique constraint on yearly_balance.user_id & yearly_balance.year column combination
+    -->
+    <changeSet id="20171229133000" author="leelo">
+        <sql>ALTER TABLE YEARLY_BALANCE ADD CONSTRAINT unique_balance UNIQUE (USER_ID, YEAR)</sql>
+    </changeSet>
+
+    <!--
+        Move user's (now deprecated) unusedVacationDays to yearly_balance table
+    -->
+
+    <changeSet id="20171229134000" author="leelo">
+        <sql>INSERT INTO YEARLY_BALANCE (USER_ID, YEAR, BALANCE) SELECT ID, 2016, UNUSEDVACATIONDAYS FROM JHI_USER WHERE UNUSEDVACATIONDAYS IS NOT NULL</sql>
+    </changeSet>
+
+
 </databaseChangeLog>
