@@ -92,12 +92,15 @@
 
     <div class="row">
         <div class="col-sm-3 paidDays">
-            <h3 data-translate="vacationTrackerApp.vacation.home.paidDaysLeft.endOfYear">Unused paid vacation until the end of year</h3>
-            <span id="paidDaysLeft">{{vm.paidDaysLeft.endOfYear}}</span>
-            <h3 data-translate="vacationTrackerApp.vacation.home.paidDaysLeft.current">Current paid vacation days balance</h3>
-            <span>{{vm.paidDaysLeft.current}}</span>
-            <h3 ng-if="vm.paidDaysLeft.studyLeaveRemaining < 30" data-translate="vacationTrackerApp.vacation.home.paidDaysLeft.studyLeave">Study leave vacation until the end of year</h3>
-            <span ng-if="vm.paidDaysLeft.studyLeaveRemaining < 30">{{vm.paidDaysLeft.studyLeaveRemaining}}</span>
+            <div class="alert alert-warning">Vabandust, puhkuste jäägi arvutamine on hetkel katki. Viga parandatakse jaanuari esimesel nädalal.</div>
+            <div style="visibility: hidden">
+                <h3 data-translate="vacationTrackerApp.vacation.home.paidDaysLeft.endOfYear">Unused paid vacation until the end of year</h3>
+                <span id="paidDaysLeft">{{vm.paidDaysLeft.endOfYear}}</span>
+                <h3 data-translate="vacationTrackerApp.vacation.home.paidDaysLeft.current">Current paid vacation days balance</h3>
+                <span>{{vm.paidDaysLeft.current}}</span>
+                <h3 ng-if="vm.paidDaysLeft.studyLeaveRemaining < 30" data-translate="vacationTrackerApp.vacation.home.paidDaysLeft.studyLeave">Study leave vacation until the end of year</h3>
+                <span ng-if="vm.paidDaysLeft.studyLeaveRemaining < 30">{{vm.paidDaysLeft.studyLeaveRemaining}}</span>
+            </div>
         </div>
         <div class="col-sm-9 table-responsive">
             <table class="jh-table table table-striped rows-as-links">
