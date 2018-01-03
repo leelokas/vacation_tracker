@@ -10,6 +10,7 @@ import com.reach_u.vacation.repository.UserRepository;
 import com.reach_u.vacation.security.AuthoritiesConstants;
 import com.reach_u.vacation.security.SecurityUtils;
 import com.reach_u.vacation.service.util.RandomUtil;
+import com.reach_u.vacation.utils.VacationCalculationUtils;
 import com.reach_u.vacation.web.rest.vm.ManagedUserVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +47,9 @@ public class UserService {
 
     @Inject
     private AuthorityRepository authorityRepository;
+
+    @Inject
+    private VacationCalculationUtils vacationCalculationUtils;
 
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
@@ -191,6 +195,9 @@ public class UserService {
     }
 
     public void updateUserYearlyBalances(Set<Balance> balances) {
+        if (balances == null) {
+            return;
+        }
         balances.forEach(balanceData ->
             balanceRepository.findUserBalanceOfYear(balanceData.getUserId(), balanceData.getYear())
                 .map(b -> {

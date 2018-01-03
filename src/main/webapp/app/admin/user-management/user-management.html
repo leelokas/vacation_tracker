@@ -62,27 +62,25 @@
             <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                 <th jh-sort-by="login"><span data-translate="userManagement.login">Login</span> <span class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="email"><span data-translate="userManagement.email">Email</span> <span class="glyphicon glyphicon-sort"></span></th>
-                <th><span data-translate="userManagement.profiles">Roles</span></th>
+                <th class="hidden-xs"><span data-translate="userManagement.profiles">Roles</span></th>
                 <th class="hidden-xs hidden-sm"><span data-translate="userManagement.manager">Manager</span></th>
-                <th jh-sort-by="createdDate" class="hidden-xs hidden-sm"><span data-translate="userManagement.createdDate">Created Date</span> <span class="glyphicon glyphicon-sort"></span></th>
-                <th jh-sort-by="lastModifiedBy" class="hidden-xs"><span data-translate="userManagement.lastModifiedBy">Last Modified By</span> <span class="glyphicon glyphicon-sort"></span></th>
-                <th jh-sort-by="lastModifiedDate" class="hidden-xs"><span data-translate="userManagement.lastModifiedDate">Last Modified Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th class="hidden-xs hidden-sm" jh-sort-by="firstWorkday"><span data-translate="userManagement.firstWorkday">First workday</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <th><span data-translate="userManagement.unusedVacationShort" translate-values="{param: '{{vm.previousYear}}'}">Last year vacation balance</span></th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="user in vm.users track by user.id">
+            <tr ng-repeat="user in vm.users track by user.id" ng-class="user.rowClass">
                 <td ui-sref="user-management-detail({login:user.login})">{{user.login}}</td>
                 <td ui-sref="user-management-detail({login:user.login})">{{user.email}}</td>
-                <td ui-sref="user-management-detail({login:user.login})">
+                <td ui-sref="user-management-detail({login:user.login})" class="hidden-xs">
                     <div ng-repeat="authority in user.authorities">
                         <span class="label label-info">{{ authority }}</span>
                     </div>
                 </td>
                 <td ui-sref="user-management-detail({login:user.login})" class="hidden-xs hidden-sm">{{user.manager.login}}</td>
-                <td ui-sref="user-management-detail({login:user.login})" class="hidden-xs hidden-sm">{{user.createdDate | date:'dd/MM/yy HH:mm'}}</td>
-                <td ui-sref="user-management-detail({login:user.login})" class="hidden-xs">{{user.lastModifiedBy}}</td>
-                <td ui-sref="user-management-detail({login:user.login})" class="hidden-xs">{{user.lastModifiedDate | date:'dd/MM/yy HH:mm'}}</td>
+                <td ui-sref="user-management-detail({login:user.login})" class="hidden-xs hidden-sm">{{user.firstWorkday | date:'dd/MM/yy'}}</td>
+                <td ui-sref="user-management-detail({login:user.login})">{{user.previousYearBalanceInfo.balance}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

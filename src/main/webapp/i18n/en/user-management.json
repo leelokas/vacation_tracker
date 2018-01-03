@@ -32,7 +32,7 @@
         "manager": "Manager",
         "firstWorkday": "First workday",
         "unusedVacationDays": "Unused vacation days from year {{ param }}",
-        "unusedVacationShort": "Unused from year {{ param }}",
+        "unusedVacationShort": "{{ param }} balance",
         "days": "days",
         "savedBalances": "Saved balances:"
     }

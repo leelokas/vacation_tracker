@@ -32,7 +32,7 @@
         "manager": "Otsene ülemus",
         "firstWorkday": "Esimene tööpäev",
         "unusedVacationDays": "Aastast {{ param }} ülekanduv puhkepäevade jääk",
-        "unusedVacationShort": "{{ param }} aasta jääk",
+        "unusedVacationShort": "{{ param }} a. jääk",
         "days": "päeva",
         "savedBalances": "Salvestatud jäägid:"
     }

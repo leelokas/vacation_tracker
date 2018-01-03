@@ -406,3 +406,6 @@ footer {
     margin-left: 200px; }
   .dl-horizontal dt {
     width: 180px; } }
+
+tr.red_highlight {
+  color: red; }

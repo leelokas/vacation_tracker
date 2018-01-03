@@ -18,10 +18,11 @@
 
 
         vm.predicate = pagingParams.predicate;
-        vm.reverse = pagingParams.ascending;
+        vm.reverse = !pagingParams.ascending;
         vm.managers = User.getFilteredUsers({role: 'ROLE_MANAGER'});
 
         vm.authorities = ['ROLE_USER', 'ROLE_MANAGER', 'ROLE_ACCOUNTANT', 'ROLE_ADMIN'];
+        vm.previousYear = new Date().getFullYear() - 1;
         vm.users = [];
         vm.currentAccount = null;
         vm.languages = null;
@@ -68,7 +69,14 @@
                 vm.pageParams.page = 1;
                 vm.pageParams.itemsPerPage = data.length;
             }
-            vm.users = data;
+            vm.users = data.map(function(user) {
+                user.previousYearBalanceInfo = user.yearlyBalances ? user.yearlyBalances.find(function (balanceInfo) {
+                    return balanceInfo.year === vm.previousYear;
+                }) : {};
+                user.rowClass = (!user.firstWorkday || !user.manager) ? "red_highlight" : "";
+                return user;
+            });
+
         }
 
         function onError(error) {
@@ -77,8 +85,8 @@
 
         function sort () {
             var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
-            if (vm.predicate !== 'id') {
-                result.push('id');
+            if (vm.predicate !== 'createdDate') {
+                result.push('createdDate');
             }
             return result;
         }
