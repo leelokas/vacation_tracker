@@ -62,7 +62,8 @@
             "from": "From",
             "until": "Until",
             "comment": "Comment",
-            "twoWeekPaidVacationRequired": "By the Estonian law you are required to plan a vacation with at least 14 consecutive days for every year (Puhkuseseadus § 20)"
+            "twoWeekPaidVacationRequired": "By the Estonian law you are required to plan a vacation with at least 14 consecutive days for every year (Puhkuseseadus § 20)",
+            "lessThanTwoWeeksNotice": "This request starts less than 2 weeks from now!"
         }
     }
 }

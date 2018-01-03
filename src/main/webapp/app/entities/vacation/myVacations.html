@@ -114,7 +114,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="vacation in vm.vacations track by vacation.id">
+                <tr ng-repeat="vacation in vm.vacations track by vacation.id" ng-class="vacation.rowClass" title="{{vacation.tooltipText}}">
                     <td ui-sref="vacation-detail({id:vacation.id})" class="hidden-xs hidden-sm">{{vacation.startDate | date:'dd/MM/yyyy'}} - {{vacation.endDate | date:'dd/MM/yyyy'}}</td>
                     <td ui-sref="vacation-detail({id:vacation.id})" class="hidden-md hidden-lg">{{vacation.startDate | date:'d/M/yy'}} - {{vacation.endDate | date:'d/M/yy'}}</td>
                     <td ui-sref="vacation-detail({id:vacation.id})" data-translate="{{'vacationTrackerApp.VacationType.' + vacation.type}}">{{vacation.type}}</td>

@@ -35,8 +35,18 @@
             }
             function onSuccess(data, headers) {
                 vm.totalItems = headers('X-Total-Count');
-                vm.vacations = data;
                 vm.page = pagingParams.page;
+
+                function daydiff(first, second) {
+                    return Math.abs(Math.round((second-first)/(1000*60*60*24)));
+                }
+                vm.vacations = data.map(function(vacation) {
+                    if (daydiff(new Date(vacation.startDate), new Date()) < 14) {
+                        vacation.rowClass = "red_highlight";
+                        vacation.tooltipText = $translate.instant("vacationTrackerApp.vacation.lessThanTwoWeeksNotice");
+                    }
+                    return vacation;
+                });
             }
             function onError(error) {
                 AlertService.error(error.data.message);

@@ -13,7 +13,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="vacation in vm.vacations track by vacation.id">
+            <tr ng-repeat="vacation in vm.vacations track by vacation.id" ng-class="vacation.rowClass" title="{{vacation.tooltipText}}">
                 <td ui-sref="manager.vacation-detail({id:vacation.id})">{{vacation.owner.firstName}} {{vacation.owner.lastName}}</td>
                 <td ui-sref="manager.vacation-detail({id:vacation.id})" data-translate="{{'vacationTrackerApp.VacationType.' + vacation.type}}">{{vacation.type}}</td>
                 <td ui-sref="manager.vacation-detail({id:vacation.id})">{{vacation.startDate | date:'dd/MM/yyyy'}}</td>

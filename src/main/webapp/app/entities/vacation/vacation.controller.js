@@ -73,7 +73,16 @@
                 vm.pageParams.totalItems = data.length;
                 vm.pageParams.page = 1;
             }
-            vm.vacations = data;
+            function daydiff(first, second) {
+                return Math.abs(Math.round((second-first)/(1000*60*60*24)));
+            }
+            vm.vacations = data.map(function (vacation) {
+                if (["SAVED", "SENT"].indexOf(vacation.stage) > -1 && daydiff(new Date(vacation.startDate), new Date()) < 14) {
+                    vacation.rowClass = "red_highlight";
+                    vacation.tooltipText = $translate.instant("vacationTrackerApp.vacation.lessThanTwoWeeksNotice");
+                }
+                return vacation;
+            });
         }
 
         function onError(error) {

@@ -62,7 +62,8 @@
             "from": "Alates",
             "until": "Kuni",
             "comment": "Kommentaar",
-            "twoWeekPaidVacationRequired": "Seaduse järgi on sul kohustus võtta igal aastal palgaline puhkus, mis kestab vähemalt 14 päeva (Puhkuseseadus § 20)"
+            "twoWeekPaidVacationRequired": "Seaduse järgi on sul kohustus võtta igal aastal palgaline puhkus, mis kestab vähemalt 14 päeva (Puhkuseseadus § 20)",
+            "lessThanTwoWeeksNotice": "See puhkus algab vähem kui 2 nädala pärast!"
         }
     }
 }
