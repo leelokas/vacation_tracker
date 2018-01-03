@@ -45,6 +45,10 @@ public interface VacationRepository extends JpaRepository<Vacation, Long>, JpaSp
         "and vacation.type = ?3 and vacation.stage in ('SENT', 'PLANNED', 'CONFIRMED') and vacation.endDate >= ?1 and vacation.startDate <= ?2")
     List<Vacation> findAllVacationsOfTypeWithTimeframe(LocalDate start, LocalDate end, VacationType type);
 
+    @Query("select vacation from Vacation vacation where vacation.owner.login = ?1 " +
+        "and vacation.type = ?4 and vacation.stage in ('SENT', 'PLANNED', 'CONFIRMED') and vacation.endDate >= ?2 and vacation.startDate <= ?3")
+    List<Vacation> findAllUserVacationsOfTypeWithTimeframe(String login, LocalDate start, LocalDate end, VacationType type);
+
     @Query("select vacation from Vacation vacation where (vacation.startDate <= ?1 and vacation.stage = 'PLANNED')")
     List<Vacation> getAllNextWeeksVacations(LocalDate nextWeekSunday);
 

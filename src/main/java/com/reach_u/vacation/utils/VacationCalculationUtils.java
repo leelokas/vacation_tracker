@@ -60,8 +60,8 @@ public class VacationCalculationUtils {
     public Integer calcYearlyVacationDaysBalanceOfUser(int year, User user) {
         LocalDate yearStart = LocalDate.parse(String.valueOf(year) + "-01-01"),
             yearEnd = LocalDate.parse(String.valueOf(year) + "-12-31");
-        int paidVacationDuration = getPlannedVacationDuration(yearStart, yearEnd, VacationType.PAID),
-            unPaidVacationDuration = getPlannedVacationDuration(yearStart, yearEnd, VacationType.UNPAID);
+        int paidVacationDuration = getPlannedVacationDurationOfUser(user, yearStart, yearEnd, VacationType.PAID),
+            unPaidVacationDuration = getPlannedVacationDurationOfUser(user, yearStart, yearEnd, VacationType.UNPAID);
         double
             nrOfDaysEarned,
             numOfDaysInYear = (Year.of(year).isLeap() ? 366 : 365);
@@ -102,6 +102,13 @@ public class VacationCalculationUtils {
         List<Vacation>
             vacationList = vacationRepository.findAllVacationsOfTypeWithTimeframe(timeFrameStart, timeFrameEnd, vacationType),
             sickLeaveList = vacationRepository.findAllVacationsOfTypeWithTimeframe(timeFrameStart, timeFrameEnd, VacationType.SICK_LEAVE);
+        return getVacationDurationSum(vacationList, sickLeaveList, timeFrameStart, timeFrameEnd);
+    }
+
+    private int getPlannedVacationDurationOfUser(User user, LocalDate timeFrameStart, LocalDate timeFrameEnd, VacationType vacationType) {
+        List<Vacation>
+            vacationList = vacationRepository.findAllUserVacationsOfTypeWithTimeframe(user.getLogin(), timeFrameStart, timeFrameEnd, vacationType),
+            sickLeaveList = vacationRepository.findAllUserVacationsOfTypeWithTimeframe(user.getLogin(), timeFrameStart, timeFrameEnd, VacationType.SICK_LEAVE);
         return getVacationDurationSum(vacationList, sickLeaveList, timeFrameStart, timeFrameEnd);
     }
 
