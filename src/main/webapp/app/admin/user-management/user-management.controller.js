@@ -140,6 +140,7 @@
         function calcYearlyBalances() {
             User.calcYearlyBalances({}, function(data) {
                 AlertService.info("userManagement.home.calculateBalancesResultMsg", data);
+                loadAll();
             });
         }
     }

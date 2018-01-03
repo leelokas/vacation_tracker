@@ -12,6 +12,7 @@ import com.reach_u.vacation.security.SecurityUtils;
 import com.reach_u.vacation.service.util.RandomUtil;
 import com.reach_u.vacation.utils.VacationCalculationUtils;
 import com.reach_u.vacation.web.rest.vm.ManagedUserVM;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.ZonedDateTime;
 import javax.inject.Inject;
 import java.util.*;
@@ -189,6 +191,16 @@ public class UserService {
                 }
                 u.setFirstWorkday(firstWorkday);
                 userRepository.save(u);
+                if (firstWorkday != null && (balances == null || balances.size() == 0)) {
+                    int previousYear = Year.now().getValue() - 1;
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(u.getFirstWorkday());
+                    int firstWorkYear = cal.get(Calendar.YEAR);
+                    if (firstWorkYear <= previousYear) {
+                        Integer unusedVacationDays = vacationCalculationUtils.calcYearlyVacationDaysBalanceOfUser(previousYear, u);
+                        balances.add(new Balance(u.getId(), previousYear, unusedVacationDays));
+                    }
+                }
                 updateUserYearlyBalances(balances);
                 log.debug("Changed Information for User: {}", u);
             });
@@ -201,11 +213,20 @@ public class UserService {
         balances.forEach(balanceData ->
             balanceRepository.findUserBalanceOfYear(balanceData.getUserId(), balanceData.getYear())
                 .map(b -> {
+                    if (balanceData.getBalance() == null) {
+                        balanceRepository.delete(b);
+                        log.debug("Deleted Balance: {}", b);
+                        return null;
+                    }
                     b.setBalance(balanceData.getBalance());
                     balanceRepository.save(b);
                     log.debug("Changed Balance: {}", b);
                     return b;
                 }).orElseGet(() -> {
+                    if (balanceData.getBalance() == null) {
+                        log.debug("Not saving balance with value on null {}", balanceData);
+                        return null;
+                    }
                     balanceRepository.save(balanceData);
                     log.debug("Saved Balance: {}", balanceData);
                     return balanceData;

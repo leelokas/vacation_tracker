@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,12 +66,22 @@ public class VacationCalculationUtils {
             nrOfDaysEarned,
             numOfDaysInYear = (Year.of(year).isLeap() ? 366 : 365);
 
-        if (user.getFirstWorkday() == null) {
-            return null;
+        // If the user's 1st workday is not defined or later than the year being calculated then abort
+        if (user.getFirstWorkday() == null) return null;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(user.getFirstWorkday());
+        if (cal.get(Calendar.YEAR) > year) return null;
+
+        // If the user's 1st workday was in the middle of the year then user earns less than 28 vacation days
+        if (cal.get(Calendar.YEAR) == year) {
+            DateTime firstWorkDayDate = new DateTime(user.getFirstWorkday());
+            double firstWorkDay = firstWorkDayDate.getDayOfYear();
+            nrOfDaysEarned = (numOfDaysInYear - unPaidVacationDuration - (firstWorkDay - 1)) / numOfDaysInYear * 28;
         } else {
             nrOfDaysEarned = (numOfDaysInYear - unPaidVacationDuration) / numOfDaysInYear * 28;
             nrOfDaysEarned += getUnusedVacationDaysOfYear(user, year - 1);
         }
+
         nrOfDaysEarned -= paidVacationDuration;
         return Math.min((int) nrOfDaysEarned, 28);
     }
@@ -150,6 +161,7 @@ public class VacationCalculationUtils {
             numOfDaysInYear = (Year.now().isLeap() ? 366 : 365),
             currentDay = new DateTime().getDayOfYear();
 
+        // If the user's 1st workday was in the middle of the year then user earns less than 28 vacation days
         if (isNewEmployee(user)) {
             if (user.getFirstWorkday() == null) {
                 log.warn("User doesn't have first work day defined, calculations will not give correct results!");
