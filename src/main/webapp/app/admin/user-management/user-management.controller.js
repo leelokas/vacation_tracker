@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('UserManagementController', UserManagementController);
 
-    UserManagementController.$inject = ['Principal', 'User', 'AlertService', 'pagingParams', 'paginationConstants', 'JhiLanguageService'];
+    UserManagementController.$inject = ['Principal', 'User', 'AlertService', 'pagingParams', 'paginationConstants', 'JhiLanguageService', '$translate'];
 
-    function UserManagementController(Principal, User, AlertService, pagingParams, paginationConstants, JhiLanguageService) {
+    function UserManagementController(Principal, User, AlertService, pagingParams, paginationConstants, JhiLanguageService, $translate) {
         var vm = this;
 
         vm.loadAll = loadAll;
@@ -73,7 +73,18 @@
                 user.previousYearBalanceInfo = user.yearlyBalances ? user.yearlyBalances.find(function (balanceInfo) {
                     return balanceInfo.year === vm.previousYear;
                 }) : {};
-                user.rowClass = (!user.firstWorkday || !user.manager) ? "red_highlight" : "";
+                var tooltipText = "";
+                if (!user.firstWorkday) {
+                    user.rowClass = "red_highlight";
+                    tooltipText += $translate.instant("userManagement.home.firstWorkdayMissing") + "\n";
+                }
+                if (!user.manager) {
+                    user.rowClass = "red_highlight";
+                    tooltipText += $translate.instant("userManagement.home.managerMissing");
+                }
+                if (tooltipText.length) {
+                    user.tooltipText = tooltipText;
+                }
                 return user;
             });
 

@@ -5,7 +5,9 @@
             "createLabel": "Create a new user",
             "createOrEditLabel": "Create or edit a user",
             "calculateBalances": "Calculate yearly balances",
-            "calculateBalancesResultMsg": "{{ year }} leftover days balance calculated for {{ success }} user(s).\nBalance unchanged for {{ unchanged }} user(s) - it might already exist or the 1st workday info might be missing. "
+            "calculateBalancesResultMsg": "{{ year }} leftover days balance calculated for {{ success }} user(s).\nBalance unchanged for {{ unchanged }} user(s) - it might already exist or the 1st workday info might be missing.",
+            "managerMissing": "Manager not defined!",
+            "firstWorkdayMissing": "First workday not defined!"
         },
         "created": "A new user is created with login '{{ param }}'",
         "updated": "An user is updated with login '{{ param }}'",

@@ -70,7 +70,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="user in vm.users track by user.id" ng-class="user.rowClass">
+            <tr ng-repeat="user in vm.users track by user.id" ng-class="user.rowClass" title="{{user.tooltipText}}">
                 <td ui-sref="user-management-detail({login:user.login})">{{user.login}}</td>
                 <td ui-sref="user-management-detail({login:user.login})">{{user.email}}</td>
                 <td ui-sref="user-management-detail({login:user.login})" class="hidden-xs">

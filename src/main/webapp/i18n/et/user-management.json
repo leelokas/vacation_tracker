@@ -5,7 +5,9 @@
             "createLabel": "Loos uus kasutaja",
             "createOrEditLabel": "Loo või muuda kasutajat",
             "calculateBalances": "Arvuta aasta jäägid",
-            "calculateBalancesResultMsg": "Aasta {{ year }} jääk arvutatud {{ success }} kasutajale.\n{{ unchanged }} jäi muutmata - jääk võib juba olemas olla või on 1. tööpäev märkimata."
+            "calculateBalancesResultMsg": "Aasta {{ year }} jääk arvutatud {{ success }} kasutajale.\n{{ unchanged }} jäi muutmata - jääk võib juba olemas olla või on 1. tööpäev märkimata.",
+            "managerMissing": "Otsene ülemus määramata!",
+            "firstWorkdayMissing": "Esimene tööpäev määramata!"
         },
         "created": "Uus kasutaja on loodud ID-ga '{{ param }}'",
         "updated": "Uus kasutaja on uuendatud ID-ga '{{ param }}'",
