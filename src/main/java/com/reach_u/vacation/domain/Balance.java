@@ -29,6 +29,13 @@ public class Balance implements Serializable {
     @Column(name="balance")
     private Integer balance;
 
+    public Balance () {}
+
+    public Balance (Long userId, Integer year, Integer balance) {
+        this.userId = userId;
+        this.year = year;
+        this.balance = balance;
+    }
 
     public Long getId() {
         return id;

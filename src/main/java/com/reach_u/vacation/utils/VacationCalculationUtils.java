@@ -1,5 +1,6 @@
 package com.reach_u.vacation.utils;
 
+import com.reach_u.vacation.domain.Balance;
 import com.reach_u.vacation.domain.User;
 import com.reach_u.vacation.domain.Vacation;
 import com.reach_u.vacation.domain.enumeration.VacationType;
@@ -12,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.temporal.ChronoUnit;
@@ -35,7 +35,7 @@ public class VacationCalculationUtils {
     private VacationRepository vacationRepository;
 
 
-    public Map<String, Integer> getRemainingDaysOfCurrentUser() throws URISyntaxException {
+    public Map<String, Integer> getRemainingDaysOfCurrentUser() {
         Map<String, Integer> result = new HashMap<>();
         int currentYear = Year.now().getValue();
         LocalDate
@@ -48,20 +48,39 @@ public class VacationCalculationUtils {
             paidVacationDurationCurrent = getPlannedVacationDuration(yearStart, currentDate, VacationType.PAID),
             unPaidVacationDurationCurrent = getPlannedVacationDuration(yearStart, currentDate, VacationType.UNPAID);
 
-        result.put("endOfYear", getEmployeeVacationDaysEarned(paidVacationDuration, unPaidVacationDuration, false));
-        result.put("current", getEmployeeVacationDaysEarned(paidVacationDurationCurrent, unPaidVacationDurationCurrent, true));
+        result.put("endOfYear", getEarnedVacationDaysSum(paidVacationDuration, unPaidVacationDuration, false));
+        result.put("current", getEarnedVacationDaysSum(paidVacationDurationCurrent, unPaidVacationDurationCurrent, true));
         result.put("hasTwoWeekPaidVacation", hasAnyTwoWeekPaidVacation(yearStart, yearEnd));
         result.put("studyLeaveRemaining", 30 - getPlannedVacationDuration(yearStart, yearEnd, VacationType.STUDY_LEAVE));
 
         return result;
     }
 
-    private int hasAnyTwoWeekPaidVacation(LocalDate timeFrameStart, LocalDate timeFrameEnd) { // TODO shouldn't exclude holidays
+    public Integer calcYearlyVacationDaysBalanceOfUser(int year, User user) {
+        LocalDate yearStart = LocalDate.parse(String.valueOf(year) + "-01-01"),
+            yearEnd = LocalDate.parse(String.valueOf(year) + "-12-31");
+        int paidVacationDuration = getPlannedVacationDuration(yearStart, yearEnd, VacationType.PAID),
+            unPaidVacationDuration = getPlannedVacationDuration(yearStart, yearEnd, VacationType.UNPAID);
+        double
+            nrOfDaysEarned,
+            numOfDaysInYear = (Year.of(year).isLeap() ? 366 : 365);
+
+        if (user.getFirstWorkday() == null) {
+            return null;
+        } else {
+            nrOfDaysEarned = (numOfDaysInYear - unPaidVacationDuration) / numOfDaysInYear * 28;
+            nrOfDaysEarned += getUnusedVacationDaysOfYear(user, year - 1);
+        }
+        nrOfDaysEarned -= paidVacationDuration;
+        return Math.min((int) nrOfDaysEarned, 28);
+    }
+
+    private int hasAnyTwoWeekPaidVacation(LocalDate timeFrameStart, LocalDate timeFrameEnd) {
         List<Vacation> list = vacationRepository.findAllVacationsOfTypeWithTimeframe(timeFrameStart, timeFrameEnd, VacationType.PAID);
         for (Vacation vacation : list) {
-            if (vacation.getStartDate().compareTo(timeFrameStart) < 0 && getDurationInDays(timeFrameStart, vacation.getEndDate()) >= 14
-                || vacation.getEndDate().compareTo(timeFrameEnd) > 0 && getDurationInDays(vacation.getStartDate(), timeFrameEnd) >= 14
-                || getDurationInDays(vacation.getStartDate(), vacation.getEndDate()) >= 14) {
+            if (vacation.getStartDate().compareTo(timeFrameStart) < 0 && getDurationInDays(timeFrameStart, vacation.getEndDate(), false) >= 14
+                || vacation.getEndDate().compareTo(timeFrameEnd) > 0 && getDurationInDays(vacation.getStartDate(), timeFrameEnd, false) >= 14
+                || getDurationInDays(vacation.getStartDate(), vacation.getEndDate(), false) >= 14) {
                 return 1;
             }
         }
@@ -114,13 +133,17 @@ public class VacationCalculationUtils {
     }
 
     private Long getDurationInDays(LocalDate start, LocalDate end) {
+        return getDurationInDays(start, end, true);
+    }
+
+    private Long getDurationInDays(LocalDate start, LocalDate end, boolean excludeHolidays) {
         if (end != null) {
-            return start.until(end, ChronoUnit.DAYS) + 1 - HolidayUtils.getHolidays(start, end).size();
+            return start.until(end, ChronoUnit.DAYS) + 1 - (excludeHolidays ? HolidayUtils.getHolidays(start, end).size() : 0);
         }
         return null;
     }
 
-    private int getEmployeeVacationDaysEarned(int paidVacationDurationSum, int unPaidVacationDurationSum, boolean byCurrentDate) {
+    private int getEarnedVacationDaysSum(int paidVacationDurationSum, int unPaidVacationDurationSum, boolean byCurrentDate) {
         User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
         double
             nrOfDaysEarned,
@@ -145,14 +168,21 @@ public class VacationCalculationUtils {
             } else {
                 nrOfDaysEarned = (numOfDaysInYear - unPaidVacationDurationSum) / numOfDaysInYear * 28;
             }
-            nrOfDaysEarned += getUnusedVacationDays(user);
+            nrOfDaysEarned += getUnusedVacationDaysOfYear(user, new DateTime().getYear() - 1);
         }
         nrOfDaysEarned -= paidVacationDurationSum;
         return (int) nrOfDaysEarned;
     }
 
-    private int getUnusedVacationDays(User user) {
-        return (user.getUnusedVacationDays() == null) ? 0 : user.getUnusedVacationDays();
+    private int getUnusedVacationDaysOfYear(User user, int year) {
+        Integer unusedVacationDays = null;
+
+        for (Balance balanceInfo : user.getYearlyBalances()) {
+            if (balanceInfo.getYear() == year) {
+                unusedVacationDays = balanceInfo.getBalance();
+            }
+        }
+        return (unusedVacationDays == null) ? 0 : unusedVacationDays;
     }
 
     private boolean isNewEmployee(User user) {

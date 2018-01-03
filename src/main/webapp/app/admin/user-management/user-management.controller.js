@@ -14,6 +14,8 @@
         vm.loadPage = loadPage;
         vm.transition = transition;
         vm.filter = filter;
+        vm.calcYearlyBalances = calcYearlyBalances;
+
 
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -114,6 +116,12 @@
                 size: vm.pageParams.itemsPerPage,
                 sort: sort()
             }, onSuccess, onError);
+        }
+
+        function calcYearlyBalances() {
+            User.calcYearlyBalances({}, function(data) {
+                AlertService.info("userManagement.home.calculateBalancesResultMsg", data);
+            });
         }
     }
 })();

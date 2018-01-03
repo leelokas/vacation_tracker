@@ -10,12 +10,15 @@
         <dt><span data-translate="userManagement.email">Email</span></dt>
         <dd>{{vm.user.email}}</dd>
         <dt><span data-translate="userManagement.manager">Manager</span></dt>
-        <dd>{{vm.user.manager.firstName}} {{vm.user.manager.lastName}} ({{vm.user.manager.login}})</dd>
+        <dd>{{vm.managerInfo}}</dd>
 
         <dt><span data-translate="userManagement.firstWorkday">First workday</span></dt>
         <dd>{{vm.user.firstWorkday | date:'dd/MM/yy' }}</dd>
-        <dt><span data-translate="userManagement.unusedVacationShort">Unused vacation</span></dt>
-        <dd>{{vm.user.unusedVacationDays}} <span data-translate="userManagement.days">days</span></dd>
+        <dt>
+            <span data-translate="userManagement.unusedVacationShort" translate-values="{param: '{{vm.previousYear}}'}">Unused vacation</span>
+            <i class="fa fa-info-circle" tooltip-placement="bottom" aria-hidden="true" uib-tooltip-html="vm.yearlyBalanceTooltipText"></i>
+        </dt>
+        <dd>{{vm.yearlyBalance}}</dd>
 
         <dt><span data-translate="userManagement.createdBy">Created By</span></dt>
         <dd>{{vm.user.createdBy}} - {{vm.user.createdDate | date:'dd/MM/yy HH:mm' }}</dd>

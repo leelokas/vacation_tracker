@@ -115,8 +115,9 @@
             </div>
 
             <div class="form-group col-md-6">
-                <label data-translate="userManagement.unusedVacationDays">Unused vacation days from previous year</label>
-                <input type="text" class="form-control" name="unusedVacationDays" ng-model="vm.user.unusedVacationDays">
+                <label data-translate="userManagement.unusedVacationDays" translate-values="{param: '{{vm.previousYear}}'}">Unused vacation days from previous year</label>
+                <i class="fa fa-info-circle" tooltip-placement="bottom" aria-hidden="true" uib-tooltip-html="vm.yearlyBalanceTooltipText"></i>
+                <input type="number" step="1" class="form-control" name="unusedVacationDays" ng-model="vm.previousYearBalanceInfo.balance">
             </div>
 
             <div class="form-group col-md-12">

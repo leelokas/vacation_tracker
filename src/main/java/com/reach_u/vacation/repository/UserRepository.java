@@ -34,6 +34,9 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
         countQuery = "select count(user) from User user")
     Page<User> findAllWithAuthorities(Pageable pageable);
 
+    @Query("select distinct user from User user where user.login != 'system' and user.login!='anonymoususer'")
+    List<User> findAllUsers();
+
     @Override
     void delete(User t);
 

@@ -1,11 +1,16 @@
 <div>
     <div class="row title-and-button">
-        <h2 class="col-xs-8" data-translate="userManagement.home.title">Users</h2>
-        <div class="col-xs-4">
-            <button class="btn reach-u_orange" ui-sref="user-management.new">
-                <span class="glyphicon glyphicon-flash"></span> <span data-translate="userManagement.home.createLabel">Create a new User</span>
+        <h2 class="col-xs-4" data-translate="userManagement.home.title">Users</h2>
+        <div class="col-xs-8 btn-group flex-btn-group-container">
+            <button class="btn btn-primary" ng-click="vm.calcYearlyBalances()">
+                <span class="fa fa-calculator"></span>
+                <span class="hidden-xs hidden-sm hidden-md" data-translate="userManagement.home.calculateBalances">Calculate yearly balances</span>
             </button>
-      </div>
+            <button class="btn reach-u_orange" ui-sref="user-management.new">
+                <span class="glyphicon glyphicon-plus"></span>
+                <span data-translate="userManagement.home.createLabel">Create a new User</span>
+            </button>
+        </div>
     </div>
     <jhi-alert></jhi-alert>
     <br/>

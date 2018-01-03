@@ -20,6 +20,10 @@
                     return data;
                 }
             },
+            'calcYearlyBalances': {
+                method: 'GET',
+                url: 'api/users/calcYearlyBalances'
+            },
             'getRemainingPaidDays': {
                 method: 'GET',
                 url: 'api/users/remainingDays'
@@ -38,7 +42,7 @@
             },
             'save': { method:'POST' },
             'update': { method:'PUT' },
-            'delete':{ method:'DELETE'}
+            'delete': { method:'DELETE'}
         });
 
         return service;

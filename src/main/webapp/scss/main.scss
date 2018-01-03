@@ -478,3 +478,15 @@ footer {
         font-weight: bold;
     }
 }
+
+@media (min-width: 768px) {
+    .dl-horizontal {
+        dd {
+            margin-left: 200px;
+        }
+        dt {
+            width: 180px;
+        }
+    }
+}
+

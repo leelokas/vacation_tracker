@@ -1,8 +1,10 @@
 package com.reach_u.vacation.service;
 
 import com.reach_u.vacation.domain.Authority;
+import com.reach_u.vacation.domain.Balance;
 import com.reach_u.vacation.domain.User;
 import com.reach_u.vacation.repository.AuthorityRepository;
+import com.reach_u.vacation.repository.BalanceRepository;
 import com.reach_u.vacation.repository.PersistentTokenRepository;
 import com.reach_u.vacation.repository.UserRepository;
 import com.reach_u.vacation.security.AuthoritiesConstants;
@@ -37,6 +39,9 @@ public class UserService {
     private UserRepository userRepository;
 
     @Inject
+    private BalanceRepository balanceRepository;
+
+    @Inject
     private PersistentTokenRepository persistentTokenRepository;
 
     @Inject
@@ -62,7 +67,7 @@ public class UserService {
             .filter(user -> {
                 ZonedDateTime oneDayAgo = ZonedDateTime.now().minusHours(24);
                 return user.getResetDate().isAfter(oneDayAgo);
-           })
+            })
            .map(user -> {
                user.setPassword(passwordEncoder.encode(newPassword));
                user.setResetKey(null);
@@ -132,11 +137,15 @@ public class UserService {
         user.setResetDate(ZonedDateTime.now());
         user.setActivated(true);
         if (managedUserVM.getManagerId() != null) {
-            userRepository.findOneById(managedUserVM.getManagerId()).ifPresent(m -> user.setManager(m));
+            userRepository.findOneById(managedUserVM.getManagerId()).ifPresent(m -> {
+                if (m.getManager() == null || m.getManager().getId() != user.getId()) {
+                    user.setManager(m);
+                }
+            });
         }
         user.setFirstWorkday(managedUserVM.getFirstWorkday());
-        user.setUnusedVacationDays(managedUserVM.getUnusedVacationDays());
         userRepository.save(user);
+        updateUserYearlyBalances(managedUserVM.getYearlyBalances());
         log.debug("Created Information for User: {}", user);
         return user;
     }
@@ -154,7 +163,7 @@ public class UserService {
 
     public void updateUser(Long id, String login, String firstName, String lastName, String email,
                            boolean activated, String langKey, Set<String> authorities, Long managerId,
-                           Date firstWorkday, Integer unusedVacationDays) {
+                           Date firstWorkday, Set<Balance> balances) {
 
         userRepository
             .findOneById(id)
@@ -175,9 +184,26 @@ public class UserService {
                     u.setManager(manager);
                 }
                 u.setFirstWorkday(firstWorkday);
-                u.setUnusedVacationDays(unusedVacationDays);
+                userRepository.save(u);
+                updateUserYearlyBalances(balances);
                 log.debug("Changed Information for User: {}", u);
             });
+    }
+
+    public void updateUserYearlyBalances(Set<Balance> balances) {
+        balances.forEach(balanceData ->
+            balanceRepository.findUserBalanceOfYear(balanceData.getUserId(), balanceData.getYear())
+                .map(b -> {
+                    b.setBalance(balanceData.getBalance());
+                    balanceRepository.save(b);
+                    log.debug("Changed Balance: {}", b);
+                    return b;
+                }).orElseGet(() -> {
+                    balanceRepository.save(balanceData);
+                    log.debug("Saved Balance: {}", balanceData);
+                    return balanceData;
+                })
+        );
     }
 
     public void deleteUser(String login) {

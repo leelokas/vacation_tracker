@@ -400,3 +400,9 @@ footer {
 .uib-datepicker-popup.dropdown-menu .national-holiday .btn {
   color: red;
   font-weight: bold; }
+
+@media (min-width: 768px) {
+  .dl-horizontal dd {
+    margin-left: 200px; }
+  .dl-horizontal dt {
+    width: 180px; } }

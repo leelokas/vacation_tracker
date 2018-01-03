@@ -3,6 +3,7 @@ package com.reach_u.vacation.web.rest;
 import com.reach_u.vacation.config.Constants;
 import com.codahale.metrics.annotation.Timed;
 import com.reach_u.vacation.domain.Authority;
+import com.reach_u.vacation.domain.Balance;
 import com.reach_u.vacation.domain.User;
 import com.reach_u.vacation.repository.UserRepository;
 import com.reach_u.vacation.repository.UserSpecifications;
@@ -27,7 +28,9 @@ import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.servlet.http.HttpServletRequest;
+import java.time.Year;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -101,12 +104,6 @@ public class UserResource {
                 .body(null);
         } else {
             User newUser = userService.createUser(managedUserVM);
-            String baseUrl = request.getScheme() + // "http"
-                "://" +                                // "://"
-                request.getServerName() +              // "myhost"
-                ":" +                                  // ":"
-                request.getServerPort() +              // "80"
-                request.getContextPath();              // "/myContextPath" or "" if deployed in root context
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
                 .headers(HeaderUtil.createAlert("userManagement.created", newUser.getLogin()))
                 .body(newUser);
@@ -139,7 +136,7 @@ public class UserResource {
         userService.updateUser(managedUserVM.getId(), managedUserVM.getLogin(), managedUserVM.getFirstName(),
             managedUserVM.getLastName(), managedUserVM.getEmail(), managedUserVM.isActivated(),
             managedUserVM.getLangKey(), managedUserVM.getAuthorities(), managedUserVM.getManagerId(),
-            managedUserVM.getFirstWorkday(), managedUserVM.getUnusedVacationDays());
+            managedUserVM.getFirstWorkday(), managedUserVM.getYearlyBalances());
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createAlert("userManagement.updated", managedUserVM.getLogin()))
@@ -240,14 +237,57 @@ public class UserResource {
      * GET  /users/remainingDays : get the counts of remaining study leave / paid vacation days that the currently logged in user has.
      *
      * @return a Map with counts of remaining study leave / paid vacation days.
-     * @throws URISyntaxException if the pagination headers couldn't be generated
      */
     @RequestMapping(value = "/users/remainingDays",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public Map<String, Integer> getRemainingDaysOfCurrentUser() throws URISyntaxException {
+    public Map<String, Integer> getRemainingDaysOfCurrentUser() {
         return vacationCalculationUtils.getRemainingDaysOfCurrentUser();
+    }
+
+    /**
+     * GET  /users/calcYearlyBalances : calculate previous year's balances for all users.
+     *
+     * @return a Map with updated and unchanged user counts.
+     */
+    @RequestMapping(value = "/users/calcYearlyBalances",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public Map<String, Integer> calcYearlyBalances() {
+        int previousYear = Year.now().getValue() - 1;
+        List<User> users = userRepository.findAllUsers();
+        AtomicInteger
+            updatedUserCount = new AtomicInteger(0),
+            unchangedUserCount = new AtomicInteger(0);
+
+        users.forEach(user -> {
+            boolean userHasPreviousYearBalance = user.getYearlyBalances().stream()
+                .anyMatch( balanceInfo -> balanceInfo.getYear() == previousYear);
+
+            if (userHasPreviousYearBalance) {
+                unchangedUserCount.incrementAndGet();
+                return;
+            }
+
+            Integer unusedVacationDays = vacationCalculationUtils.calcYearlyVacationDaysBalanceOfUser(previousYear, user);
+            if (unusedVacationDays == null) {
+                unchangedUserCount.incrementAndGet();
+                return;
+            }
+
+            Set<Balance> balances = user.getYearlyBalances();
+            balances.add(new Balance(user.getId(), previousYear, unusedVacationDays));
+            userService.updateUserYearlyBalances(balances);
+            updatedUserCount.incrementAndGet();
+        });
+
+        Map<String, Integer> result = new HashMap<>();
+        result.put("success", updatedUserCount.get());
+        result.put("unchanged", unchangedUserCount.get());
+        result.put("year", previousYear);
+        return result;
     }
 
 }

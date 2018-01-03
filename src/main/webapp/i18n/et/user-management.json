@@ -3,7 +3,9 @@
         "home": {
             "title": "Kasutajad",
             "createLabel": "Loos uus kasutaja",
-            "createOrEditLabel": "Loo või muuda kasutajat"
+            "createOrEditLabel": "Loo või muuda kasutajat",
+            "calculateBalances": "Arvuta aasta jäägid",
+            "calculateBalancesResultMsg": "Aasta {{ year }} jääk arvutatud {{ success }} kasutajale.\n{{ unchanged }} jäi muutmata - jääk võib juba olemas olla või on 1. tööpäev märkimata."
         },
         "created": "Uus kasutaja on loodud ID-ga '{{ param }}'",
         "updated": "Uus kasutaja on uuendatud ID-ga '{{ param }}'",
@@ -29,8 +31,9 @@
         "lastModifiedDate": "Muutmise kuupäev",
         "manager": "Otsene ülemus",
         "firstWorkday": "Esimene tööpäev",
-        "unusedVacationDays": "Eelmise aasta kasutamata jäänud puhkepäevad",
-        "unusedVacationShort": "Eelmise aasta jääk",
-        "days": "päeva"
+        "unusedVacationDays": "Aastast {{ param }} ülekanduv puhkepäevade jääk",
+        "unusedVacationShort": "{{ param }} aasta jääk",
+        "days": "päeva",
+        "savedBalances": "Salvestatud jäägid:"
     }
 }

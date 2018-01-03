@@ -3,7 +3,9 @@
         "home": {
             "title": "Users",
             "createLabel": "Create a new user",
-            "createOrEditLabel": "Create or edit a user"
+            "createOrEditLabel": "Create or edit a user",
+            "calculateBalances": "Calculate yearly balances",
+            "calculateBalancesResultMsg": "{{ year }} leftover days balance calculated for {{ success }} user(s).\nBalance unchanged for {{ unchanged }} user(s) - it might already exist or the 1st workday info might be missing. "
         },
         "created": "A new user is created with login '{{ param }}'",
         "updated": "An user is updated with login '{{ param }}'",
@@ -29,8 +31,9 @@
         "lastModifiedDate": "Modified date",
         "manager": "Manager",
         "firstWorkday": "First workday",
-        "unusedVacationDays": "Unused vacation days from previous year",
-        "unusedVacationShort": "Unused from last year",
-        "days": "days"
+        "unusedVacationDays": "Unused vacation days from year {{ param }}",
+        "unusedVacationShort": "Unused from year {{ param }}",
+        "days": "days",
+        "savedBalances": "Saved balances:"
     }
 }
