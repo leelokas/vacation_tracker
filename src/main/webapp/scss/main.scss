@@ -272,8 +272,16 @@ entity detail page css
         }
         dd {
             border-bottom: 1px solid #eee;
-            padding-left: 180px;
+            padding-left: 200px;
             margin-left: 0;
+        }
+    }
+    .dl-horizontal {
+        dt {
+            width: 180px;
+        }
+        dd {
+            margin-left: 200px;
         }
     }
 }
@@ -476,17 +484,6 @@ footer {
     .national-holiday .btn{
         color: red;
         font-weight: bold;
-    }
-}
-
-@media (min-width: 768px) {
-    .dl-horizontal {
-        dd {
-            margin-left: 200px;
-        }
-        dt {
-            width: 180px;
-        }
     }
 }
 
