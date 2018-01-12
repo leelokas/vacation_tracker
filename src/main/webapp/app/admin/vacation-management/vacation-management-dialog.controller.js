@@ -66,8 +66,8 @@
 
         function setMinEndDate () {
             $scope.$watch("vm.vacation.startDate", function() {
-                vm.endDateOptions.minDate = vm.vacation.startDate;
-                vm.endDateOptions.initDate = vm.vacation.startDate;
+                vm.endDateOptions.minDate = vm.vacation.startDate ? new Date(vm.vacation.startDate) : undefined;
+                vm.endDateOptions.initDate = vm.vacation.startDate ? new Date(vm.vacation.startDate) : undefined;
             });
         }
         $scope.$watch("vm.vacation.startDate", function () {
