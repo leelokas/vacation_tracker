@@ -45,11 +45,7 @@
         loadAll();
 
         function sort() {
-            var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
-            if (vm.predicate !== 'id') {
-                result.push('id');
-            }
-            return result;
+            return [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
         }
 
         function onSuccess(data, headers) {

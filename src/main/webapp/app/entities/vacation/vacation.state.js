@@ -29,7 +29,7 @@
                     squash: true
                 },
                 sort: {
-                    value: 'id,asc',
+                    value: 'startDate,desc',
                     squash: true
                 },
                 search: null
@@ -76,7 +76,7 @@
                     squash: true
                 },
                 sort: {
-                    value: 'id,asc',
+                    value: 'startDate,asc',
                     squash: true
                 },
                 search: null
@@ -122,7 +122,7 @@
                     squash: true
                 },
                 sort: {
-                    value: 'id,asc',
+                    value: 'startDate,desc',
                     squash: true
                 },
                 search: null
