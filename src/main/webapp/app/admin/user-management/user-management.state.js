@@ -88,7 +88,8 @@
                                 id: null, login: null, firstName: null, lastName: null, email: null,
                                 activated: true, langKey: "en", createdBy: null, createdDate: null,
                                 lastModifiedBy: null, lastModifiedDate: null, resetDate: null,
-                                resetKey: null, authorities: ["ROLE_USER"], firstWorkday: new Date()
+                                resetKey: null, authorities: ["ROLE_USER"], firstWorkday: new Date(),
+                                yearlyBalances: []
                             };
                         }
                     }
