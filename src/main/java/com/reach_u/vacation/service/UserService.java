@@ -143,17 +143,15 @@ public class UserService {
         user.setResetDate(ZonedDateTime.now());
         user.setActivated(true);
         if (managedUserVM.getManagerId() != null) {
-            userRepository.findOneById(managedUserVM.getManagerId()).ifPresent(m -> {
-                if (m.getManager() == null || m.getManager().getId() != user.getId()) {
-                    user.setManager(m);
-                }
-            });
+            userRepository.findOneById(managedUserVM.getManagerId()).ifPresent(m -> user.setManager(m));
         }
         user.setFirstWorkday(managedUserVM.getFirstWorkday());
-        userRepository.save(user);
-        updateUserYearlyBalances(managedUserVM.getYearlyBalances());
-        log.debug("Created Information for User: {}", user);
-        return user;
+
+		User savedUser = userRepository.save(user);
+
+        updateUserYearlyBalances(managedUserVM.getYearlyBalances(), savedUser.getId());
+        log.debug("Created Information for User: {}", savedUser);
+        return savedUser;
     }
 
     public void updateUser(String firstName, String lastName, String email, String langKey) {
@@ -201,15 +199,16 @@ public class UserService {
                         balances.add(new Balance(u.getId(), previousYear, unusedVacationDays));
                     }
                 }
-                updateUserYearlyBalances(balances);
+                updateUserYearlyBalances(balances, id);
                 log.debug("Changed Information for User: {}", u);
             });
     }
 
-    public void updateUserYearlyBalances(Set<Balance> balances) {
+    public void updateUserYearlyBalances(Set<Balance> balances, Long userId) {
         if (balances == null) {
             return;
         }
+		log.error(balances.toString());
         balances.forEach(balanceData ->
             balanceRepository.findUserBalanceOfYear(balanceData.getUserId(), balanceData.getYear())
                 .map(b -> {
@@ -227,6 +226,7 @@ public class UserService {
                         log.debug("Not saving balance with value on null {}", balanceData);
                         return null;
                     }
+					balanceData.setUserId(userId);
                     balanceRepository.save(balanceData);
                     log.debug("Saved Balance: {}", balanceData);
                     return balanceData;

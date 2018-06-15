@@ -279,7 +279,7 @@ public class UserResource {
 
             Set<Balance> balances = user.getYearlyBalances();
             balances.add(new Balance(user.getId(), previousYear, unusedVacationDays));
-            userService.updateUserYearlyBalances(balances);
+            userService.updateUserYearlyBalances(balances, user.getId());
             updatedUserCount.incrementAndGet();
         });
 

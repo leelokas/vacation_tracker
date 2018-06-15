@@ -31,10 +31,10 @@
         };
 
         if (vm.user.$promise) {
-            vm.user.$promise.then( function(){
-                if (!vm.user.yearlyBalances) return;
-
-                addBalanceInfo();
+            vm.user.$promise.then(function() {
+                if (vm.user.yearlyBalances && vm.user.yearlyBalances.length) {
+					addBalanceInfo();
+				}
             });
         }
 
@@ -66,7 +66,9 @@
                 vm.user.managerId = -1;
             }
 
-            if (vm.previousYearBalanceInfo.balance !== null && vm.previousYearBalanceInfo.balance !== undefined) {
+			var prevYearBalance = vm.user.yearlyBalances.find(data => data.year === vm.previousYear);
+
+            if (!prevYearBalance && vm.previousYearBalanceInfo.balance !== null && vm.previousYearBalanceInfo.balance !== undefined) {
                 vm.user.yearlyBalances.push({
                     userId: vm.user.id,
                     year: vm.previousYear,
@@ -85,9 +87,8 @@
         }
 
         function addBalanceInfo () {
-            vm.previousYearBalanceInfo = vm.user.yearlyBalances.find( function (data) {
-                    return data.year === vm.previousYear;
-                }) || vm.previousYearBalanceInfo;
+            vm.previousYearBalanceInfo = vm.user.yearlyBalances
+				.find(data => data.year === vm.previousYear) || vm.previousYearBalanceInfo;
 
             vm.yearlyBalanceTooltipText =
                 $sce.trustAsHtml( $translate.instant("userManagement.savedBalances") + (
