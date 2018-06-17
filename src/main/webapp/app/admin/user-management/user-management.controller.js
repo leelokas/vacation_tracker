@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('UserManagementController', UserManagementController);
 
-    UserManagementController.$inject = ['Principal', 'User', 'AlertService', 'pagingParams', 'paginationConstants', 'JhiLanguageService', '$translate'];
+    UserManagementController.$inject = ['Principal', 'User', 'AlertService', 'pagingParams', 'paginationConstants', 'JhiLanguageService', '$translate', '$scope'];
 
-    function UserManagementController(Principal, User, AlertService, pagingParams, paginationConstants, JhiLanguageService, $translate) {
+    function UserManagementController(Principal, User, AlertService, pagingParams, paginationConstants, JhiLanguageService, $translate, $scope) {
         var vm = this;
 
         vm.loadAll = loadAll;
@@ -143,5 +143,9 @@
                 loadAll();
             });
         }
+
+				$scope.$watchCollection('[vm.filterParams.login, vm.filterParams.firstName, vm.filterParams.lastName, vm.filterParams.role, vm.filterParams.manager]', function () {
+						filter();
+				});
     }
 })();

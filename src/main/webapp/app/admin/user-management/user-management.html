@@ -16,43 +16,35 @@
     <br/>
 
 	<form class="row filterForm" ng-submit="vm.filter()">
-        <div class="col-sm-11 no-padding">
-            <div class="col-md-7 no-padding">
-                <div class="form-group col-xs-4">
-                    <label data-translate="userManagement.login" for="field_login">Login</label>
-                    <input id="field_login" type="text" class="form-control" ng-model="vm.filterParams.login"/>
-                </div>
-                <div class="form-group col-xs-4">
-                    <label data-translate="userManagement.firstName" for="field_firstName">First Name</label>
-                    <input id="field_firstName" type="text" class="form-control" ng-model="vm.filterParams.firstName"/>
-                </div>
-                <div class="form-group col-xs-4">
-                    <label data-translate="userManagement.lastName" for="field_lastName">Last Name</label>
-                    <input id="field_lastName" type="text" class="form-control" ng-model="vm.filterParams.lastName"/>
-                </div>
+        <div class="col-md-7 no-padding">
+            <div class="form-group col-xs-4">
+                <label data-translate="userManagement.login" for="field_login">Login</label>
+                <input id="field_login" type="text" class="form-control" ng-model="vm.filterParams.login"/>
             </div>
-            <div class="col-md-5 no-padding">
-                <div class="form-group col-xs-6">
-                    <label data-translate="userManagement.profiles" for="field_profiles">Roles</label>
-                    <select id="field_profiles" class="form-control" name="authority" ng-model="vm.filterParams.role"
-                            ng-options="authority for authority in vm.authorities" submit-on-enter>
-                        <option value=""></option>
-                    </select>
-                </div>
-                <div class="form-group col-xs-6">
-                    <label data-translate="userManagement.manager" for="field_manager">Manager</label>
-                    <select id="field_manager" class="form-control" name="manager" ng-model="vm.filterParams.manager"
-                            ng-options="user.login as user.firstName + ' ' + user.lastName for user in vm.managers" submit-on-enter>
-                        <option value=""></option>
-                    </select>
-                </div>
+            <div class="form-group col-xs-4">
+                <label data-translate="userManagement.firstName" for="field_firstName">First Name</label>
+                <input id="field_firstName" type="text" class="form-control" ng-model="vm.filterParams.firstName"/>
+            </div>
+            <div class="form-group col-xs-4">
+                <label data-translate="userManagement.lastName" for="field_lastName">Last Name</label>
+                <input id="field_lastName" type="text" class="form-control" ng-model="vm.filterParams.lastName"/>
             </div>
         </div>
-        <div class="col-sm-1 no-padding filterBtn">
-            <button class="btn btn-default" type="submit">
-                <span class="fa fa-filter fa-lg"></span>&nbsp;
-                <span class="visible-xs visible-lg" data-translate="global.filter">Filter</span>
-            </button>
+        <div class="col-md-5 no-padding">
+            <div class="form-group col-xs-6">
+                <label data-translate="userManagement.profiles" for="field_profiles">Roles</label>
+                <select id="field_profiles" class="form-control" name="authority" ng-model="vm.filterParams.role"
+                        ng-options="authority for authority in vm.authorities" submit-on-enter>
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="form-group col-xs-6">
+                <label data-translate="userManagement.manager" for="field_manager">Manager</label>
+                <select id="field_manager" class="form-control" name="manager" ng-model="vm.filterParams.manager"
+                        ng-options="user.login as user.firstName + ' ' + user.lastName for user in vm.managers" submit-on-enter>
+                    <option value=""></option>
+                </select>
+            </div>
         </div>
 	</form>
 

@@ -16,77 +16,69 @@
     <br/>
 
     <form class="row filterForm" ng-submit="vm.filter()">
-        <div class="col-sm-11 no-padding">
-            <div class="col-md-5 no-padding">
-                <div class="form-group col-xs-6">
-                    <label data-translate="vacationTrackerApp.vacation.from" for="field_from">From</label>
-                    <div class="input-group">
-                        <input id="field_from" type="text" class="form-control"
-                               uib-datepicker-popup="{{'dd/MM/yyyy'}}"
-                               ng-model="vm.filterParams.from"
-                               is-open="vm.datePickerOpenStatus.from"
-                               datepicker-options="vm.dateOptions"
-                               show-button-bar="false"/>
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar('from')"><i class="glyphicon glyphicon-calendar"></i></button>
-                </span>
-                    </div>
-                </div>
-                <div class="form-group col-xs-6">
-                    <label data-translate="vacationTrackerApp.vacation.until" for="field_until">Until</label>
-                    <div class="input-group">
-                        <input id="field_until" type="text" class="form-control"
-                               uib-datepicker-popup="{{'dd/MM/yyyy'}}"
-                               ng-model="vm.filterParams.until"
-                               is-open="vm.datePickerOpenStatus.until"
-                               datepicker-options="vm.dateOptions"
-                               show-button-bar="false"/>
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar('until')"><i class="glyphicon glyphicon-calendar"></i></button>
-                </span>
-                    </div>
+        <div class="col-md-5 no-padding">
+            <div class="form-group col-xs-6">
+                <label data-translate="vacationTrackerApp.vacation.from" for="field_from">From</label>
+                <div class="input-group">
+                    <input id="field_from" type="text" class="form-control"
+                           uib-datepicker-popup="{{'dd/MM/yyyy'}}"
+                           ng-model="vm.filterParams.from"
+                           is-open="vm.datePickerOpenStatus.from"
+                           datepicker-options="vm.dateOptions"
+                           show-button-bar="false"/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('from')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
                 </div>
             </div>
-            <div class="col-md-7 no-padding">
-                <div class="form-group col-xs-4">
-                    <label data-translate="vacationTrackerApp.vacation.type" for="field_type">Type</label>
-                    <select class="form-control" ng-model="vm.filterParams.type" id="field_type" submit-on-enter>
-                        <option value=""></option>
-                        <option value="PAID" data-translate="vacationTrackerApp.VacationType.PAID">PAID</option>
-                        <option value="UNPAID" data-translate="vacationTrackerApp.VacationType.UNPAID">UNPAID</option>
-                        <option value="SICK_LEAVE" data-translate="vacationTrackerApp.VacationType.SICK_LEAVE">SICK_LEAVE</option>
-                        <option value="STUDY_LEAVE" data-translate="vacationTrackerApp.VacationType.STUDY_LEAVE">STUDY_LEAVE</option>
-                        <option value="PREGNANCY_LEAVE" data-translate="vacationTrackerApp.VacationType.PREGNANCY_LEAVE">PREGNANCY_LEAVE</option>
-                        <option value="PARENTAL_LEAVE" data-translate="vacationTrackerApp.VacationType.PARENTAL_LEAVE">PARENTAL_LEAVE</option>
-                    </select>
-                </div>
-                <div class="form-group col-xs-4">
-                    <label data-translate="vacationTrackerApp.vacation.stage" for="field_stage">Stage</label>
-                    <i class="fa fa-question-circle-o" tooltip-placement="bottom" aria-hidden="true"
-                       uib-tooltip="{{'vacationTrackerApp.vacation.dialog.stageTooltip' | translate}}"></i>
-                    <select class="form-control" ng-model="vm.filterParams.stage" id="field_stage" submit-on-enter>
-                        <option value=""></option>
-                        <option value="SAVED" data-translate="vacationTrackerApp.Stage.SAVED">SAVED</option>
-                        <option value="SENT" data-translate="vacationTrackerApp.Stage.SENT">SENT</option>
-                        <option value="PLANNED" data-translate="vacationTrackerApp.Stage.PLANNED">PLANNED</option>
-                        <option value="CONFIRMED" data-translate="vacationTrackerApp.Stage.CONFIRMED">CONFIRMED</option>
-                    </select>
-                </div>
-                <div class="form-group col-xs-4">
-                    <label data-translate="vacationTrackerApp.vacation.payment" for="field_payment">Payment</label>
-                    <select class="form-control" ng-model="vm.filterParams.payment" id="field_payment" submit-on-enter>
-                        <option value=""></option>
-                        <option value="BEFORE_VACATION" data-translate="vacationTrackerApp.PaymentType.BEFORE_VACATION">BEFORE_VACATION</option>
-                        <option value="WITH_NEXT_SALARY" data-translate="vacationTrackerApp.PaymentType.WITH_NEXT_SALARY">WITH_NEXT_SALARY</option>
-                    </select>
+            <div class="form-group col-xs-6">
+                <label data-translate="vacationTrackerApp.vacation.until" for="field_until">Until</label>
+                <div class="input-group">
+                    <input id="field_until" type="text" class="form-control"
+                           uib-datepicker-popup="{{'dd/MM/yyyy'}}"
+                           ng-model="vm.filterParams.until"
+                           is-open="vm.datePickerOpenStatus.until"
+                           datepicker-options="vm.dateOptions"
+                           show-button-bar="false"/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('until')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
                 </div>
             </div>
         </div>
-        <div class="col-sm-1 no-padding filterBtn">
-            <button class="btn btn-default" type="submit">
-                <span class="fa fa-filter fa-lg"></span>&nbsp;
-                <span class="visible-xs visible-lg" data-translate="global.filter">Filter</span>
-            </button>
+        <div class="col-md-7 no-padding">
+            <div class="form-group col-xs-4">
+                <label data-translate="vacationTrackerApp.vacation.type" for="field_type">Type</label>
+                <select class="form-control" ng-model="vm.filterParams.type" id="field_type" submit-on-enter>
+                    <option value=""></option>
+                    <option value="PAID" data-translate="vacationTrackerApp.VacationType.PAID">PAID</option>
+                    <option value="UNPAID" data-translate="vacationTrackerApp.VacationType.UNPAID">UNPAID</option>
+                    <option value="SICK_LEAVE" data-translate="vacationTrackerApp.VacationType.SICK_LEAVE">SICK_LEAVE</option>
+                    <option value="STUDY_LEAVE" data-translate="vacationTrackerApp.VacationType.STUDY_LEAVE">STUDY_LEAVE</option>
+                    <option value="PREGNANCY_LEAVE" data-translate="vacationTrackerApp.VacationType.PREGNANCY_LEAVE">PREGNANCY_LEAVE</option>
+                    <option value="PARENTAL_LEAVE" data-translate="vacationTrackerApp.VacationType.PARENTAL_LEAVE">PARENTAL_LEAVE</option>
+                </select>
+            </div>
+            <div class="form-group col-xs-4">
+                <label data-translate="vacationTrackerApp.vacation.stage" for="field_stage">Stage</label>
+                <i class="fa fa-question-circle-o" tooltip-placement="bottom" aria-hidden="true"
+                   uib-tooltip="{{'vacationTrackerApp.vacation.dialog.stageTooltip' | translate}}"></i>
+                <select class="form-control" ng-model="vm.filterParams.stage" id="field_stage" submit-on-enter>
+                    <option value=""></option>
+                    <option value="SAVED" data-translate="vacationTrackerApp.Stage.SAVED">SAVED</option>
+                    <option value="SENT" data-translate="vacationTrackerApp.Stage.SENT">SENT</option>
+                    <option value="PLANNED" data-translate="vacationTrackerApp.Stage.PLANNED">PLANNED</option>
+                    <option value="CONFIRMED" data-translate="vacationTrackerApp.Stage.CONFIRMED">CONFIRMED</option>
+                </select>
+            </div>
+            <div class="form-group col-xs-4">
+                <label data-translate="vacationTrackerApp.vacation.payment" for="field_payment">Payment</label>
+                <select class="form-control" ng-model="vm.filterParams.payment" id="field_payment" submit-on-enter>
+                    <option value=""></option>
+                    <option value="BEFORE_VACATION" data-translate="vacationTrackerApp.PaymentType.BEFORE_VACATION">BEFORE_VACATION</option>
+                    <option value="WITH_NEXT_SALARY" data-translate="vacationTrackerApp.PaymentType.WITH_NEXT_SALARY">WITH_NEXT_SALARY</option>
+                </select>
+            </div>
         </div>
     </form>
 

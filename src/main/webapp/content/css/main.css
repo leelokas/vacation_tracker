@@ -398,9 +398,6 @@ footer {
   outline: none;
   color: #777; }
 
-.input-group-btn:last-child > .btn {
-  padding-bottom: 7px; }
-
 .uib-datepicker-popup.dropdown-menu .national-holiday .btn {
   color: red;
   font-weight: bold; }

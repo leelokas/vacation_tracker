@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('VacationManagementController', VacationManagementController);
 
-    VacationManagementController.$inject = ['$filter', 'Vacation', 'User', 'HolidayUtils', 'AlertService', 'pagingParams', 'paginationConstants'];
+    VacationManagementController.$inject = ['$filter', '$scope', 'Vacation', 'User', 'HolidayUtils', 'AlertService', 'pagingParams', 'paginationConstants'];
 
-    function VacationManagementController ($filter, Vacation, User, HolidayUtils, AlertService, pagingParams, paginationConstants) {
+    function VacationManagementController ($filter, $scope, Vacation, User, HolidayUtils, AlertService, pagingParams, paginationConstants) {
         var vm = this;
 
         vm.loadPage = loadPage;
@@ -121,5 +121,9 @@
                 sort: sort()
             }, onSuccess, onError);
         }
+
+				$scope.$watchCollection('[vm.filterParams.owner, vm.filterParams.manager, vm.filterParams.type, vm.filterParams.stage, vm.filterParams.from, vm.filterParams.until]', function () {
+						filter();
+        });
     }
 })();

@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('VacationOverviewController', VacationOverviewController);
 
-    VacationOverviewController.$inject = ['$filter', '$window', 'Vacation', 'HolidayUtils', 'User', 'AlertService', 'pagingParams', 'paginationConstants'];
+    VacationOverviewController.$inject = ['$filter', '$window', '$scope', 'Vacation', 'HolidayUtils', 'User', 'AlertService', 'pagingParams', 'paginationConstants'];
 
-    function VacationOverviewController ($filter, $window, Vacation, HolidayUtils, User, AlertService, pagingParams, paginationConstants) {
+    function VacationOverviewController ($filter, $window, $scope, Vacation, HolidayUtils, User, AlertService, pagingParams, paginationConstants) {
         var vm = this;
 
         vm.loadPage = loadPage;
@@ -125,7 +125,6 @@
         }
 
         function exportFile() {
-            console.log('exportFile');
             if (vm.selectAll) {
                 var dateFormat = 'yyyy-MM-dd';
                 Vacation.getOverviewFilteredVacations({
@@ -162,5 +161,9 @@
                 vm.vacations[i].checked = vm.selectAll;
             }
         }
+
+				$scope.$watchCollection('[vm.filterParams.owner, vm.filterParams.manager, vm.filterParams.type, vm.filterParams.from, vm.filterParams.until]', function () {
+		  			filter();
+        });
     }
 })();

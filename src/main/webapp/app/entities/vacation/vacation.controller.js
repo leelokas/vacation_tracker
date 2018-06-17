@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('VacationController', VacationController);
 
-    VacationController.$inject = ['$filter', '$translate', 'Vacation', 'HolidayUtils', 'AlertService', 'pagingParams', 'User', 'Principal', 'paginationConstants'];
+    VacationController.$inject = ['$filter', '$translate', '$scope', 'Vacation', 'HolidayUtils', 'AlertService', 'pagingParams', 'User', 'Principal', 'paginationConstants'];
 
-    function VacationController($filter, $translate, Vacation, HolidayUtils, AlertService, pagingParams, User, Principal, paginationConstants) {
+    function VacationController($filter, $translate, $scope, Vacation, HolidayUtils, AlertService, pagingParams, User, Principal, paginationConstants) {
         var vm = this;
 
         vm.loadPage = loadPage;
@@ -17,6 +17,8 @@
         vm.filter = filter;
         vm.displayCancelButton = displayCancelButton;
         vm.currentUser = null;
+
+				vm.twoWeekPaidVacationAlertDisplayed = false;
 
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -28,9 +30,6 @@
                 vm.currentUser = User.get({login: account.login});
             });
         }
-
-
-
 
         vm.paidDaysLeft = {};
         vm.dateOptions = {
@@ -218,11 +217,16 @@
         function loadRemainingPaidDays() {
             User.getRemainingPaidDays({}, function (data) {
                 vm.paidDaysLeft = data;
-                if (!data.hasTwoWeekPaidVacation) {
+                if (!vm.twoWeekPaidVacationAlertDisplayed && !data.hasTwoWeekPaidVacation) {
+										vm.twoWeekPaidVacationAlertDisplayed = true;
                     AlertService.warning("vacationTrackerApp.vacation.twoWeekPaidVacationRequired");
                 }
             }, onError);
         }
+
+				$scope.$watchCollection('[vm.filterParams.from, vm.filterParams.until, vm.filterParams.type, vm.filterParams.stage, vm.filterParams.payment]', function () {
+		  			filter();
+        });
     }
 
 })();
