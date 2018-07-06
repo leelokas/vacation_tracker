@@ -2,10 +2,10 @@
     "vacationTrackerApp": {
         "Stage" : {
             "null": "",
-            "SAVED": "Saved",
-            "SENT": "Sent",
-            "PLANNED": "Planned",
-            "CONFIRMED": "Confirmed"
+            "SAVED": "Saved privately",
+            "SENT": "Sent for confirmation",
+            "PLANNED": "Confirmed by manager",
+            "CONFIRMED": "Confirmed by finance"
         }
     }
 }

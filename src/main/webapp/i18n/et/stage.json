@@ -3,8 +3,8 @@
         "Stage" : {
             "null": "",
             "SAVED": "Salvestatud",
-            "SENT": "Saadetud",
-            "PLANNED": "Planeeritud",
+            "SENT": "Ootab kinnitamist",
+            "PLANNED": "Ülemuse kinnitatud",
             "CONFIRMED": "Kinnitatud"
         }
     }

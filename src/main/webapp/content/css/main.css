@@ -330,6 +330,9 @@ nav.navbar-default ul.navbar-nav.reach-u_orange > li.active > a {
   height: 45px;
   outline: none; }
 
+select.form-control {
+  padding: 6px; }
+
 .filterForm {
   padding-bottom: 10px; }
   .filterForm .filterBtn {
