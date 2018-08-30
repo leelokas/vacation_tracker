@@ -28,9 +28,8 @@
             "sent": "Your vacation request for dates {{vacation.startDate}} - {{vacation.endDate}} was sent for confirmation to your manager {{manager.firstName}} {{manager.lastName}}.\nNB! Have you notified your project manager(s) about your vacation request dates?",
             "sendSickLeave": "Information about your sick leave starting at {{vacation.startDate}} was sent to your manager {{manager.firstName}} {{manager.lastName}}.\nNB! Have you notified your project manager(s) about your sick leave?",
             "confirmed": "The vacation request of user {{owner.firstName}} {{owner.lastName}} is now confirmed and visible from the vacations’ overview page. \nNB Are the project managers aware of the vacation?",
-            "updated": "A Vacation is updated with ID {{ param }}",
-            "saved": "A Vacation is updated with ID {{ param }}. \nYour vacation request is saved but not sent for confirmation. \nIf your request doesn’t need any changes then please click 'Send to confirmation'",
-            "deleted": "A Vacation is deleted with ID {{ param }}",
+            "saved": "Your vacation request is saved but not sent for confirmation. \nIf your request doesn’t need any changes then please click 'Send to confirmation'",
+            "deleted": "The vacation is deleted",
             "rejected": "The vacation request of user {{owner.firstName}} {{owner.lastName}} was rejected.",
             "delete": {
                 "question": "Are you sure you want to delete Vacation {{ id }}?"

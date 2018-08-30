@@ -22,10 +22,6 @@ public class HeaderUtil {
         return createAlert("vacationTrackerApp." + entityName + ".created", param);
     }
 
-    public static HttpHeaders createEntityUpdateAlert(String entityName, String param) {
-        return createAlert("vacationTrackerApp." + entityName + ".updated", param);
-    }
-
     public static HttpHeaders createCustomVacationUpdateAlert(String i18n, String param) {
         return createAlert("vacationTrackerApp.vacation." + i18n, param);
     }

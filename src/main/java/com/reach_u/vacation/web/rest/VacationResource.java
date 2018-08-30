@@ -111,18 +111,17 @@ public class VacationResource {
         }
 
         HttpHeaders headers;
-        if (vacation.getStage() == Stage.SAVED) {
-            if (Objects.equals(SecurityUtils.getCurrentUserLogin(), vacation.getOwner().getLogin())) {
-                headers = HeaderUtil.createCustomVacationUpdateAlert("saved", vacation.getId().toString());
-            } else {
-                headers = HeaderUtil.createCustomVacationUpdateAlert("updated", vacation.getId().toString());
-            }
+        if (vacation.getStage() == Stage.SAVED && Objects.equals(SecurityUtils.getCurrentUserLogin(), vacation.getOwner().getLogin())) {
+            headers = HeaderUtil.createCustomVacationUpdateAlert("saved", vacation.getId().toString());
+            return ResponseEntity.ok()
+                        .headers(headers)
+                        .body(result);
         } else {
-            headers = HeaderUtil.createEntityUpdateAlert("vacation", vacation.getId().toString());
+            return ResponseEntity.ok()
+                        .body(result);
         }
-        return ResponseEntity.ok()
-            .headers(headers)
-            .body(result);
+
+
     }
 
     /**
