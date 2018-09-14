@@ -142,7 +142,9 @@
     "footer": {
         "copyright": "© 2018 Reach-U",
         "forInfoContact": "Kui Sul on küsimusi, probleeme või soovitusi, siis kirjuta",
-        "email": "liis@reach-u.com"
+        "email": "liis@reach-u.com",
+        "help": "või otsi abi kasutusjuhendist ",
+        "helpLink": "SIIT"
     },
     "queryInfo": "Näitan {{totalItems==0 ? 0 : ((page-1)*itemsPerPage)==0 ? 1 : ((page-1)*itemsPerPage)}} - {{(page*itemsPerPage)<totalItems ? (page*itemsPerPage) : totalItems}} kogu {{totalItems}} vastest."
 }

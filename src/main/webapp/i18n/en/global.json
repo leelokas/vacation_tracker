@@ -143,7 +143,9 @@
     "footer": {
         "copyright": "© 2018 Reach-U",
         "forInfoContact": "If you have questions, problems or feature requests then turn to",
-        "email": "liis@reach-u.com"
+        "email": "liis@reach-u.com",
+        "help": "or check out ",
+        "helpLink": "HELP"
     },
     "queryInfo": "Showing {{totalItems==0 ? 0 : ((page-1)*itemsPerPage)==0 ? 1 : ((page-1)*itemsPerPage)}} - {{(page*itemsPerPage)<totalItems ? (page*itemsPerPage) : totalItems}} of {{totalItems}} items."
 }
