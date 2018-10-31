@@ -13,6 +13,7 @@
         vm.account = null;
         vm.isAuthenticated = null;
         vm.authenticationError = false;
+        vm.credentialsExpiredError = false;
         vm.credentials = {};
         vm.login = login;
         vm.password = null;
@@ -45,6 +46,7 @@
                 rememberMe: vm.rememberMe
             }).then(function () {
                 vm.authenticationError = false;
+                vm.credentialsExpiredError = false;
                 if ($state.current.name === 'register' || $state.current.name === 'activate' ||
                     $state.current.name === 'finishReset' || $state.current.name === 'requestReset') {
                     $state.go('home');
@@ -61,8 +63,13 @@
                 }
 
                 $state.go('vacation');
-            }).catch(function () {
-                vm.authenticationError = true;
+            }).catch(function (error) {
+
+                if (error.data.message.indexOf("expired") >= -1) {
+                    vm.credentialsExpiredError = true;
+                } else {
+                    vm.authenticationError = true;
+                }
             });
         }
 

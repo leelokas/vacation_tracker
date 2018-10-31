@@ -1,5 +1,6 @@
 package com.reach_u.vacation.security;
 
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,11 @@ public class AjaxAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
         AuthenticationException exception) throws IOException, ServletException {
 
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication failed");
+        if (exception instanceof CredentialsExpiredException) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication failed: " + exception.getMessage());
+        } else {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication failed");
+        }
+
     }
 }
