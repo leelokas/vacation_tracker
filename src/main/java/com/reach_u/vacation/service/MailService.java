@@ -209,14 +209,21 @@ public class MailService {
             content += "<br/>Request stage was changed from <b>" + oldVacation.getStage()
                 + "</b> to <b>" + newVacation.getStage() + "</b><br/>";
         }
-        if (!typeChanged && newVacation.getType() == VacationType.SICK_LEAVE) {
-            content += "<br/><b>Type:</b> Sick leave";
-        }
         if (dateChanged) {
             content += "<br/><b>Previous duration:</b> " + oldVacation.getStartDate().format(FORMATTER)
                 + " to " + (oldVacation.getEndDate() == null ? "-" : oldVacation.getEndDate().format(FORMATTER))
                 + "<br/><b>New duration:</b> " + newVacation.getStartDate().format(FORMATTER)
                 + " to " + (newVacation.getEndDate() == null ? "-" : newVacation.getEndDate().format(FORMATTER));
+        } else {
+            content += "<br/><b>Duration:</b> " + newVacation.getStartDate().format(FORMATTER)
+            + " to " + (newVacation.getEndDate() == null ? "-" : newVacation.getEndDate().format(FORMATTER));
+        }
+
+        if (typeChanged) {
+            content += "<br/><b>Previous type:</b> " + oldVacation.getType()
+                + "<br/><b>New type:</b> " + newVacation.getType();
+        } else {
+            content += "<br/><b>Type:</b> " + newVacation.getType();
         }
 
         if (!stageChanged) {
@@ -232,10 +239,6 @@ public class MailService {
                 sendEmail(manager.getEmail(), subject, content + EMAIL_FOOTER, false, true);
             }
 
-            if (typeChanged) {
-                content += "<br/><b>Previous type:</b> " + oldVacation.getType()
-                    + "<br/><b>New type:</b> " + newVacation.getType();
-            }
             if (paymentChanged) {
                 content += "<br/><b>Previous payment type:</b> " + oldVacation.getPayment()
                     + "<br/><b>New payment type:</b> " + newVacation.getPayment();
@@ -264,10 +267,6 @@ public class MailService {
             sendEmail(manager.getEmail(), subject, content + EMAIL_FOOTER, false, true);
         }
 
-        if (typeChanged) {
-            content += "<br/><b>Previous type:</b> " + oldVacation.getType()
-                + "<br/><b>New type:</b> " + newVacation.getType();
-        }
         if (paymentChanged) {
             content += "<br/><b>Previous payment type:</b> " + oldVacation.getPayment()
                 + "<br/><b>New payment type:</b> " + newVacation.getPayment();
