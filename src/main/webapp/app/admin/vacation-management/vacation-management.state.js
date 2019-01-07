@@ -135,6 +135,30 @@
                     $state.go('^');
                 });
             }]
+        })
+        .state('vacation-management.cancel', {
+            parent: 'vacation-management',
+            url: '/{id}/cancel',
+            data: {
+                authorities: ['ROLE_ADMIN']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/admin/vacation-management/vacation-management-cancel-dialog.html',
+                    controller: 'VacationManagementCancelController',
+                    controllerAs: 'vm',
+                    size: 'md',
+                    resolve: {
+                        entity: ['Vacation', function(Vacation) {
+                            return Vacation.get({id : $stateParams.id}).$promise;
+                        }]
+                    }
+                }).result.then(function() {
+                    $state.go('vacation-management', null, { reload: true });
+                }, function() {
+                    $state.go('^');
+                });
+            }]
         });
     }
 })();

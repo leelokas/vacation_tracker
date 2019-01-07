@@ -14,6 +14,7 @@
         vm.transition = transition;
         vm.openCalendar = openCalendar;
         vm.filter = filter;
+        vm.displayCancelButton = displayCancelButton;
 
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -122,8 +123,12 @@
             }, onSuccess, onError);
         }
 
-				$scope.$watchCollection('[vm.filterParams.owner, vm.filterParams.manager, vm.filterParams.type, vm.filterParams.stage, vm.filterParams.from, vm.filterParams.until]', function () {
-						filter();
+        function displayCancelButton(vacation) {
+            return vacation.stage !== 'SAVED';
+        }
+
+		$scope.$watchCollection('[vm.filterParams.owner, vm.filterParams.manager, vm.filterParams.type, vm.filterParams.stage, vm.filterParams.from, vm.filterParams.until]', function () {
+			filter();
         });
     }
 })();

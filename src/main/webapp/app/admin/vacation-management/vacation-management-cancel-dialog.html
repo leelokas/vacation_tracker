@@ -1,0 +1,27 @@
+<form name="cancelForm" ng-submit="vm.confirmCancel(vm.vacation.id)" id="cancelForm">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" data-translate="entity.cancel.title">Confirm cancel operation</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <p data-translate="vacationTrackerApp.vacation.vacationManagement.cancel.question"
+            translate-values="{start: '{{vm.vacation.startDate | date:'dd/MM/yyyy'}}', end: '{{vm.vacation.endDate | date:'dd/MM/yyyy'}}', owner:'{{vm.vacation.owner.fullName}}'}">
+            Are you sure you want to cancel this Vacation?
+        </p>
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label for="comment" data-translate="entity.action.addComment">Add comment</label>
+                <textarea name="comment" class="form-control" type="text" id="comment" ng-model="vm.vacation.cancelComment" rows="1"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back">Back</span>
+        </button>
+        <button type="submit" ng-disabled="cancelForm.$invalid" class="btn btn-danger">
+            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span data-translate="entity.action.cancelRequest">Cancel request</span>
+        </button>
+    </div>
+</form>

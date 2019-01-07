@@ -22,7 +22,10 @@
             },
             "vacationManagement": {
                 "title": "Vacations Management",
-                "stageWarning": "<b>Attention!</b> If the accountants do not yet have information about these changes then set stage to 'Confirmed by manager' instead of 'Confirmed by finance'."
+                "stageWarning": "<b>Attention!</b> If the accountants do not yet have information about these changes then set stage to 'Confirmed by manager' instead of 'Confirmed by finance'.",
+                "cancel": {
+                  "question": "Are you sure you want to cancel vacation from {{ start }} to {{ end }} of user {{ owner }}?"
+                }
             },
             "created": "Your vacation request is saved but not sent for confirmation. \nIf your request doesn’t need any changes then please click 'Send to confirmation'",
             "sent": "Your vacation request for dates {{vacation.startDate}} - {{vacation.endDate}} was sent for confirmation to your manager {{manager.firstName}} {{manager.lastName}}.\nNB! Have you notified your project manager(s) about your vacation request dates?",

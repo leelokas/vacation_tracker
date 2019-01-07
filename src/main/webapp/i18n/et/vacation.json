@@ -22,7 +22,10 @@
             },
             "vacationManagement": {
                 "title": "Puhkuste haldus",
-                "stageWarning": "<b>Tähelepanu!</b> Kui raamatupidajatel ei ole veel nende muudatuste kohta infot, siis vali staatuseks 'Ülemuse kinnitatud', mitte 'Kinnitatud'."
+                "stageWarning": "<b>Tähelepanu!</b> Kui raamatupidajatel ei ole veel nende muudatuste kohta infot, siis vali staatuseks 'Ülemuse kinnitatud', mitte 'Kinnitatud'.",
+                "cancel": {
+                    "question": "Kas oled kindel, et tahad tühistada kasutaja {{ owner }} puhkust kestvusega {{ start }} kuni {{ end }}?"
+                }
             },
             "created": "Sinu puhkuse taotlus on salvestatud, kuid pole saadetud kinnitamiseks. \nKui taotlus ei vaja mingeid muudatusi, siis palun klõpsa 'Saada kinnitamisele'",
             "sent": "Puhkuse taotlus kuupäevadega {{vacation.startDate}} - {{vacation.endDate}} saadeti Sinu juhile {{manager.firstName}} {{manager.lastName}} kinnitamiseks.\nNB! Kas oled teavitanud projektijuhti oma puhkuse kuupäevadest?",

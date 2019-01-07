@@ -47,6 +47,12 @@
             <span class="hidden-xs" data-translate="entity.action.back">Back</span>
         </button>
 
+        <button ng-if="vm.displayCancelButton()" type="submit"
+                ui-sref="vacation-management.cancel({id:vm.vacation.id})" class="btn btn-danger" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;
+            <span class="hidden-xs" data-translate="entity.action.cancelRequest">Cancel</span>
+        </button>
+
         <button type="button" ui-sref="vacation-management.edit({id:vm.vacation.id})" class="btn btn-primary" ng-click="vm.clear()">
             <span class="glyphicon glyphicon-pencil"></span>&nbsp;
             <span class="hidden-xs" data-translate="entity.action.edit">Edit</span>
