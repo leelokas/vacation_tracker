@@ -12,8 +12,8 @@
 
         vm.previousYear = new Date().getFullYear() - 1;
         vm.managerInfo = '-';
-        vm.yearlyBalance = '-';
-        vm.yearlyBalanceTooltipText = $sce.trustAsHtml($translate.instant("userManagement.savedBalances") + "<br>-");
+        vm.currentBalance = '-';
+        vm.balanceTooltipText = $sce.trustAsHtml($translate.instant("userManagement.savedBalances") + "<br>-");
 
         vm.load = load;
         vm.user = {};
@@ -26,25 +26,38 @@
                 if (vm.user.manager) {
                     vm.managerInfo = vm.user.manager.firstName + " " + vm.user.manager.lastName + " (" + vm.user.manager.login + ")";
                 }
-                if (vm.user.yearlyBalances && vm.user.yearlyBalances.length) {
-                    var balanceInfo = vm.user.yearlyBalances.find( function (balanceInfo) {
-                        return balanceInfo.year === vm.previousYear;
-                    });
-                    if (balanceInfo) {
-                        vm.yearlyBalance = balanceInfo.balance + " " + $translate.instant("userManagement.days");
-                    }
-
-                    vm.yearlyBalanceTooltipText =
-                        $sce.trustAsHtml( $translate.instant("userManagement.savedBalances") + (
-                                vm.user.yearlyBalances.sort( function (a, b) {
-                                    return b.year - a.year;
-                                }).map( function (data) {
-                                    return '<br>' + data.year + ': <b>' + data.balance + '</b>';
-                                })
-                            )
-                        );
-                }
+                addBalanceInfo();
             });
+        }
+
+        function addBalanceInfo() {
+            vm.balanceTooltipText = $sce.trustAsHtml($translate.instant("userManagement.savedBalances") + "<br>-");
+
+            if (vm.user.yearlyBalances && vm.user.yearlyBalances.length) {
+                vm.balanceTooltipText = $sce.trustAsHtml(
+                    '<b>' + $translate.instant("userManagement.savedBalances") + '</b>' + (
+                        vm.user.yearlyBalances.sort( function (a, b) {
+                            return b.year - a.year;
+                        }).map( function (data) {
+                            return '<br>' + data.year + ': <b>' + data.balance + '</b>';
+                        })
+                    )
+                );
+            }
+
+            User.getRemainingPaidDays({login: vm.user.login}, function (data) {
+                vm.currentBalance = data.current;
+                vm.balanceTooltipText = $sce.trustAsHtml(
+                    '<b>' + $translate.instant("userManagement.unusedVacation") + ':</b>' +
+                    '<br>' + $translate.instant("userManagement.paidVacation") + ': <b>' + data.current + '</b>' +
+                    '<br>' + $translate.instant("userManagement.studyLeave") + ': <b>' + data.studyLeaveRemaining + '</b><hr>' +
+                    vm.balanceTooltipText
+                );
+            }, onError);
+        }
+
+        function onError(error) {
+            AlertService.error(error.data.message);
         }
     }
 })();

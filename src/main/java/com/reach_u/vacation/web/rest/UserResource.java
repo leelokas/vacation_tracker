@@ -242,8 +242,11 @@ public class UserResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public Map<String, Integer> getRemainingDaysOfCurrentUser() {
-        return vacationCalculationUtils.getRemainingDaysOfCurrentUser();
+    public Map<String, Integer> getRemainingDaysOfUser(@RequestParam(value = "login", required = false) String login) {
+        if (login == null) {
+            return vacationCalculationUtils.getRemainingDaysOfCurrentUser();
+        }
+        return vacationCalculationUtils.getRemainingDaysOfUser(login);
     }
 
     /**

@@ -57,7 +57,7 @@
                 <th class="hidden-xs"><span data-translate="userManagement.profiles">Roles</span></th>
                 <th class="hidden-xs hidden-sm"><span data-translate="userManagement.manager">Manager</span></th>
                 <th class="hidden-xs hidden-sm" jh-sort-by="firstWorkday"><span data-translate="userManagement.firstWorkday">First workday</span> <span class="glyphicon glyphicon-sort"></span></th>
-                <th><span data-translate="userManagement.unusedVacationShort" translate-values="{param: '{{vm.previousYear}}'}">Last year vacation balance</span></th>
+                <th><span data-translate="userManagement.unusedVacationShort">Current balance</span></th>
                 <th></th>
             </tr>
             </thead>
@@ -72,7 +72,10 @@
                 </td>
                 <td ui-sref="user-management-detail({login:user.login})" class="hidden-xs hidden-sm">{{user.manager.login}}</td>
                 <td ui-sref="user-management-detail({login:user.login})" class="hidden-xs hidden-sm">{{user.firstWorkday | date:'dd/MM/yy'}}</td>
-                <td ui-sref="user-management-detail({login:user.login})">{{user.previousYearBalanceInfo.balance}}</td>
+                <td ui-sref="user-management-detail({login:user.login})">
+                    <span tooltip-placement="bottom" uib-tooltip-html="user.balanceTooltipText">{{user.currentBalance}}</span>
+                    <i class="fa fa-info-circle" tooltip-placement="bottom" aria-hidden="true" uib-tooltip-html="user.balanceTooltipText"></i>
+                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

@@ -5,9 +5,9 @@
         .module('vacationTrackerApp')
         .controller('UserManagementController', UserManagementController);
 
-    UserManagementController.$inject = ['Principal', 'User', 'AlertService', 'pagingParams', 'paginationConstants', 'JhiLanguageService', '$translate', '$scope'];
+    UserManagementController.$inject = ['Principal', 'User', 'AlertService', 'pagingParams', 'paginationConstants', 'JhiLanguageService', '$translate', '$sce', '$scope'];
 
-    function UserManagementController(Principal, User, AlertService, pagingParams, paginationConstants, JhiLanguageService, $translate, $scope) {
+    function UserManagementController(Principal, User, AlertService, pagingParams, paginationConstants, JhiLanguageService, $translate, $sce, $scope) {
         var vm = this;
 
         vm.loadAll = loadAll;
@@ -70,10 +70,8 @@
                 vm.pageParams.itemsPerPage = data.length;
             }
             vm.users = data.map(function(user) {
-                user.previousYearBalanceInfo = user.yearlyBalances ? user.yearlyBalances.find(function (balanceInfo) {
-                    return balanceInfo.year === vm.previousYear;
-                }) : {};
                 var tooltipText = "";
+
                 if (!user.firstWorkday) {
                     user.rowClass = "red_highlight";
                     tooltipText += $translate.instant("userManagement.home.firstWorkdayMissing") + "\n";
@@ -85,9 +83,38 @@
                 if (tooltipText.length) {
                     user.tooltipText = tooltipText;
                 }
+
+                addBalanceInfo(user);
+
                 return user;
             });
 
+        }
+
+        function addBalanceInfo(user) {
+            user.balanceTooltipText = $sce.trustAsHtml($translate.instant("userManagement.savedBalances") + "<br>-");
+
+            if (user.yearlyBalances && user.yearlyBalances.length) {
+                user.balanceTooltipText = $sce.trustAsHtml(
+                    '<b>' + $translate.instant("userManagement.savedBalances") + '</b>' + (
+                        user.yearlyBalances.sort( function (a, b) {
+                            return b.year - a.year;
+                        }).map( function (data) {
+                            return '<br>' + data.year + ': <b>' + data.balance + '</b>';
+                        })
+                    )
+                );
+            }
+
+            User.getRemainingPaidDays({login: user.login}, function (data) {
+                user.currentBalance = data.current;
+                user.balanceTooltipText = $sce.trustAsHtml(
+                    '<b>' + $translate.instant("userManagement.unusedVacation") + ':</b>' +
+                    '<br>' + $translate.instant("userManagement.paidVacation") + ': <b>' + data.current + '</b>' +
+                    '<br>' + $translate.instant("userManagement.studyLeave") + ': <b>' + data.studyLeaveRemaining + '</b><hr>' +
+                    user.balanceTooltipText
+                );
+            }, onError);
         }
 
         function onError(error) {
@@ -144,8 +171,8 @@
             });
         }
 
-				$scope.$watchCollection('[vm.filterParams.login, vm.filterParams.firstName, vm.filterParams.lastName, vm.filterParams.role, vm.filterParams.manager]', function () {
-						filter();
-				});
+		$scope.$watchCollection('[vm.filterParams.login, vm.filterParams.firstName, vm.filterParams.lastName, vm.filterParams.role, vm.filterParams.manager]', function () {
+				filter();
+		});
     }
 })();

@@ -15,10 +15,10 @@
         <dt><span data-translate="userManagement.firstWorkday">First workday</span></dt>
         <dd>{{vm.user.firstWorkday | date:'dd/MM/yy' }}</dd>
         <dt>
-            <span data-translate="userManagement.unusedVacationShort" translate-values="{param: '{{vm.previousYear}}'}">Unused vacation</span>
-            <i class="fa fa-info-circle" tooltip-placement="bottom" aria-hidden="true" uib-tooltip-html="vm.yearlyBalanceTooltipText"></i>
+            <span data-translate="userManagement.unusedVacationShort">Current balance</span>
+            <i class="fa fa-info-circle" tooltip-placement="bottom" aria-hidden="true" uib-tooltip-html="vm.balanceTooltipText"></i>
         </dt>
-        <dd>{{vm.yearlyBalance}}</dd>
+        <dd>{{vm.currentBalance}}</dd>
 
         <dt><span data-translate="userManagement.createdBy">Created By</span></dt>
         <dd>{{vm.user.createdBy}} - {{vm.user.createdDate | date:'dd/MM/yy HH:mm' }}</dd>

@@ -34,8 +34,11 @@
         "manager": "Otsene ülemus",
         "firstWorkday": "Esimene tööpäev",
         "unusedVacationDays": "Aastast {{ param }} ülekanduv puhkepäevade jääk",
-        "unusedVacationShort": "{{ param }} a. jääk",
+        "unusedVacationShort": "Hetke jääk",
+        "unusedVacation": "Hetke puhkusepäevade jääk",
+        "paidVacation": "tasustatud puhkus",
+        "studyLeave": "õppepuhkus",
         "days": "päeva",
-        "savedBalances": "Salvestatud jäägid:"
+        "savedBalances": "Eelmiste aastate jäägid:"
     }
 }

@@ -490,3 +490,10 @@ footer {
 tr.red_highlight {
     color: red;
 }
+
+.tooltip .tooltip-inner {
+    padding: 4px 8px;
+    hr {
+        margin: 6px 0;
+    }
+}

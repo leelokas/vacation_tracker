@@ -34,8 +34,11 @@
         "manager": "Manager",
         "firstWorkday": "First workday",
         "unusedVacationDays": "Unused vacation days from year {{ param }}",
-        "unusedVacationShort": "{{ param }} balance",
+        "unusedVacationShort": "Current balance",
+        "unusedVacation": "Current remaining days",
+        "paidVacation": "paid vacation",
+        "studyLeave": "study leave",
         "days": "days",
-        "savedBalances": "Saved balances:"
+        "savedBalances": "Balances from previous years:"
     }
 }

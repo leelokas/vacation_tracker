@@ -57,6 +57,28 @@ public class VacationCalculationUtils {
         return result;
     }
 
+    public Map<String, Integer> getRemainingDaysOfUser(String login) {
+        User user = userRepository.findOneByLogin(login).get();
+        Map<String, Integer> result = new HashMap<>();
+        int currentYear = Year.now().getValue();
+        LocalDate
+            yearStart = LocalDate.parse(String.valueOf(currentYear) + "-01-01"),
+            yearEnd = LocalDate.parse(String.valueOf(currentYear) + "-12-31"),
+            currentDate = LocalDate.now();
+
+        int paidVacationDuration = getPlannedVacationDurationOfUser(user, yearStart, yearEnd, VacationType.PAID),
+            unPaidVacationDuration = getPlannedVacationDurationOfUser(user, yearStart, yearEnd, VacationType.UNPAID),
+            paidVacationDurationCurrent = getPlannedVacationDurationOfUser(user, yearStart, currentDate, VacationType.PAID),
+            unPaidVacationDurationCurrent = getPlannedVacationDurationOfUser(user, yearStart, currentDate, VacationType.UNPAID);
+
+        result.put("endOfYear", getUserEarnedVacationDaysSum(user, paidVacationDuration, unPaidVacationDuration, false));
+        result.put("current", getUserEarnedVacationDaysSum(user, paidVacationDurationCurrent, unPaidVacationDurationCurrent, true));
+        result.put("hasTwoWeekPaidVacation", hasAnyTwoWeekPaidVacation(yearStart, yearEnd));
+        result.put("studyLeaveRemaining", 30 - getPlannedVacationDurationOfUser(user, yearStart, yearEnd, VacationType.STUDY_LEAVE));
+
+        return result;
+    }
+
     public Integer calcYearlyVacationDaysBalanceOfUser(int year, User user) {
         LocalDate yearStart = LocalDate.parse(String.valueOf(year) + "-01-01"),
             yearEnd = LocalDate.parse(String.valueOf(year) + "-12-31");
@@ -163,6 +185,10 @@ public class VacationCalculationUtils {
 
     private int getEarnedVacationDaysSum(int paidVacationDurationSum, int unPaidVacationDurationSum, boolean byCurrentDate) {
         User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+        return getUserEarnedVacationDaysSum(user, paidVacationDurationSum, unPaidVacationDurationSum, byCurrentDate);
+    }
+
+    private int getUserEarnedVacationDaysSum(User user, int paidVacationDurationSum, int unPaidVacationDurationSum, boolean byCurrentDate) {
         double
             nrOfDaysEarned,
             numOfDaysInYear = (Year.now().isLeap() ? 366 : 365),
