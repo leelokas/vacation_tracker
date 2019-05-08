@@ -2,7 +2,9 @@ package com.reach_u.vacation.security;
 
 import com.reach_u.vacation.config.JHipsterProperties;
 import com.reach_u.vacation.domain.Authority;
+import com.reach_u.vacation.domain.User;
 import com.reach_u.vacation.repository.AuthorityRepository;
+import com.reach_u.vacation.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ldap.core.DirContextAdapter;
@@ -18,6 +20,7 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -34,6 +37,9 @@ public class UserDetailsContextMapper extends LdapUserDetailsMapper {
 
     @Inject
     private AuthorityRepository authorityRepository;
+
+    @Inject
+    private UserRepository userRepository;
 
     @Override
     public UserDetails mapUserFromContext(DirContextOperations dirContextOperations, String s, Collection<? extends GrantedAuthority> collection) {
@@ -57,9 +63,14 @@ public class UserDetailsContextMapper extends LdapUserDetailsMapper {
             log.error("Failed to parse AD variables", e);
         }
 
-        //TODO create logic that decides authorities
-        Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
-        Set<Authority> authoritySet = new HashSet<Authority>(){{ add(authority); }};
+        Optional<User> user = userRepository.findOneByLogin(userDetails.getUsername());
+        Set<Authority> authorities = new HashSet<>();
+        if (user.isPresent()) {
+            authorities.addAll(user.get().getAuthorities());
+        } else {
+            Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
+            authorities.add(authority);
+        }
 
         CustomUserDetails customUserDetails = new CustomUserDetails(
             userDetails,
@@ -68,7 +79,7 @@ public class UserDetailsContextMapper extends LdapUserDetailsMapper {
             givenname,
             lastname,
             langKey,
-            authoritySet
+            authorities
         );
 
         return customUserDetails;
