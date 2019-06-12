@@ -127,7 +127,6 @@ public class CustomPersistentRememberMeServices extends
         } else {
             log.debug("Creating new user {}", login);
             CustomUserDetails customUserDetails = (CustomUserDetails) successfulAuthentication.getPrincipal();
-            //TODO generate random password for ldap users
             User newUser = userService.createUser(login, UUID.randomUUID().toString(), customUserDetails.getGivenname(), customUserDetails.getLastname(), customUserDetails.getEmail(), customUserDetails.getLangKey());
             newUser.setAuthorities(customUserDetails.getAppAuthorities());
             newUser.setActivated(true);
