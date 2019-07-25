@@ -68,6 +68,7 @@ public class VacationSpecifications {
             }
         };
     }
+
     public static Specification<Vacation> byQuery(VacationType type, PaymentType paymentType, List<Stage> stages,
                                                   Date startDate, Date endDate, String owner, String manager) {
         return new Specification<Vacation>() {
@@ -110,6 +111,41 @@ public class VacationSpecifications {
                 }
                 if (manager != null) {
                     andExpressions.add(criteriaBuilder.equal(root.get("owner").get("manager").get("login"), manager));
+                }
+
+                if (orExpressions.size() > 0) {
+                    andExpressions.add(criteriaBuilder.or(orExpressions.toArray(new Predicate[0])));
+                }
+
+                return criteriaBuilder.and(andExpressions.toArray(new Predicate[0]));
+            }
+        };
+    }
+
+    public static Specification<Vacation> byQuery(VacationType type, PaymentType paymentType, Stage stage,
+                                                  Date startDate, Date endDate, String owner) {
+        return new Specification<Vacation>() {
+            @Override
+            public Predicate toPredicate(Root<Vacation> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> andExpressions = new ArrayList<>();
+                List<Predicate> orExpressions = new ArrayList<>();
+                if (type != null) {
+                    andExpressions.add(criteriaBuilder.equal(root.get("type"), type));
+                }
+                if (paymentType != null) {
+                    andExpressions.add(criteriaBuilder.equal(root.get("payment"), paymentType));
+                }
+                if (stage != null) {
+                    andExpressions.add(criteriaBuilder.equal(root.get("stage"), stage));
+                }
+                if (startDate != null) {
+                    andExpressions.add(criteriaBuilder.greaterThanOrEqualTo(root.get("endDate"), startDate));
+                }
+                if (endDate != null) {
+                    andExpressions.add(criteriaBuilder.lessThanOrEqualTo(root.get("startDate"), endDate));
+                }
+                if (owner != null) {
+                    andExpressions.add(criteriaBuilder.equal(root.get("owner").get("login"), owner));
                 }
 
                 if (orExpressions.size() > 0) {

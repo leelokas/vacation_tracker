@@ -37,6 +37,14 @@
                     return getMethodCallback(data);
                 }
             },
+            'getOwnFilteredVacations': {
+                method: 'GET',
+                url: 'api/vacations/currentUser/filter',
+                isArray: true,
+                transformResponse: function (data) {
+                    return getMethodCallback(data);
+                }
+            },
             'getOverviewVacations': {
                 method: 'GET',
                 url: 'api/vacations/confirmed',

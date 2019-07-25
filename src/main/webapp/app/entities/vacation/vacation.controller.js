@@ -102,9 +102,8 @@
         function transition() {
             var dateFormat = 'yyyy-MM-dd';
 
-            Vacation.getFilteredVacations({
+            Vacation.getOwnFilteredVacations({
                 type: vm.filterParams.type,
-                owner: vm.currentUser.login,
                 stage: vm.filterParams.stage,
                 payment: vm.filterParams.payment,
                 from: $filter('date')(vm.filterParams.from, dateFormat),
@@ -201,9 +200,8 @@
                 return;
             }
             var dateFormat = 'yyyy-MM-dd';
-            Vacation.getFilteredVacations({
+            Vacation.getOwnFilteredVacations({
                 type: vm.filterParams.type,
-                owner: vm.currentUser.login,
                 stage: vm.filterParams.stage,
                 payment: vm.filterParams.payment,
                 from: $filter('date')(vm.filterParams.from, dateFormat),

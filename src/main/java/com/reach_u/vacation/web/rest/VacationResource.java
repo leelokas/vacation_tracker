@@ -169,6 +169,9 @@ public class VacationResource {
      * @param paymentType the vacation payment type
      * @param from the vacation minimum start date
      * @param until the vacation maximum end date
+     * @param owner the vacation's owner by login or name
+     * @param manager the vacation's owner's manager
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and with body the vacation, or with status 404 (Not Found)
      */
     @RequestMapping(value = "/vacations/filter",
@@ -201,6 +204,9 @@ public class VacationResource {
      * @param paymentType the vacation payment type
      * @param from the vacation minimum start date
      * @param until the vacation maximum end date
+     * @param owner the vacation's owner by login or name
+     * @param manager the vacation's owner's manager
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and with body the vacation, or with status 404 (Not Found)
      */
     @RequestMapping(value = "/vacations/overview/filter",
@@ -268,6 +274,38 @@ public class VacationResource {
         log.debug("REST request to get a page of current user's Vacations");
         Page<Vacation> page = vacationRepository.findByOwnerIsCurrentUser(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/vacations/currentUser");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET /vacations/currentUser/filter : get current user's vacations with requested filter
+     *
+     * @param vacationType the vacation type
+     * @param vacationStage the vacation stage
+     * @param paymentType the vacation payment type
+     * @param from the vacation minimum start date
+     * @param until the vacation maximum end date
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and with body the vacation, or with status 404 (Not Found)
+     */
+    @RequestMapping(value = "/vacations/currentUser/filter",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<Vacation>> getCurrentUserVacationsByFilter(
+        @RequestParam(value = "type", required = false) VacationType vacationType,
+        @RequestParam(value = "stage", required = false) Stage vacationStage,
+        @RequestParam(value = "payment", required = false) PaymentType paymentType,
+        @RequestParam(value = "from",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date from,
+        @RequestParam(value = "until", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date until,
+        Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get current user's vacations : vacationStage: {}, paymentType: {}, vacationType: {}, from: {}, until: {}",
+            vacationStage, paymentType, vacationType, from, until);
+        Page<Vacation> page = vacationRepository.findAll(
+            VacationSpecifications.byQuery(vacationType, paymentType, vacationStage, from, until, SecurityUtils.getCurrentUserLogin()), pageable
+        );
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/vacations/currentUser/filter");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
