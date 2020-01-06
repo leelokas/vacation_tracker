@@ -36,7 +36,7 @@
                            required
                            ng-model="vm.vacation.startDate"
                            is-open="vm.datePickerOpenStatus.startDate"
-                           datepicker-options="vm.vacation.type === 'SICK_LEAVE' ? vm.startDateOptions : vm.dateOptions"
+                           datepicker-options="vm.vacation.type === 'SICK_LEAVE' ? vm.sickLeaveStartDateOptions : vm.dateOptions"
                            show-button-bar="false"/>
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('startDate')"><i class="glyphicon glyphicon-calendar"></i></button>

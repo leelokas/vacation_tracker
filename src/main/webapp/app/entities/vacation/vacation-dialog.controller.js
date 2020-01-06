@@ -25,10 +25,7 @@
             customClass: HolidayUtils.getHolidayDates
         };
 
-        var lastWeekDate = new Date();
-        lastWeekDate.setDate(lastWeekDate.getDate() - 7);
-        vm.startDateOptions = {
-            minDate: lastWeekDate,
+        vm.sickLeaveStartDateOptions = {
             showWeeks: false,
             startingDay: 1,
             customClass: HolidayUtils.getHolidayDates
