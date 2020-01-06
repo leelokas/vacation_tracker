@@ -105,7 +105,7 @@ public class VacationCalculationUtils {
         }
 
         nrOfDaysEarned -= paidVacationDuration;
-        return Math.min((int) nrOfDaysEarned, 28);
+        return (int) nrOfDaysEarned;
     }
 
     private int hasAnyTwoWeekPaidVacation(LocalDate timeFrameStart, LocalDate timeFrameEnd) {
